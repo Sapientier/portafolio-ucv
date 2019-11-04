@@ -1,6 +1,6 @@
 # client
 
-> A Vue.js project
+> Frontend del Portafolio Digital UCV
 
 ## Build Setup
 
