@@ -2,10 +2,9 @@
 Trabajo Especial de Grado
 
 ## Autores
-```
 - Brian Torres
 - Jorge Ramírez
-```
+
 
 # client
 
