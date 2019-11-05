@@ -5,7 +5,6 @@ Trabajo Especial de Grado
 - Brian Torres
 - Jorge Ramírez
 
-
 # client
 
 ## Project setup
