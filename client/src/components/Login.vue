@@ -14,7 +14,7 @@
               dark
               flat
             >
-              <v-toolbar-title>Registro</v-toolbar-title>
+              <v-toolbar-title>Inicio de Sesión</v-toolbar-title>
             </v-toolbar>
             <v-card-text>
               <v-form>
@@ -37,9 +37,8 @@
             <v-card-actions>
               <v-spacer />
               <v-btn 
-                @click="register" 
                 color="primary" 
-              >Registrar</v-btn>
+              >Ingresar</v-btn>
             </v-card-actions>
           </v-card>
         </v-col>
@@ -59,12 +58,7 @@ export default {
     }
   },
   methods: {
-    async register () {
-      await AuthenticationService.register({
-        email: this.email,
-        password: this.password
-      })
-    }
+    
   },
 }
 </script>
