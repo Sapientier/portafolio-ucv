@@ -34,10 +34,14 @@
                 ></v-text-field>
               </v-form>
             </v-card-text>
+            <v-alert type="error">
+              <div v-html="error"></div>
+            </v-alert>
             <v-card-actions>
               <v-spacer />
               <v-btn 
-                color="primary" 
+                color="primary"
+                @click="login" 
               >Ingresar</v-btn>
             </v-card-actions>
           </v-card>
@@ -55,10 +59,20 @@ export default {
       email: '',
       password: '',
       show1: false,
+      error: null
     }
   },
   methods: {
-    
+    async login () {
+      try {
+        await AuthenticationService.login({
+          email: this.email,
+          password: this.password
+        })
+      } catch (error) {
+          this.error = error.response.data.error;
+      }
+    }
   },
 }
 </script>

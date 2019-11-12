@@ -28,12 +28,12 @@
                   label="Contraseña" 
                   v-model="password"
                   prepend-icon="mdi-lock"
-                  :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                  :type="show1 ? 'text' : 'password'"
-                  @click:append="show1 = !show1"
                 ></v-text-field>
               </v-form>
             </v-card-text>
+            <v-alert type="error">
+              <div v-html="error"></div>
+            </v-alert>
             <v-card-actions>
               <v-spacer />
               <v-btn 
@@ -55,15 +55,19 @@ export default {
     return {
       email: '',
       password: '',
-      show1: false,
+      error: null
     }
   },
   methods: {
     async register () {
-      await AuthenticationService.register({
-        email: this.email,
-        password: this.password
-      })
+      try {
+        await AuthenticationService.register({
+          email: this.email,
+          password: this.password
+        })
+      } catch (error) {
+        this.error = error.response.data.error
+      }
     }
   },
 }
