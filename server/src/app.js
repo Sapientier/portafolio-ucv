@@ -3,10 +3,10 @@ const cors = require('cors');
 const morgan = require('morgan');
 const app = express();
 const mongoose = require('mongoose');
-const URI = 'mongodb+srv://Sapientier:portafolio-ucv@portafolio-bd-3ovqh.mongodb.net/test?retryWrites=true&w=majority';
+const config = require('./config/config');
 
 // Conexión a la BD en la Nube Cloud Atlas
-mongoose.connect(URI, { useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true })
+mongoose.connect(config.db.URI, { useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true })
     .then(() => console.log("DB conectada"))
     .catch(err => console.error(err));
 
@@ -18,10 +18,7 @@ app.use(cors());
 // Rutas
 require('./routes')(app)
 
-// Configuraciones del servidor
-app.set('port', process.env.PORT || 8000); // Que tome por defecto el puerto que se brinde donde esté desplegada la app, sino el 8000
-
 // Inicialización del servidor
-app.listen(app.get('port'), () => {
-    console.log(`Servidor inicializado en el puerto ${app.get('port')}`);
+app.listen(config.port, () => {
+    console.log(`Servidor inicializado en el puerto ${config.port}`);
 });

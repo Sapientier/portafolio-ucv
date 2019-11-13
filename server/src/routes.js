@@ -41,5 +41,3 @@ module.exports = (app) => {
 //     await Task.findByIdAndDelete(req.params.id);
 //     res.json("Tarea eliminada");
 // });
-
-// module.exports = router;
