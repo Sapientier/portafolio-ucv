@@ -28,10 +28,18 @@
                   label="Contraseña" 
                   v-model="password"
                   prepend-icon="mdi-lock"
+                  :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                  :type="show1 ? 'text' : 'password'"
+                  @click:append="show1 = !show1"
                 ></v-text-field>
               </v-form>
             </v-card-text>
-            <v-alert type="error">
+            <v-alert 
+              type="error" 
+              v-model="alert"
+              dismissible
+              transition="scale-transition"
+            >
               <div v-html="error"></div>
             </v-alert>
             <v-card-actions>
@@ -55,18 +63,23 @@ export default {
     return {
       email: '',
       password: '',
-      error: null
+      show1: false,
+      error: null,
+      alert: false
     }
   },
   methods: {
     async register () {
       try {
-        await AuthenticationService.register({
+        const response = await AuthenticationService.register({
           email: this.email,
           password: this.password
         })
+        this.$store.dispatch('setToken', response.data.token)
+        this.$store.dispatch('setUser', response.data.user)
       } catch (error) {
-        this.error = error.response.data.error
+          this.alert = true
+          this.error = error.response.data.error
       }
     }
   },

@@ -14,7 +14,15 @@
             <v-list-item-title>Inicio</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item link to="/register">
+        <v-list-item link to="/services">
+          <v-list-item-action>
+            <v-icon>mdi-book-open</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Servicios</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item link to="/register" v-if="!$store.state.isUserLoggedIn">
           <v-list-item-action>
             <v-icon>mdi-contact-mail</v-icon>
           </v-list-item-action>
@@ -22,12 +30,20 @@
             <v-list-item-title>Registro</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item link to="/login">
+        <v-list-item link to="/login" v-if="!$store.state.isUserLoggedIn">
           <v-list-item-action>
             <v-icon>mdi-login</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>Iniciar Sesión</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item link @click="logout" v-if="$store.state.isUserLoggedIn">
+          <v-list-item-action>
+            <v-icon>mdi-logout</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Cerrar Sesión</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -58,19 +74,13 @@
         class="hidden-sm-and-down"
       />
       <v-spacer />
-      <v-btn
-        icon
-        large
-      >
-        <v-avatar
-          size="32px"
-          item
-        >
-          <v-img
-            src="https://cdn.vuetifyjs.com/images/logos/logo.svg"
-            alt="Vuetify"
-          />
-        </v-avatar>
+
+      <v-btn icon v-if="!$store.state.isUserLoggedIn">
+        <v-icon>mdi-bell</v-icon>
+      </v-btn>
+
+      <v-btn icon v-if="!$store.state.isUserLoggedIn">
+        <v-icon>mdi-account</v-icon>
       </v-btn>
     </v-app-bar>
   </div>
@@ -81,6 +91,14 @@ export default {
   methods: {
     navigateTo (route) {
       this.$router.push(route)
+    },
+    logout () {
+      this.$store.dispatch('setToken', null)
+      this.$store.dispatch('setUser', null)
+      // Redirigimos al Inicio
+      this.$router.push({
+        name: 'Home'
+      })
     }
   },
   data: () => ({
@@ -91,6 +109,6 @@ export default {
 
 <style scoped>
 .home {
-  cursor: pointer;
+  cursor: pointer
 }
 </style>>

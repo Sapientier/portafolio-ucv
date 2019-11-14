@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Hello from '@/components/Home'
+import Home from '@/components/Home'
 import Register from '@/components/Register'
 import Login from '@/components/Login'
+import Services from '@/components/Services'
 
 Vue.use(VueRouter)
 
@@ -12,7 +13,7 @@ export default new VueRouter({
         {
             path: '/',
             name: 'Home',
-            component: Hello
+            component: Home
         },
         {
             path: '/register',
@@ -23,6 +24,11 @@ export default new VueRouter({
             path: '/login',
             name: 'Login',
             component: Login
+        },
+        {
+            path: '/services',
+            name: 'Services',
+            component: Services
         }
     ]
 })

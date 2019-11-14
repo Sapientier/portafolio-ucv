@@ -34,7 +34,12 @@
                 ></v-text-field>
               </v-form>
             </v-card-text>
-            <v-alert type="error">
+            <v-alert 
+              type="error" 
+              v-model="alert"
+              dismissible
+              transition="scale-transition"
+            >
               <div v-html="error"></div>
             </v-alert>
             <v-card-actions>
@@ -59,18 +64,22 @@ export default {
       email: '',
       password: '',
       show1: false,
-      error: null
+      error: null,
+      alert: false
     }
   },
   methods: {
     async login () {
       try {
-        await AuthenticationService.login({
+        const response = await AuthenticationService.login({
           email: this.email,
           password: this.password
         })
+        this.$store.dispatch('setToken', response.data.token)
+        this.$store.dispatch('setUser', response.data.user)
       } catch (error) {
-          this.error = error.response.data.error;
+          this.alert = true
+          this.error = error.response.data.error
       }
     }
   },

@@ -15,10 +15,10 @@ const UserSchema = new Schema({
     }
 });
 
-UserSchema.pre('save', async function(next) {
-
+UserSchema.pre('save', function(next) {
     var user = this;
     const SALT_WORK_FACTOR = 8;
+
     // solo hashea la clave si ha sido modificada (o si es nueva)
     if (!user.isModified('password')) return next();
 
@@ -37,13 +37,8 @@ UserSchema.pre('save', async function(next) {
     });
 });
 
-UserSchema.pre('updateOne', async function() {
-    //const docToUpdate = await this.model.findOne(this.getQuery());
-    // await hashPassword(docToUpdate);
-});
-
-UserSchema.comparePassword = function (password) {
-    return bcrypt.compareAsync(password, this.password)
+UserSchema.methods.comparePassword = function (password) {
+    return bcrypt.compare(password, this.password)
 }
 
 module.exports = mongoose.model('User', UserSchema);
