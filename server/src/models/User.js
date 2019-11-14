@@ -19,18 +19,18 @@ UserSchema.pre('save', async function(next) {
 
     var user = this;
     const SALT_WORK_FACTOR = 8;
-    // only hash the password if it has been modified (or is new)
+    // solo hashea la clave si ha sido modificada (o si es nueva)
     if (!user.isModified('password')) return next();
 
-    // generate a salt
+    // genera un salt
     bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
         if (err) return next(err);
 
-        // hash the password using our new salt
+        // hashea la clave usando el nuevo salt
         bcrypt.hash(user.password, salt, function(err, hash) {
             if (err) return next(err);
 
-            // override the cleartext password with the hashed one
+            // sobrescribe la clave con el hash
             user.password = hash;
             next();
         });

@@ -31,6 +31,10 @@ npm run lint
 
 ## Project setup
 ```
+npm install
+```
+### Compiles and hot-reloads for development
+```
 npm start
 ```
 
