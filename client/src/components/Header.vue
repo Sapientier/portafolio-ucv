@@ -75,12 +75,22 @@
       />
       <v-spacer />
 
-      <v-btn icon v-if="!$store.state.isUserLoggedIn">
-        <v-icon>mdi-bell</v-icon>
+      <v-btn icon v-if="$store.state.isUserLoggedIn">
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <v-icon v-on="on">mdi-bell</v-icon>
+          </template>
+          <span># notificaciones</span>
+        </v-tooltip>
       </v-btn>
 
-      <v-btn icon v-if="!$store.state.isUserLoggedIn">
-        <v-icon>mdi-account</v-icon>
+      <v-btn icon v-if="$store.state.isUserLoggedIn" >
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <v-icon v-on="on">mdi-account</v-icon>
+          </template>
+          <span v-text="$store.state.user.email"></span>
+        </v-tooltip>
       </v-btn>
     </v-app-bar>
   </div>
