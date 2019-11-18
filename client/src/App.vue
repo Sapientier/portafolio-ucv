@@ -2,7 +2,9 @@
   <v-app>
     <page-header />
     <v-content>
-      <router-view></router-view>
+      <transition name="fade-transition" mode="out-in">
+        <router-view />
+      </transition>
     </v-content>
   </v-app>
 </template>

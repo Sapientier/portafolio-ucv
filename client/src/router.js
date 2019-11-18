@@ -4,6 +4,7 @@ import Home from '@/components/Home'
 import Register from '@/components/Register'
 import Login from '@/components/Login'
 import Services from '@/components/Services'
+import UserProfile from '@/components/UserProfile'
 
 Vue.use(VueRouter)
 
@@ -29,6 +30,11 @@ export default new VueRouter({
             path: '/services',
             name: 'Services',
             component: Services
+        },
+        {
+            path: '/userprofile',
+            name: 'UserProfile',
+            component: UserProfile
         }
     ]
 })

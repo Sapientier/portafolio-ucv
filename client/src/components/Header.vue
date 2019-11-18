@@ -70,21 +70,20 @@
         solo-inverted
         hide-details
         prepend-inner-icon="mdi-magnify"
-        label="Search"
+        label="Buscar"
         class="hidden-sm-and-down"
       />
       <v-spacer />
 
       <v-btn icon v-if="$store.state.isUserLoggedIn">
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
-            <v-icon v-on="on">mdi-bell</v-icon>
-          </template>
-          <span># notificaciones</span>
-        </v-tooltip>
+        <v-badge overlap>
+          <template v-slot:badge
+          >0</template>
+            <v-icon>mdi-bell</v-icon>
+        </v-badge>
       </v-btn>
 
-      <v-btn icon v-if="$store.state.isUserLoggedIn" >
+      <v-btn icon v-if="$store.state.isUserLoggedIn" @click="navigateTo({name: 'UserProfile'})">
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-icon v-on="on">mdi-account</v-icon>
@@ -100,7 +99,7 @@
 export default {
   methods: {
     navigateTo (route) {
-      this.$router.push(route)
+      this.$router.push(route).catch(err => {})
     },
     logout () {
       this.$store.dispatch('setToken', null)
