@@ -1,6 +1,7 @@
 // const express = require('express');
 // const router = express.Router();
 const AuthenticationController = require('./controllers/AuthenticationController');
+const UsersController = require('./controllers/UsersController');
 const AuthenticationControllerPolicy = require('./policies/AuthenticationControllerPolicy');
 
 module.exports = (app) => {
@@ -11,6 +12,9 @@ module.exports = (app) => {
     ),
     app.post('/login', 
         AuthenticationController.login
+    ),
+    app.get('/getusers', 
+        UsersController.getusers
     )
 }
 // Metodo Leer

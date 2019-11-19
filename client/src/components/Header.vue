@@ -22,12 +22,12 @@
             <v-list-item-title>Servicios</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item link to="/register" v-if="!$store.state.isUserLoggedIn">
+        <v-list-item link to="/userstable" v-if="$store.state.isUserLoggedIn">
           <v-list-item-action>
-            <v-icon>mdi-contact-mail</v-icon>
+            <v-icon>mdi-table-edit</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>Registro</v-list-item-title>
+            <v-list-item-title>Tabla de Usuarios</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <v-list-item link to="/login" v-if="!$store.state.isUserLoggedIn">
@@ -88,7 +88,16 @@
           <template v-slot:activator="{ on }">
             <v-icon v-on="on">mdi-account</v-icon>
           </template>
-          <span v-text="$store.state.user.email"></span>
+          <span>Perfil de Usuario</span>
+        </v-tooltip>
+      </v-btn>
+
+      <v-btn icon @click="logout" v-if="$store.state.isUserLoggedIn">
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <v-icon v-on="on">mdi-power</v-icon>
+          </template>
+          <span>Cerrar Sesión</span>
         </v-tooltip>
       </v-btn>
     </v-app-bar>
