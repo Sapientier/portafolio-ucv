@@ -9,8 +9,13 @@ module.exports = {
             )
         });
 
-        const {error} = schema.validate(req.body);
-
+        const newTask = {
+            email: req.body.email,
+            password: req.body.password
+        };
+        
+        const {error} = schema.validate(newTask);
+       
         if (error) {
             switch (error.details[0].context.key) {
                 case 'email':

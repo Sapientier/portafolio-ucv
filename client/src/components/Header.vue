@@ -22,7 +22,7 @@
             <v-list-item-title>Servicios</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item link to="/userstable" v-if="$store.state.isUserLoggedIn">
+        <v-list-item link to="/userstable" v-if="$store.state.isUserLoggedIn  && $store.state.user.isAdmin">
           <v-list-item-action>
             <v-icon>mdi-table-edit</v-icon>
           </v-list-item-action>

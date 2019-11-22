@@ -22,10 +22,14 @@
                 ></v-text-field>
             </v-card-title>
             <v-data-table
-              :headers="headers"
-              :items="UserList"
-              :search="search"
-              class="elevation-1"
+                :headers="headers"
+                :items="UserList"
+                :search="search"
+                class="elevation-1"
+                :page.sync="page"
+                :items-per-page="itemsPerPage"
+                hide-default-footer
+                @page-count="pageCount = $event"
             >
                 <template v-slot:top>
                     <v-toolbar flat color="white">
@@ -36,51 +40,86 @@
                         vertical
                         ></v-divider>
                         <v-spacer></v-spacer>
+                        <v-dialog v-model="dialog2" persistent max-width="350px">
+                            <v-card>
+                                <v-card-title>
+                                    <span class="headline">Atención</span>
+                                </v-card-title>
+                                <v-card-text>
+                                    ¿Esta seguro que desea eliminar este usuario?
+                                </v-card-text>
+                                <v-card-actions>
+                                    <v-spacer></v-spacer>
+                                    <v-btn color="blue darken-1" text @click="close">Cancelar</v-btn>
+                                    <v-btn color="blue darken-1" text @click="deleteval">Aceptar</v-btn>
+                                </v-card-actions>
+                            </v-card>
+                        </v-dialog>
                         <v-dialog v-model="dialog" max-width="500px">
-                        <template v-slot:activator="{ on }">
-                            <v-btn color="primary" dark class="mb-2" v-on="on">Agregar</v-btn>
-                        </template>
-                        <v-card>
-                            <v-card-title>
-                            <span class="headline">{{ formTitle }}</span>
-                            </v-card-title>
-
-                            <v-card-text>
-                            <v-container>
-                                <v-row>
-                                <v-col cols="12" sm="6" md="6">
-                                    <v-text-field 
-                                        v-model="editedItem.email" 
-                                        label="Correo"
-                                        type="email"
-                                    ></v-text-field>
-                                </v-col>
-                                <v-col cols="12" sm="6" md="6">
-                                    <v-text-field 
-                                        v-model="editedItem.password" 
-                                        label="Contraseña"
-                                        :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                                        :type="show1 ? 'text' : 'password'"
-                                        @click:append="show1 = !show1">
-                                    </v-text-field>
-                                </v-col>
-                                </v-row>
-                            </v-container>
-                            </v-card-text>
-                            <v-alert 
-                                type="error" 
-                                v-model="alert"
-                                dismissible
-                                transition="scale-transition"
-                                >
-                                <div v-html="error"></div>
-                            </v-alert>
-                            <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn color="blue darken-1" text @click="close">Cancelar</v-btn>
-                            <v-btn color="blue darken-1" text @click="save">Aceptar</v-btn>
-                            </v-card-actions>
-                        </v-card>
+                            <template v-slot:activator="{ on }">
+                                <v-btn color="primary" dark class="mb-2" v-on="on">Agregar</v-btn>
+                            </template>
+                            <v-card>
+                                <v-card-title>
+                                    <span class="headline">{{ formTitle }}</span>
+                                </v-card-title>
+                                <v-card-text>
+                                    <v-container>
+                                        <v-row>
+                                            <v-col cols="12" sm="6" md="6">
+                                                <v-text-field 
+                                                    v-model="editedItem.email" 
+                                                    label="Correo"
+                                                    type="email"
+                                                    :rules="[() => !!editedItem.email || 'Este campo es requerido']"
+                                                ></v-text-field>
+                                            </v-col>
+                                            <v-col cols="12" sm="6" md="6">
+                                                <v-text-field 
+                                                    v-model="editedItem.password" 
+                                                    label="Contraseña"
+                                                    :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                                                    :type="show1 ? 'text' : 'password'"
+                                                    @click:append="show1 = !show1"
+                                                    :rules="[() => !!editedItem.password || 'Este campo es requerido']">
+                                                </v-text-field>
+                                            </v-col>
+                                            <v-col cols="12" sm="6" md="6">
+                                                <v-switch
+                                                    v-model="editedItem.isAdmin"
+                                                    label="Administrador"
+                                                ></v-switch>
+                                            </v-col>
+                                            <v-col cols="12" sm="6" md="6">
+                                                <v-switch
+                                                    v-model="editedItem.isActive"
+                                                    label="Bloqueado"
+                                                ></v-switch>
+                                            </v-col>
+                                            <v-col col="12" sm="8" md="8">
+                                                <v-combobox
+                                                    v-model="editedItem.Dependencies"
+                                                    :items="itemsel"
+                                                    label="Dependencias"
+                                                ></v-combobox>
+                                            </v-col>
+                                        </v-row>
+                                    </v-container>
+                                </v-card-text>
+                                <v-alert 
+                                    type="error" 
+                                    v-model="alert"
+                                    dismissible
+                                    transition="scale-transition"
+                                    >
+                                    <div v-html="error"></div>
+                                </v-alert>
+                                <v-card-actions>
+                                    <v-spacer></v-spacer>
+                                    <v-btn color="blue darken-1" text @click="close">Cancelar</v-btn>
+                                    <v-btn color="blue darken-1" text @click="save">Aceptar</v-btn>
+                                </v-card-actions>
+                            </v-card>
                         </v-dialog>
                     </v-toolbar>
                 </template>
@@ -101,10 +140,25 @@
                         mdi-delete
                     </v-icon>
                 </template>
+                <template v-slot:item.isAdmin="{ item }">
+                    <v-checkbox
+                        v-model="item.isAdmin"
+                        disabled
+                    ></v-checkbox>
+                </template>
+                <template v-slot:item.isActive="{ item }">
+                    <v-checkbox
+                        v-model="item.isActive"
+                        disabled
+                    ></v-checkbox>
+                </template>
                 <template v-slot:no-data>
                     <v-btn color="primary" @click="initialize">Reiniciar</v-btn>
                 </template>
             </v-data-table>
+            <div class="text-center pt-2">
+                <v-pagination v-model="page" :length="pageCount"></v-pagination>
+            </div>
             <v-snackbar
               v-model="snack"
               :timeout="3000"
@@ -116,7 +170,6 @@
             </v-snackbar>
           </v-card>
       </v-flex>
-
     </v-layout>
   </v-container>
 </template>
@@ -127,6 +180,9 @@ import AuthenticationService from '@/services/AuthenticationService'
 
 export default {
     data: () => ({
+        page: 1,
+        pageCount: 0,
+        itemsPerPage: 10,
         show1: false,
         error: null,
         alert: false,
@@ -135,25 +191,37 @@ export default {
         snackText: '',
         UserList: [],
         dialog: false,
+        dialog2: false,
+        itemsel: [
+            'Coordinador General',
+            'Coordinador de Extensión',
+            'Coordinador de Investigación',
+            'Profesor/Investigador',
+        ],
         search: '',
         headers: [
             { text: 'Correo', value: 'email' },
             { text: 'Administrador', value: 'isAdmin' },
             { text: 'Bloqueado', value: 'isActive' },
+            { text: 'Dependencia', value: 'Dependencies' },
             { text: 'Acciones', value: 'action', sortable: false }
         ],
         editedIndex: -1,
         editedItem: {
+            _id: '',
             password: '',
             email: '',
-            isAdmin : true,
-            isActive : true,
+            isAdmin : false,
+            isActive : false,
+            Dependencies: ''
         },
         defaultItem: {
+            _id: '',
             password: '',
             email: '',
-            isAdmin : true,
-            isActive : true,
+            isAdmin : false,
+            isActive : false,
+            Dependencies: ''
         },
     }),
     computed: {
@@ -165,6 +233,9 @@ export default {
         dialog (val) {
             val || this.close()
         },
+        dialog2 (val) {
+            val || this.close()
+        }
     },
     // called when page is created before dom
     created () {
@@ -185,27 +256,56 @@ export default {
             this.dialog = true
         },
         deleteItem (item) {
-            const index = this.UserList.indexOf(item)
-            confirm('Are you sure you want to delete this item?') && this.UserList.splice(index, 1)
+            this.editedIndex = this.UserList.indexOf(item)
+            this.editedItem = Object.assign({}, item)
+            this.dialog2 = true
+        },
+        async deleteval() {
+            try {
+                const response = await UsersService.deleteusers({
+                    _id: this.editedItem._id
+                }).then((response) => this.delete())
+                this.UserList.splice(this.editedIndex, 1)
+                this.close()
+            } catch (error) {
+                this.error = error.response.data.error
+            }
         },
         close () {
             this.dialog = false
+            this.dialog2 = false
             this.alert = false
             setTimeout(() => {
-            this.editedItem = Object.assign({}, this.defaultItem)
-            this.editedIndex = -1
+                this.editedItem = Object.assign({}, this.defaultItem)
+                this.editedIndex = -1
             }, 300)
         },
         async save () {
             if (this.editedIndex > -1) {
-                Object.assign(this.UserList[this.editedIndex], this.editedItem)
+                try {
+                    const response = await UsersService.updateusers({
+                        _id: this.editedItem._id,
+                        email: this.editedItem.email,
+                        isAdmin: this.editedItem.isAdmin,
+                        isActive: this.editedItem.isActive,
+                        Dependencies: this.editedItem.Dependencies
+                    }).then((response) => this.updateInline())
+                    Object.assign(this.UserList[this.editedIndex], this.editedItem)
+                    this.close()
+                } catch (error) {
+                    this.alert = true
+                    this.error = error.response.data.error
+                }
             } else {
-                this.UserList.push(this.editedItem)
                 try {
                     const response = await AuthenticationService.register({
                         email: this.editedItem.email,
-                        password: this.editedItem.password
+                        password: this.editedItem.password,
+                        isAdmin: this.editedItem.isAdmin,
+                        isActive: this.editedItem.isActive,
+                        Dependencies: this.editedItem.Dependencies
                     }).then((response) => this.saveInline())
+                    this.UserList.push(this.editedItem)
                     this.close()
                 } catch (error) {
                     this.alert = true
@@ -214,25 +314,20 @@ export default {
             }
         },
         //toasts/snackbar messages for actions
+        updateInline () {
+            this.snack = true
+            this.snackColor = 'success'
+            this.snackText = 'Datos actualizados'
+        },
         saveInline () {
             this.snack = true
             this.snackColor = 'success'
             this.snackText = 'Datos guardados'
         },
-        cancelInline () {
-            this.snack = true
-            this.snackColor = 'error'
-            this.snackText = 'Canceled'
-        },
-        reset () {
+        delete () {
             this.snack = true
             this.snackColor = 'success'
-            this.snackText = 'Data reset to default'
-        },
-        openInline () {
-            this.snack = true
-            this.snackColor = 'info'
-            this.snackText = 'Dialog opened'
+            this.snackText = 'Datos eliminados'
         }
     }
 }

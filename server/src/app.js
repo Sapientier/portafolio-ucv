@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const config = require('./config');
 
 // Conexión a la BD en la Nube Cloud Atlas
-mongoose.connect(config.db.URI, { useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true })
+mongoose.connect(config.db.URI, config.db.options)
     .then(() => console.log("DB conectada"))
     .catch(err => console.error(err));
 
