@@ -71,7 +71,6 @@
                                                     v-model="editedItem.email" 
                                                     label="Correo"
                                                     type="email"
-                                                    :rules="[() => !!editedItem.email || 'Este campo es requerido']"
                                                 ></v-text-field>
                                             </v-col>
                                             <v-col cols="12" sm="6" md="6">
@@ -81,8 +80,7 @@
                                                     :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
                                                     :type="show1 ? 'text' : 'password'"
                                                     @click:append="show1 = !show1"
-                                                    :rules="[() => !!editedItem.password || 'Este campo es requerido']">
-                                                </v-text-field>
+                                                ></v-text-field>
                                             </v-col>
                                             <v-col cols="12" sm="6" md="6">
                                                 <v-switch

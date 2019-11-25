@@ -47,6 +47,23 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
+      <v-bottom-navigation
+        v-model="bottomNav"
+        absolute
+        color="indigo"
+      >
+        <v-btn>
+          <v-icon>mdi-twitter</v-icon>
+        </v-btn>
+
+        <v-btn>
+          <v-icon>mdi-youtube</v-icon>
+        </v-btn>
+
+        <v-btn>
+          <v-icon>mdi-facebook</v-icon>
+        </v-btn>
+      </v-bottom-navigation>
     </v-navigation-drawer>
     <v-app-bar
       :clipped-left="$vuetify.breakpoint.lgAndUp"
@@ -65,14 +82,6 @@
         title="Pagina de Inicio"
         >Portafolio Digital UCV</span>
       </v-toolbar-title>
-      <v-text-field
-        flat
-        solo-inverted
-        hide-details
-        prepend-inner-icon="mdi-magnify"
-        label="Buscar"
-        class="hidden-sm-and-down"
-      />
       <v-spacer />
 
       <v-btn icon v-if="$store.state.isUserLoggedIn">
@@ -100,7 +109,7 @@
           <span>Cerrar Sesión</span>
         </v-tooltip>
       </v-btn>
-    </v-app-bar>
+    </v-app-bar>  
   </div>
 </template>
 

@@ -17,7 +17,7 @@
               <v-layout wrap>
                 <v-flex
                   xs12
-                  md4
+                  md6
                 >
                   <v-text-field
                     label="Dependencia"
@@ -25,16 +25,7 @@
                 </v-flex>
                 <v-flex
                   xs12
-                  md4
-                >
-                  <v-text-field
-                    class="purple-input"
-                    label="Nombre de Usuario"
-                  />
-                </v-flex>
-                <v-flex
-                  xs12
-                  md4
+                  md6
                 >
                   <v-text-field
                     :value="$store.state.user.email"
