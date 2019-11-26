@@ -86,7 +86,7 @@
                 <v-combobox
                     v-model="dependencies"
                     :items="itemsel2"
-                    label="Denpendencias*"
+                    label="Dependencias*"
                 ></v-combobox>
               </v-col>
               <v-col cols="12" sm="6">
