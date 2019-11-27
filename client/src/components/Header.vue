@@ -22,7 +22,15 @@
             <v-list-item-title>Servicios</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item link to="/userstable" v-if="$store.state.isUserLoggedIn  && $store.state.user.isAdmin">
+        <v-list-item link to="/reports" v-if="$store.state.isUserLoggedIn">
+          <v-list-item-action>
+            <v-icon>mdi-file-document-box-search</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Reportes</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item link to="/userstable" v-if="$store.state.isUserLoggedIn && $store.state.user.isAdmin">
           <v-list-item-action>
             <v-icon>mdi-table-edit</v-icon>
           </v-list-item-action>
@@ -38,17 +46,8 @@
             <v-list-item-title>Iniciar Sesión</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item link @click="logout" v-if="$store.state.isUserLoggedIn">
-          <v-list-item-action>
-            <v-icon>mdi-logout</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Cerrar Sesión</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
       </v-list>
       <v-bottom-navigation
-        v-model="bottomNav"
         absolute
         color="indigo"
       >
@@ -125,7 +124,7 @@ export default {
       // Redirigimos al Inicio
       this.$router.push({
         name: 'Home'
-      })
+      }).catch(err => {})
     }
   },
   data: () => ({

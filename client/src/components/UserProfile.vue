@@ -21,7 +21,8 @@
                 >
                   <v-text-field
                     label="Dependencia"
-                    disabled/>
+                    disabled
+                    :value="$store.state.user.Dependencies"/>
                 </v-flex>
                 <v-flex
                   xs12

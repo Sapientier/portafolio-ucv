@@ -24,7 +24,7 @@ module.exports = {
             res.json(user.toJSON());
         } catch (err) {
             res.status(400).send({
-                error: 'Error en la inserción de datos'
+                error: 'Error en la inserción de datos.'
             })
         }
     },
@@ -37,7 +37,7 @@ module.exports = {
 
             if(!user) {
                 return res.status(403).send({
-                   error: 'El correo electronico ingresado es incorrecto' 
+                   error: 'El correo electronico ingresado es incorrecto.' 
                 })
             }
 
@@ -45,7 +45,12 @@ module.exports = {
             
             if(!isPasswordValid) {
                 return res.status(403).send({
-                    error: 'La contraseña ingresada es incorrecta'
+                    error: 'La contraseña ingresada es incorrecta.'
+                })
+            }
+            if(user.isActive) {
+                return res.status(403).send({
+                    error: 'El usuario con el que intenta ingresar esta bloqueado.'
                 })
             }
             

@@ -12,7 +12,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@hapi/joi": "^16.1.7",
     "bcrypt": "^3.0.6",
     "bluebird": "^3.7.1",
     "connect-history-api-fallback": "^1.6.0",

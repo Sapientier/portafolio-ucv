@@ -55,68 +55,74 @@
                                 </v-card-actions>
                             </v-card>
                         </v-dialog>
-                        <v-dialog v-model="dialog" max-width="500px">
+                        <v-dialog v-model="dialog" max-width="600px">
                             <template v-slot:activator="{ on }">
                                 <v-btn color="primary" dark class="mb-2" v-on="on">Agregar</v-btn>
                             </template>
                             <v-card>
-                                <v-card-title>
-                                    <span class="headline">{{ formTitle }}</span>
-                                </v-card-title>
-                                <v-card-text>
-                                    <v-container>
-                                        <v-row>
-                                            <v-col cols="12" sm="6" md="6">
-                                                <v-text-field 
-                                                    v-model="editedItem.email" 
-                                                    label="Correo"
-                                                    type="email"
-                                                ></v-text-field>
-                                            </v-col>
-                                            <v-col cols="12" sm="6" md="6">
-                                                <v-text-field 
-                                                    v-model="editedItem.password" 
-                                                    label="Contraseña"
-                                                    :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                                                    :type="show1 ? 'text' : 'password'"
-                                                    @click:append="show1 = !show1"
-                                                ></v-text-field>
-                                            </v-col>
-                                            <v-col cols="12" sm="6" md="6">
-                                                <v-switch
-                                                    v-model="editedItem.isAdmin"
-                                                    label="Administrador"
-                                                ></v-switch>
-                                            </v-col>
-                                            <v-col cols="12" sm="6" md="6">
-                                                <v-switch
-                                                    v-model="editedItem.isActive"
-                                                    label="Bloqueado"
-                                                ></v-switch>
-                                            </v-col>
-                                            <v-col col="12" sm="8" md="8">
-                                                <v-combobox
-                                                    v-model="editedItem.Dependencies"
-                                                    :items="itemsel"
-                                                    label="Dependencias"
-                                                ></v-combobox>
-                                            </v-col>
-                                        </v-row>
-                                    </v-container>
-                                </v-card-text>
-                                <v-alert 
-                                    type="error" 
-                                    v-model="alert"
-                                    dismissible
-                                    transition="scale-transition"
-                                    >
-                                    <div v-html="error"></div>
-                                </v-alert>
-                                <v-card-actions>
-                                    <v-spacer></v-spacer>
-                                    <v-btn color="blue darken-1" text @click="close">Cancelar</v-btn>
-                                    <v-btn color="blue darken-1" text @click="save">Aceptar</v-btn>
-                                </v-card-actions>
+                                <v-form
+                                    v-model="valid"
+                                >
+                                    <v-card-title>
+                                        <span class="headline">{{ formTitle }}</span>
+                                    </v-card-title>
+                                    <v-card-text>
+                                        <v-container>
+                                            <v-row>
+                                                <v-col cols="12" sm="6" md="6">
+                                                    <v-text-field 
+                                                        v-model="editedItem.email" 
+                                                        label="Correo"
+                                                        type="email"
+                                                        :rules="emailRules"
+                                                    ></v-text-field>
+                                                </v-col>
+                                                <v-col cols="12" sm="6" md="6">
+                                                    <v-text-field 
+                                                        v-model="editedItem.password" 
+                                                        label="Contraseña"
+                                                        :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                                                        :type="show1 ? 'text' : 'password'"
+                                                        @click:append="show1 = !show1"
+                                                        :rules="passwordRules"
+                                                    ></v-text-field>
+                                                </v-col>
+                                                <v-col cols="12" sm="6" md="6">
+                                                    <v-switch
+                                                        v-model="editedItem.isAdmin"
+                                                        label="Administrador"
+                                                    ></v-switch>
+                                                </v-col>
+                                                <v-col cols="12" sm="6" md="6">
+                                                    <v-switch
+                                                        v-model="editedItem.isActive"
+                                                        label="Bloqueado"
+                                                    ></v-switch>
+                                                </v-col>
+                                                <v-col col="12" sm="8" md="8">
+                                                    <v-combobox
+                                                        v-model="editedItem.Dependencies"
+                                                        :items="itemsel"
+                                                        label="Dependencias"
+                                                    ></v-combobox>
+                                                </v-col>
+                                            </v-row>
+                                        </v-container>
+                                    </v-card-text>
+                                    <v-alert 
+                                        type="error" 
+                                        v-model="alert"
+                                        dismissible
+                                        transition="scale-transition"
+                                        >
+                                        <div v-html="error"></div>
+                                    </v-alert>
+                                    <v-card-actions>
+                                        <v-spacer></v-spacer>
+                                        <v-btn color="blue darken-1" text @click="close">Cancelar</v-btn>
+                                        <v-btn color="blue darken-1" text @click="save" :disabled="!valid">Aceptar</v-btn>
+                                    </v-card-actions>
+                                </v-form>
                             </v-card>
                         </v-dialog>
                     </v-toolbar>
@@ -178,6 +184,15 @@ import AuthenticationService from '@/services/AuthenticationService'
 
 export default {
     data: () => ({
+        passwordRules: [
+            v => !!v || 'Contraseña es requerida',
+            // v => v.length <= 20 || 'La contraseña debe ser menor a 20 caracteres',
+        ],
+        emailRules: [
+            v => !!v || 'El correo es requerido',
+            v => /.+@.+\..+/.test(v) || 'El correo debe ser valido',
+        ],
+        valid: true,
         page: 1,
         pageCount: 0,
         itemsPerPage: 10,

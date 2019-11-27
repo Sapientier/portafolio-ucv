@@ -1,6 +1,5 @@
 const AuthenticationController = require('./controllers/AuthenticationController');
 const UsersController = require('./controllers/UsersController');
-const AuthenticationControllerPolicy = require('./policies/AuthenticationControllerPolicy');
 const path = require('path');
 
 module.exports = (app) => {
@@ -8,7 +7,6 @@ module.exports = (app) => {
         res.sendFile(path.join(__dirname, '../public/index.html'))
     }),
     app.post('/register', 
-        AuthenticationControllerPolicy.register,
         AuthenticationController.register
     ),
     app.post('/login', 
