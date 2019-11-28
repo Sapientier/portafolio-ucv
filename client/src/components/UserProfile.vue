@@ -13,7 +13,7 @@
       >
         <v-card>
           <v-form>
-            <v-container py-0>
+            <v-container>
               <v-layout wrap>
                 <v-flex
                   xs12
@@ -103,7 +103,7 @@
             size="130"
           >
             <img
-              src="https://bookingagentinfo.com/wp-content/uploads/2014/12/Travis-Scott-Contact-Information.jpg"
+              src="https://c8d8q6i8.stackpathcdn.com/wp-content/uploads/2014/01/James-Franco-Contact-Information.jpg"
             >
           </v-avatar>
           <v-card-text class="text-xs-center">

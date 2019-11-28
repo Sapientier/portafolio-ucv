@@ -1,100 +1,214 @@
 <template>
-  <div>
-    <v-row
-
-      justify="space-around"
+    <v-container
+        fill-height
+        fluid
     >
-      <v-switch
-        v-model="icons"
-        class="mx-2"
-        label="Text + icons"
-      ></v-switch>
-      <v-switch
-        v-model="centered"
-        class="mx-2"
-        label="Centered"
-        :disabled="vertical"
-      ></v-switch>
-      <v-switch
-        v-model="grow"
-        class="mx-2"
-        label="Grow"
-      ></v-switch>
-      <v-switch
-        v-model="vertical"
-        class="mx-2"
-        label="Vertical"
-      ></v-switch>
-      <v-switch
-        v-model="right"
-        class="mx-2"
-        label="Right"
-      ></v-switch>
-      <v-col cols="12">
-        <v-slider
-          v-model="tabs"
-          min="0"
-          max="10"
-          label="Tabs number"
-        ></v-slider>
-      </v-col>
-    </v-row>
-
-    <v-tabs
-      v-model="tab"
-      background-color="deep-purple accent-4"
-      class="elevation-2"
-      dark
-      :centered="centered"
-      :grow="grow"
-      :vertical="vertical"
-      :right="right"
-      :prev-icon="prevIcon ? 'mdi-arrow-left-bold-box-outline' : undefined"
-      :next-icon="nextIcon ? 'mdi-arrow-right-bold-box-outline' : undefined"
-      :icons-and-text="icons"
-    >
-      <v-tabs-slider></v-tabs-slider>
-
-      <v-tab
-        v-for="i in tabs"
-        :key="i"
-        :href="`#tab-${i}`"
-      >
-        Tab {{ i }}
-        <v-icon v-if="icons">mdi-phone</v-icon>
-      </v-tab>
-
-      <v-tab-item
-        v-for="i in tabs"
-        :key="i"
-        :value="'tab-' + i"
-      >
-        <v-card
-          flat
-          tile
+        <v-layout
+        justify-center
+        wrap
         >
-          <v-card-text>{{ text }}</v-card-text>
-        </v-card>
-      </v-tab-item>
-    </v-tabs>
-  </div>
+            <v-flex
+                xs12
+                md12
+            >
+                <v-container>
+                    <v-row>
+                        <v-col
+                            cols="12"
+                            md="6"
+                            sm="12"
+                        >
+                            <v-card
+                                class="mt-4 mx-auto"
+                            >
+                                <v-sheet
+                                class="v-sheet--offset mx-auto"
+                                color="cyan"
+                                elevation="12"
+                                max-width="calc(100% - 32px)"
+                                >
+                                <v-sparkline
+                                    :labels="labels"
+                                    :value="value"
+                                    color="white"
+                                    line-width="2"
+                                    padding="16"
+                                ></v-sparkline>
+                                </v-sheet>
+
+                                <v-card-text class="pt-0">
+                                <div class="title font-weight-light mb-2">Suscripciones</div>
+                                <div class="subheading font-weight-light grey--text">Last Campaign Performance</div>
+                                <v-divider class="my-2"></v-divider>
+                                <v-icon
+                                    class="mr-2"
+                                    small
+                                >
+                                    mdi-clock
+                                </v-icon>
+                                <span class="caption grey--text font-weight-light">last registration 26 minutes ago</span>
+                                </v-card-text>
+
+                                <v-divider></v-divider>
+
+                                <v-card-actions class="justify-center">
+                                    <v-btn block text color="green">Ir al Reporte</v-btn>
+                                </v-card-actions>
+                            </v-card>
+                        </v-col>
+                        <v-col cols="12"
+                            md="6"
+                            sm="12">
+                            <v-card
+                                class="mt-4 mx-auto"
+                            >
+                                <v-sheet
+                                class="v-sheet--offset mx-auto"
+                                color="red"
+                                elevation="12"
+                                max-width="calc(100% - 32px)"
+                                >
+                                <v-sparkline
+                                    :labels="labels"
+                                    :value="value"
+                                    color="white"
+                                    type="bar"
+                                    line-width="2"
+                                    padding="16"
+                                ></v-sparkline>
+                                </v-sheet>
+
+                                <v-card-text class="pt-0">
+                                    <div class="title font-weight-light mb-2">Registro de servicios</div>
+                                    <div class="subheading font-weight-light grey--text">Last Campaign Performance</div>
+                                    <v-divider class="my-2"></v-divider>
+                                    <v-icon
+                                        class="mr-2"
+                                        small
+                                    >
+                                        mdi-clock
+                                    </v-icon>
+                                    <span class="caption grey--text font-weight-light">last registration 26 minutes ago</span>
+                                </v-card-text>
+
+                                <v-divider></v-divider>
+
+                                <v-card-actions class="justify-center">
+                                    <v-btn block text color="green">Ir al Reporte</v-btn>
+                                </v-card-actions>
+                            </v-card>
+                        </v-col>
+                    </v-row>
+                </v-container>
+                <v-card>
+                    <v-tabs
+                        v-model="tabs"
+                        background-color="deep-purple accent-4"
+                        class="elevation-2"
+                        dark
+                        grow
+                    >
+                        <v-tab
+                            v-for="item in items"
+                            :key="item"
+                        >
+                            {{ item }}
+                        </v-tab>
+                    </v-tabs>
+                    <v-tabs-items v-model="tabs">
+                        <v-tab-item>
+                            <v-card flat>
+                                <v-card-title class="headline">Reporte de Usuarios</v-card-title>
+                                <v-card-text>
+                                    <p>
+                                    Duis lobortis massa imperdiet quam. Donec vitae orci sed dolor rutrum auctor. Vestibulum facilisis, purus nec pulvinar iaculis, ligula mi congue nunc, vitae euismod ligula urna in dolor. Praesent congue erat at massa.
+                                    </p>
+
+                                    <p>
+                                    Aenean posuere, tortor sed cursus feugiat, nunc augue blandit nunc, eu sollicitudin urna dolor sagittis lacus. Pellentesque egestas, neque sit amet convallis pulvinar, justo nulla eleifend augue, ac auctor orci leo non est. Etiam sit amet orci eget eros faucibus tincidunt. Donec sodales sagittis magna.
+                                    </p>
+                                </v-card-text>
+                            </v-card>
+                        </v-tab-item>
+                        <v-tab-item>
+                            <v-card flat>
+                                <v-card-text>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                                </v-card-text>
+                            </v-card>
+                        </v-tab-item>
+                        <v-tab-item>
+                            <v-card flat>
+                            <v-card-title class="headline">An awesome title</v-card-title>
+                            <v-card-text>
+                                <p>
+                                Duis lobortis massa imperdiet quam. Donec vitae orci sed dolor rutrum auctor. Vestibulum facilisis, purus nec pulvinar iaculis, ligula mi congue nunc, vitae euismod ligula urna in dolor. Praesent congue erat at massa.
+                                </p>
+
+                                <p>
+                                Aenean posuere, tortor sed cursus feugiat, nunc augue blandit nunc, eu sollicitudin urna dolor sagittis lacus. Pellentesque egestas, neque sit amet convallis pulvinar, justo nulla eleifend augue, ac auctor orci leo non est. Etiam sit amet orci eget eros faucibus tincidunt. Donec sodales sagittis magna.
+                                </p>
+
+                                <p class="mb-0">
+                                Ut leo. Suspendisse potenti. Duis vel nibh at velit scelerisque suscipit. Fusce pharetra convallis urna.
+                                </p>
+                            </v-card-text>
+                            </v-card>
+                        </v-tab-item>
+                        <v-tab-item>
+                            <v-card flat>
+                            <v-card-title class="headline">An even better title</v-card-title>
+                            <v-card-text>
+                                <p>
+                                Maecenas ullamcorper, dui et placerat feugiat, eros pede varius nisi, condimentum viverra felis nunc et lorem. Sed hendrerit. Maecenas malesuada. Vestibulum ullamcorper mauris at ligula. Proin faucibus arcu quis ante.
+                                </p>
+
+                                <p class="mb-0">
+                                Etiam vitae tortor. Curabitur ullamcorper ultricies nisi. Sed magna purus, fermentum eu, tincidunt eu, varius ut, felis. Aliquam lobortis. Suspendisse potenti.
+                                </p>
+                            </v-card-text>
+                            </v-card>
+                        </v-tab-item>
+                    </v-tabs-items>
+                </v-card>
+            </v-flex>
+        </v-layout>
+    </v-container>
 </template>
 
 <script>
   export default {
-    data () {
-      return {
-        tab: null,
-        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-        icons: false,
-        centered: false,
-        grow: false,
-        vertical: false,
-        prevIcon: false,
-        nextIcon: false,
-        right: false,
-        tabs: 3,
-      }
-    },
+    data: () => ({
+        labels: [
+            '12am',
+            '3am',
+            '6am',
+            '9am',
+            '12pm',
+            '3pm',
+            '6pm',
+            '9pm',
+        ],
+        value: [
+            423,
+            446,
+            675,
+            510,
+            590,
+            610,
+            760
+        ],
+        tabs: null,
+        items: [
+          'Usuarios', 'Servicios', 'Suscriptores', 'Notificaciones',
+        ]
+    })
   }
 </script>
+
+<style>
+  .v-sheet--offset {
+    top: -24px;
+    position: relative;
+  }
+</style>
