@@ -1,0 +1,86 @@
+[
+  {
+    "title": "MICROSCOPÍA ELECTRÓNICA DE TRANSMISIÓN",
+    "author": "Brian Torres",
+    "category": "Investigación",
+    "hero": "moroccandays.jpg"
+  },
+  {
+    "title": "ASESORÍA EN DESARROLLO DE APLICACIONES",
+    "author": "Jorge Ramirez",
+    "category": "Desarrollo",
+    "hero": "autumnclouds.jpg"
+  },
+  {
+    "title": "CAPACITACION DE SOLUCIONES DE INTELIGENCIA DE NEGOCIO",
+    "author": "Brian Torres",
+    "category": "Mercadeo",
+    "hero": "snowcup.jpg"
+  },
+  {
+    "title": "DIAGNÓSTICO MÉDICO POR IMÁGENES COMPUTARIZADAS",
+    "author": "Yosly Hernandez",
+    "category": "Medicina",
+    "hero": "christmas.jpg"
+  },
+  {
+    "title": "ANÁLISIS DE CROMATOGRAFÍA DE CAPA FINA",
+    "author": "Jorge Ramirez",
+    "category": "Estadística",
+    "hero": "july4.jpg"
+  },
+  {
+    "title": "Trial By Fire",
+    "author": "Anthony R",
+    "category": "Cooking",
+    "hero": "firepots.jpg"
+  },
+  {
+    "title": "Water Ventures",
+    "author": "Rachel L",
+    "category": "Leisure",
+    "hero": "jellyfish.jpg"
+  },
+  {
+    "title": "Mt. Zekial",
+    "author": "Rachel L",
+    "category": "Travel",
+    "hero": "mountaincabin.jpg"
+  },
+  {
+    "title": "Cozumel Caves",
+    "author": "Rachel L",
+    "category": "Travel",
+    "hero": "lightcave.jpg"
+  },
+  {
+    "title": "Amazing Ireland",
+    "author": "Rachel L",
+    "category": "Travel",
+    "hero": "greengrass.jpg"
+  },
+  {
+    "title": "Cabin Fever",
+    "author": "Rachel L",
+    "category": "Travel",
+    "hero": "snowcabin.jpg"
+  },
+  {
+    "title": "ANÁLISIS DE AGUA",
+    "author": "Rachel L",
+    "category": "Travel",
+    "hero": "ruins.jpg"
+  },
+  {
+    "title": "DETERMINACIONES MICROBIOLÓICAS",
+    "author": "Rachel L",
+    "category": "Travel",
+    "hero": "umbrella.jpg"
+  },
+  {
+    "title": "ANÁLISIS TÉRMICO DIFERENCIAL DE BARRIDO",
+    "author": "Rachel L",
+    "category": "Travel",
+    "hero": "adventurecave.jpg"
+  }
+]

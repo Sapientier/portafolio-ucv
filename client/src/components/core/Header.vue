@@ -81,6 +81,14 @@
         title="Pagina de Inicio"
         >Portafolio Digital UCV</span>
       </v-toolbar-title>
+      <v-text-field
+        flat
+        solo-inverted
+        hide-details
+        prepend-inner-icon="mdi-magnify"
+        label="Buscar"
+        class="hidden-sm-and-down"
+      />
       <v-spacer />
 
       <v-btn icon v-if="$store.state.isUserLoggedIn">
@@ -107,6 +115,19 @@
           </template>
           <span>Cerrar Sesión</span>
         </v-tooltip>
+      </v-btn>
+       <v-btn
+        icon
+        large
+      >
+        <v-avatar
+          size="32px"
+          item
+        >
+          <v-img
+            :src="require('@/assets/UCV.png')"
+            alt="Vuetify"
+          /></v-avatar>
       </v-btn>
     </v-app-bar>  
   </div>

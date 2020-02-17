@@ -1,11 +1,11 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '@/components/Home'
-import Login from '@/components/Login'
+import Login from '@/components/admin/Login'
 import Services from '@/components/Services'
-import UserProfile from '@/components/UserProfile'
-import UsersTable from '@/components/UsersTable'
-import Reports from '@/components/Reports'
+import UserProfile from '@/components/admin/UserProfile'
+import UsersTable from '@/components/admin/UsersTable'
+import Reports from '@/components/admin/Reports'
 
 Vue.use(VueRouter)
 

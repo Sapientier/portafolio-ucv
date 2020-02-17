@@ -4,6 +4,7 @@ import router from './router'
 import vuetify from './plugins/vuetify'
 import { sync } from 'vuex-router-sync'
 import store from './store'
+import './plugins/base'
 
 Vue.config.productionTip = false
 

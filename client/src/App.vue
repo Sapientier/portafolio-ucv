@@ -6,16 +6,19 @@
         <router-view />
       </transition>
     </v-content>
+    <page-footer />
   </v-app>
 </template>
 
 <script>
-import PageHeader from '@/components/Header.vue'
+import PageHeader from '@/components/core/Header.vue'
+import PageFooter from '@/components/core/Footer.vue'
 
 export default {
   name: 'App',
   components: {
-    PageHeader
+    PageHeader,
+    PageFooter
   },
   data: () => ({
     //

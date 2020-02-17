@@ -6,11 +6,21 @@
       <v-flex xs12>
 
         <slot />
+        <v-row justify="center">
+            <v-col
+              cols="12"
+              md="4"
+            ></v-col>
+            <v-col cols="12" md="4">
+                <h1 class="subheading text-uppercase font-weight-medium">Servicios Destacados</h1>
+            </v-col>
+            <v-col cols="12" md="2"></v-col>
+        </v-row>
         <v-divider></v-divider>
       </v-flex>
 
       <feed-card
-        v-for="(article, i) in paginatedServices"
+        v-for="(article, i) in paginatedArticles"
         :key="article.title"
         :size="layout[i]"
         :value="article"
@@ -27,29 +37,6 @@
           @click="page--"
         >
           <v-icon>mdi-chevron-left</v-icon>
-        </base-btn>
-      </v-flex>
-
-      <v-flex
-        xs6
-        text-xs-center
-        subheading
-      >
-        PÁGINA {{ page }} DE {{ pages }}
-      </v-flex>
-
-      <v-flex
-        xs3
-        text-xs-right
-      >
-        <base-btn
-          v-if="pages > 1 && page < pages"
-          class="mr-0"
-          title="Siguiente página"
-          square
-          @click="page++"
-        >
-          <v-icon>mdi-chevron-right</v-icon>
         </base-btn>
       </v-flex>
     </v-layout>
@@ -70,20 +57,20 @@
     },
 
     data: () => ({
-      layout: [2, 2, 1, 2, 2, 3, 3, 3, 3, 3, 3],
+      layout: [2, 2, 3, 3, 3, 3, 3, 3, 3, 3],
       page: 1
     }),
 
     computed: {
-      ...mapState(['servicios']),
+      ...mapState(['articles']),
       pages () {
-        return Math.ceil(this.servicios.length / 11)
+        return Math.ceil(this.articles.length / 11)
       },
-      paginatedServices () {
+      paginatedArticles () {
         const start = (this.page - 1) * 11
         const stop = this.page * 11
 
-        return this.servicios.slice(start, stop)
+        return this.articles.slice(start, stop)
       }
     },
 
