@@ -4,8 +4,44 @@
   >
     <v-layout wrap>
       <v-flex xs12>
+        <div class="text-center">
+          <v-chip
+            class="ma-2"
+            color="success"
+            outlined
+          >
+            <v-icon left>mdi-server-plus</v-icon>
+            Investigación
+          </v-chip>
 
-        <slot />
+          <v-chip
+            class="ma-2"
+            color="primary"
+            outlined
+            pill
+          >
+            Desarrollo
+            <v-icon right>mdi-account-outline</v-icon>
+          </v-chip>
+
+          <v-chip
+            class="ma-2"
+            color="deep-purple accent-4"
+            outlined
+          >
+            <v-icon left>mdi-wrench</v-icon>
+            Mercadeo
+          </v-chip>
+
+          <v-chip
+            class="ma-2"
+            color="indigo darken-3"
+            outlined
+          >
+            <v-icon left>mdi-fire</v-icon>
+            Medicina
+          </v-chip>
+        </div>
         <v-divider></v-divider>
       </v-flex>
 

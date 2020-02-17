@@ -93,7 +93,7 @@
                     mdi-phone
                   </v-icon>
                 </v-list-item-avatar>
-                <v-list-item-title>PHONE</v-list-item-title>
+                <v-list-item-title>TELÉFONO</v-list-item-title>
                 <v-list-item-subtitle>
                   212-789-1234
                 </v-list-item-subtitle>
