@@ -9,6 +9,8 @@ module.exports = {
         options: { useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false }
     },
     authentication: {
-        jwtSecret: process.env.JWT_SECRET || 'secret'
+        jwtSecret: process.env.JWT_SECRET || 'secret',
+        email: 'macroplusmail@gmail.com',
+        password: '02082006'
     }
 }

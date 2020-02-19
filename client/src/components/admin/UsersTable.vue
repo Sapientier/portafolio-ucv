@@ -77,15 +77,12 @@
                                                             :rules="emailRules"
                                                         ></v-text-field>
                                                     </v-col>
-                                                    <v-col cols="12" sm="6" md="6">
-                                                        <v-text-field 
-                                                            v-model="editedItem.password" 
-                                                            label="Contraseña"
-                                                            :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                                                            :type="show1 ? 'text' : 'password'"
-                                                            @click:append="show1 = !show1"
-                                                            :rules="passwordRules"
-                                                        ></v-text-field>
+                                                    <v-col col="12" sm="6" md="6">
+                                                        <v-combobox
+                                                            v-model="editedItem.Dependencies"
+                                                            :items="itemsel"
+                                                            label="Dependencias"
+                                                        ></v-combobox>
                                                     </v-col>
                                                     <v-col cols="12" sm="6" md="6">
                                                         <v-switch
@@ -99,12 +96,8 @@
                                                             label="Bloqueado"
                                                         ></v-switch>
                                                     </v-col>
-                                                    <v-col col="12" sm="8" md="8">
-                                                        <v-combobox
-                                                            v-model="editedItem.Dependencies"
-                                                            :items="itemsel"
-                                                            label="Dependencias"
-                                                        ></v-combobox>
+                                                    <v-col cols="12" sm="6" md="6" v-if="editedIndex > -1">
+                                                        <v-btn color="warning" @click="reset">Reiniciar Contraseña</v-btn>
                                                     </v-col>
                                                 </v-row>
                                             </v-container>
@@ -184,10 +177,6 @@ import AuthenticationService from '@/services/AuthenticationService'
 
 export default {
     data: () => ({
-        passwordRules: [
-            v => !!v || 'Contraseña es requerida',
-            // v => v.length <= 20 || 'La contraseña debe ser menor a 20 caracteres',
-        ],
         emailRules: [
             v => !!v || 'El correo es requerido',
             v => /.+@.+\..+/.test(v) || 'El correo debe ser valido',
@@ -311,9 +300,8 @@ export default {
                 }
             } else {
                 try {
-                    const response = await AuthenticationService.register({
+                    const response = await UsersService.insertusers({
                         email: this.editedItem.email,
-                        password: this.editedItem.password,
                         isAdmin: this.editedItem.isAdmin,
                         isActive: this.editedItem.isActive,
                         Dependencies: this.editedItem.Dependencies
@@ -326,7 +314,24 @@ export default {
                 }
             }
         },
+        async reset() {
+            try {
+                const response = await UsersService.resetpass({
+                    _id: this.editedItem._id,
+                    email: this.editedItem.email
+                }).then((response) => this.emailInline())
+                Object.assign(this.UserList[this.editedIndex], this.editedItem)
+                this.close()
+            } catch (error) {
+                this.error = error.response.data.error
+            }
+        },
         //toasts/snackbar messages for actions
+        emailInline () {
+            this.snack = true
+            this.snackColor = 'success'
+            this.snackText = 'Contraseña reiniciada'
+        },
         updateInline () {
             this.snack = true
             this.snackColor = 'success'

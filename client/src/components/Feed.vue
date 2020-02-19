@@ -6,12 +6,8 @@
       <v-flex xs12>
 
         <slot />
-        <v-row justify="center">
-            <v-col
-              cols="12"
-              md="4"
-            ></v-col>
-            <v-col cols="12" md="4">
+        <v-row justify="center" no-gutters>
+            <v-col cols="12" class="lighten-2 py-4 text-center">
                 <h1 class="subheading text-uppercase font-weight-medium">Servicios Destacados</h1>
             </v-col>
             <v-col cols="12" md="2"></v-col>

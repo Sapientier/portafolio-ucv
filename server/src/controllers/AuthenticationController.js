@@ -10,24 +10,6 @@ function jwtSignUser (user) {
 }
 
 module.exports = {
-    async register (req, res) {
-        try {
-            const task = new User({
-                email: req.body.email,
-                password: req.body.password,
-                isAdmin: req.body.isAdmin,
-                isActive: req.body.isActive,
-                Dependencies: req.body.Dependencies
-            });
-
-            const user = await task.save();
-            res.json(user.toJSON());
-        } catch (err) {
-            res.status(400).send({
-                error: 'Error en la inserción de datos.'
-            })
-        }
-    },
     async login (req, res) {
         try {
             const { email, password } = req.body;
