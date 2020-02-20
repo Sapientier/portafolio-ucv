@@ -15,6 +15,9 @@ module.exports = (app) => {
     app.get('/getusers', 
         UsersController.getusers
     ),
+    app.post('/getuserpass', 
+        UsersController.getuserpass
+    ),
     app.post('/deleteusers', 
         UsersController.deleteusers
     ),
@@ -23,5 +26,8 @@ module.exports = (app) => {
     ),
     app.post('/resetpass', 
         UsersController.resetpass
+    ),
+    app.post('/modpass', 
+        UsersController.modpass
     )
 }

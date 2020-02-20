@@ -7,6 +7,13 @@
         <div class="text-center">
           <v-chip
             class="ma-2"
+            outlined
+          >
+            <v-icon left>mdi-star</v-icon>
+            Todos
+          </v-chip>
+          <v-chip
+            class="ma-2"
             color="success"
             outlined
           >
@@ -18,7 +25,6 @@
             class="ma-2"
             color="primary"
             outlined
-            pill
           >
             Desarrollo
             <v-icon right>mdi-account-outline</v-icon>

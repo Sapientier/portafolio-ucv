@@ -4,29 +4,29 @@ const Promise = require('bluebird');
 const bcrypt = Promise.promisifyAll(require('bcrypt'));
 
 const UserSchema = new Schema({
-    email: { 
+    email: {
         type: String,
-        required: true, 
-        unique: true 
+        required: true,
+        unique: true
     },
-    password: { 
+    password: {
         type: String,
-        required: true 
+        required: true
     },
     isAdmin: {
         type: Boolean,
-        required: true 
+        required: true
     },
     isActive: {
         type: Boolean,
-        required: true 
+        required: true
     },
-    Dependencies: {
+    dependencies: {
         type: String
     }
 });
 
-UserSchema.pre('save', function(next) {
+UserSchema.pre('save', function (next) {
     var user = this;
     const SALT_WORK_FACTOR = 8;
 
@@ -34,33 +34,11 @@ UserSchema.pre('save', function(next) {
     if (!user.isModified('password')) return next();
 
     // genera un salt
-    bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
+    bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
         if (err) return next(err);
 
         // hashea la clave usando el nuevo salt
-        bcrypt.hash(user.password, salt, function(err, hash) {
-            if (err) return next(err);
-
-            // sobrescribe la clave con el hash
-            user.password = hash;
-            next();
-        });
-    });
-});
-
-UserSchema.pre('findOneAndUpdate', function(next) {
-    var user = this;
-    const SALT_WORK_FACTOR = 8;
-    
-    // solo hashea la clave si ha sido modificada (o si es nueva)
-    if (!user.isModified('password')) return next();
-
-    // genera un salt
-    bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
-        if (err) return next(err);
-
-        // hashea la clave usando el nuevo salt
-        bcrypt.hash(user.password, salt, function(err, hash) {
+        bcrypt.hash(user.password, salt, function (err, hash) {
             if (err) return next(err);
 
             // sobrescribe la clave con el hash

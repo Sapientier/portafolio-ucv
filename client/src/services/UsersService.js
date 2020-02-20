@@ -7,6 +7,9 @@ export default {
     getusers () {
         return Api().get('getusers')
     },
+    getuserpass (values) {
+        return Api().post('getuserpass', values)
+    },
     updateusers (values) {
         return Api().post('updateusers', values)
     },
@@ -15,5 +18,8 @@ export default {
     },
     resetpass (values) {
         return Api().post('resetpass', values)
+    },
+    modpass (values) {
+        return Api().post('modpass', values)
     }
 }
