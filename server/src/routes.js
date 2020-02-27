@@ -3,31 +3,37 @@ const UsersController = require('./controllers/UsersController');
 const path = require('path');
 
 module.exports = (app) => {
-    app.get('/', function(req, res) {
+    app.get('/', function (req, res) {
         res.sendFile(path.join(__dirname, '../public/index.html'))
     }),
-    app.post('/login', 
-        AuthenticationController.login
+        app.post('/login',
+            AuthenticationController.login
+        ),
+        app.post('/insertusers',
+            UsersController.insertusers
+        ),
+        app.get('/getusers',
+            UsersController.getusers
+        ),
+        app.post('/getuserpass',
+            UsersController.getuserpass
+        ),
+        app.post('/getuserper',
+        UsersController.getuserper
     ),
-    app.post('/insertusers', 
-        UsersController.insertusers
-    ),
-    app.get('/getusers', 
-        UsersController.getusers
-    ),
-    app.post('/getuserpass', 
-        UsersController.getuserpass
-    ),
-    app.post('/deleteusers', 
-        UsersController.deleteusers
-    ),
-    app.post('/updateusers', 
-        UsersController.updateusers
-    ),
-    app.post('/resetpass', 
-        UsersController.resetpass
-    ),
-    app.post('/modpass', 
-        UsersController.modpass
-    )
+        app.post('/deleteusers',
+            UsersController.deleteusers
+        ),
+        app.post('/updateusers',
+            UsersController.updateusers
+        ),
+        app.post('/updateuserper',
+            UsersController.updateuserper
+        ),
+        app.post('/resetpass',
+            UsersController.resetpass
+        ),
+        app.post('/modpass',
+            UsersController.modpass
+        )
 }

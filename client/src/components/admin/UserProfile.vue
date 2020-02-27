@@ -4,16 +4,13 @@
       <v-flex xs12 md4>
         <v-card>
           <v-avatar class="mx-auto d-block" size="130">
-            <img
-              src="https://c8d8q6i8.stackpathcdn.com/wp-content/uploads/2014/01/James-Franco-Contact-Information.jpg"
-            />
+            <v-img :src="require(`@/assets/profile-avatar-icon.png`)"></v-img>
           </v-avatar>
           <v-card-text class="text-xs-center">
             <h3 class="card-title font-weight-light">Brian Torres</h3>
             <p class="card-description font-weight-light">Administrador</p>
             <v-file-input
-              show-size
-              :rules="rules"
+              :rules="rulesImg"
               accept="image/png, image/jpeg, image/bmp"
               placeholder="Seleccione una imagen"
               prepend-icon="mdi-camera"
@@ -31,23 +28,27 @@
                   <v-text-field
                     label="Dependencia"
                     disabled
-                    :value="$store.state.user.Dependencies"
+                    :value="$store.state.user.dependencies"
                   />
                 </v-flex>
                 <v-flex xs12 md6>
-                  <v-text-field :value="$store.state.user.email" label="Correo Electrónico" />
+                  <v-text-field
+                    :value="$store.state.user.email"
+                    label="Correo Electrónico"
+                    disabled
+                  />
                 </v-flex>
                 <v-flex xs12 md6>
-                  <v-text-field label="Nombre" />
+                  <v-text-field v-model="name" label="Nombre" />
                 </v-flex>
                 <v-flex xs12 md6>
-                  <v-text-field label="Apellido" />
+                  <v-text-field v-model="lastname" label="Apellido" />
                 </v-flex>
                 <v-flex xs12 md6>
-                  <v-combobox :items="itemsel" label="Escuelas"></v-combobox>
+                  <v-combobox v-model="escuelas" :items="itemsel" label="Escuelas"></v-combobox>
                 </v-flex>
                 <v-flex xs12 md6>
-                  <v-combobox :items="itemsel2" label="Institutos"></v-combobox>
+                  <v-combobox v-model="institutos" :items="itemsel2" label="Institutos"></v-combobox>
                 </v-flex>
                 <v-flex md8>
                   <v-dialog v-model="dialog" persistent max-width="400px">
@@ -71,6 +72,7 @@
                                   :type="show1 ? 'text' : 'password'"
                                   @click:append="show1 = !show1"
                                   :rules="passwordActRules"
+                                  required
                                 ></v-text-field>
                               </v-col>
                               <v-col cols="12">
@@ -82,6 +84,7 @@
                                   :type="show2 ? 'text' : 'password'"
                                   @click:append="show2 = !show2"
                                   :rules="passwordNewRules"
+                                  required
                                 ></v-text-field>
                               </v-col>
                               <v-col cols="12">
@@ -92,7 +95,8 @@
                                   :append-icon="show3 ? 'mdi-eye' : 'mdi-eye-off'"
                                   :type="show3 ? 'text' : 'password'"
                                   @click:append="show3 = !show3"
-                                  :rules="passwordNewRules"
+                                  :rules="passwordNew2Rules"
+                                  required
                                 ></v-text-field>
                               </v-col>
                             </v-row>
@@ -122,7 +126,7 @@
                   </v-dialog>
                 </v-flex>
                 <v-flex md4>
-                  <v-btn color="primary">Actualizar Perfil</v-btn>
+                  <v-btn color="primary" @click="updateUser">Actualizar Perfil</v-btn>
                 </v-flex>
               </v-layout>
             </v-container>
@@ -147,12 +151,20 @@ export default {
     actPass: "",
     newPass: "",
     newPass2: "",
+    name: "",
+    lastname: "",
+    escuelas: "",
+    institutos: "",
+    snack: false,
+    snackColor: "",
+    snackText: "",
+    UserList: [],
     error: null,
     alert: false,
     show1: false,
     show2: false,
     show3: false,
-    rules: [
+    rulesImg: [
       value =>
         !value ||
         value.size < 2000000 ||
@@ -160,15 +172,19 @@ export default {
     ],
     passwordActRules: [
       v => !!v || "Contraseña actual es requerida",
-      v => v.length <= 20 || "La contraseña debe ser menor a 20 caracteres"
+      v =>
+        v.length <= 20 || "La contraseña actual debe ser menor a 20 caracteres"
     ],
     passwordNewRules: [
       v => !!v || "Contraseña nueva es requerida",
-      v => v.length <= 20 || "La contraseña debe ser menor a 20 caracteres"
+      v =>
+        v.length <= 20 || "La contraseña nueva debe ser menor a 20 caracteres"
     ],
     passwordNew2Rules: [
       v => !!v || "Confirmar contraseña nueva es requerida",
-      v => v.length <= 20 || "La contraseña debe ser menor a 20 caracteres"
+      v =>
+        v.length <= 20 ||
+        "La contraseña a confirmar debe ser menor a 20 caracteres"
     ],
     itemsel: [
       "Biología",
@@ -180,24 +196,62 @@ export default {
     ],
     itemsel2: ["IBE", "ICTA", "ICT"]
   }),
+  created() {
+    this.initialize();
+  },
   methods: {
+    async initialize() {
+      const response = await UsersService.getuserper({
+        _id: this.$store.state.user._id
+      })
+        .then(response => {
+          this.name = response.data.name;
+          this.lastname = response.data.lastname;
+          this.escuelas = response.data.school;
+          this.institutos = response.data.institute;
+        })
+        .catch(error => console.log(error));
+    },
     resetValidation() {
       this.$refs.form.resetValidation();
     },
     close() {
-      this.resetValidation();
       this.actPass = "";
       this.newPass = "";
       this.newPass2 = "";
+      this.show1 = false;
+      this.show2 = false;
+      this.show3 = false;
       this.dialog = false;
       this.alert = false;
+      this.resetValidation();
     },
     async checkPassword() {
+      if (this.$refs.form.validate()) {
+        if (this.newPass != this.newPass2) {
+          this.alert = true;
+          this.error = "Las nuevas contraseñas no coinciden";
+        } else {
+          try {
+            const response = await UsersService.getuserpass({
+              _id: this.$store.state.user._id,
+              password: this.actPass
+            }).then(response => this.modPassword(response.data._id));
+
+            this.close();
+          } catch (error) {
+            this.alert = true;
+            this.error = error.response.data.error;
+          }
+        }
+      }
+    },
+    async modPassword(id) {
       try {
-        const response = await UsersService.getuserpass({
-          email: this.$store.state.user.email,
-          password: this.actPass
-        }).then(response => this.modPassword(response.data._id));
+        const response = await UsersService.modpass({
+          _id: id,
+          password: this.newPass
+        }).then(response => this.passwordInline());
 
         this.close();
       } catch (error) {
@@ -205,25 +259,27 @@ export default {
         this.error = error.response.data.error;
       }
     },
-    async modPassword(id) {
-      if (this.newPass != this.newPass2) {
-        this.alert = true;
-        this.error = 'Las nuevas contraseñas no coinciden';
-      } else {
-        try {
-          const response = await UsersService.modpass({
-            _id: id,
-            password: this.newPass
-          }).then(response => this.passwordInline());
-
-          this.close();
-        } catch (error) {
-          this.alert = true;
-          this.error = error.response.data.error;
-        }
+    async updateUser() {
+      try {
+        const response = await UsersService.updateuserper({
+          _id: this.$store.state.user._id,
+          name: this.name,
+          lastname: this.lastname,
+          school: this.escuelas,
+          institute: this.institutos
+        }).then(response => this.updateInline());
+      } catch (error) {
+        this.snack = true;
+        this.snackColor = "error";
+        this.snackText = error.response.data.error;
       }
     },
     //toasts/snackbar messages for actions
+    updateInline() {
+      this.snack = true;
+      this.snackColor = "success";
+      this.snackText = "Datos actualizados";
+    },
     passwordInline() {
       this.snack = true;
       this.snackColor = "success";

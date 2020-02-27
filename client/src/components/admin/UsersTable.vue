@@ -58,11 +58,12 @@
                                 label="Correo"
                                 type="email"
                                 :rules="emailRules"
+                                required
                               ></v-text-field>
                             </v-col>
                             <v-col col="12" sm="6" md="6">
                               <v-combobox
-                                v-model="editedItem.Dependencies"
+                                v-model="editedItem.dependencies"
                                 :items="itemsel"
                                 label="Dependencias"
                               ></v-combobox>
@@ -165,7 +166,7 @@ export default {
       { text: "Correo", value: "email" },
       { text: "Administrador", value: "isAdmin" },
       { text: "Bloqueado", value: "isActive" },
-      { text: "Dependencia", value: "Dependencies" },
+      { text: "dependencies", value: "dependencies" },
       { text: "Acciones", value: "action", sortable: false }
     ],
     editedIndex: -1,
@@ -175,7 +176,7 @@ export default {
       email: "",
       isAdmin: false,
       isActive: false,
-      Dependencies: ""
+      dependencies: ""
     },
     defaultItem: {
       _id: "",
@@ -183,7 +184,7 @@ export default {
       email: "",
       isAdmin: false,
       isActive: false,
-      Dependencies: ""
+      dependencies: ""
     }
   }),
   computed: {
@@ -237,10 +238,10 @@ export default {
       this.$refs.form.resetValidation();
     },
     close() {
-      this.resetValidation();
       this.dialog = false;
       this.dialog2 = false;
       this.alert = false;
+      this.resetValidation();
       setTimeout(() => {
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
@@ -254,7 +255,7 @@ export default {
             email: this.editedItem.email,
             isAdmin: this.editedItem.isAdmin,
             isActive: this.editedItem.isActive,
-            Dependencies: this.editedItem.Dependencies
+            dependencies: this.editedItem.dependencies
           }).then(response => this.updateInline());
           Object.assign(this.UserList[this.editedIndex], this.editedItem);
           this.close();
@@ -268,7 +269,7 @@ export default {
             email: this.editedItem.email,
             isAdmin: this.editedItem.isAdmin,
             isActive: this.editedItem.isActive,
-            Dependencies: this.editedItem.Dependencies
+            dependencies: this.editedItem.dependencies
           }).then(response => this.saveInline());
           this.UserList.push(this.editedItem);
           this.close();
@@ -284,8 +285,6 @@ export default {
           _id: this.editedItem._id,
           email: this.editedItem.email
         }).then(response => this.emailInline());
-        Object.assign(this.UserList[this.editedIndex], this.editedItem);
-        this.close();
       } catch (error) {
         this.error = error.response.data.error;
       }

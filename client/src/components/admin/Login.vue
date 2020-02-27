@@ -24,6 +24,7 @@
                 :type="show1 ? 'text' : 'password'"
                 @click:append="show1 = !show1"
                 :rules="passwordRules"
+                @keyup.enter="login"
               ></v-text-field>
             </v-card-text>
             <v-alert type="error" v-model="alert" dismissible transition="scale-transition">

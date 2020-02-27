@@ -7,7 +7,7 @@ const bcrypt = Promise.promisifyAll(require('bcrypt'));
 const SALT_WORK_FACTOR = 8;
 
 module.exports = {
-    async insertusers (req, res) {
+    async insertusers(req, res) {
         var password = generatePassword(12, false);
 
         var transporter = nodemailer.createTransport({
@@ -22,7 +22,7 @@ module.exports = {
             from: '"Portafolio UCV" <ciens@ciens.ucv.ve>',
             to: req.body.email,
             subject: 'Portafolio de Servicios UCV - Creación de Usuario',
-            text: 'Su contraseña es: ' + password
+            html: '<html><body>Su usuario es: <b>' + req.body.email + '</b><br>Su contraseña es: <b>' + + password + '</b><br><br> Correo automático. Favor no responder.</body></html>'
         };
 
         try {
@@ -31,11 +31,11 @@ module.exports = {
                 password: password,
                 isAdmin: req.body.isAdmin,
                 isActive: req.body.isActive,
-                dependencies: req.body.Dependencies
+                dependencies: req.body.dependencies
             });
 
             const user = await task.save();
-            transporter.sendMail(mailOptions, function(error, info){
+            transporter.sendMail(mailOptions, function (error, info) {
                 if (error) {
                     console.log(error);
                 } else {
@@ -49,7 +49,7 @@ module.exports = {
             })
         }
     },
-    async getusers (req, res) {
+    async getusers(req, res) {
         try {
             const users = await User.find();
             res.json(users);
@@ -59,15 +59,15 @@ module.exports = {
             })
         }
     },
-    async getuserpass (req, res) {
+    async getuserpass(req, res) {
         try {
             const user = await User.findOne({
-                'email': req.body.email
+                '_id': req.body._id
             });
 
             const isPasswordValid = await user.comparePassword(req.body.password);
 
-            if(!isPasswordValid) {
+            if (!isPasswordValid) {
                 return res.status(403).send({
                     error: 'La contraseña actual ingresada no coincide con su usuario'
                 })
@@ -79,13 +79,25 @@ module.exports = {
             })
         }
     },
-    async updateusers (req, res) {
+    async getuserper(req, res) {
+        try {
+            const user = await User.findOne({
+                '_id': req.body._id
+            });
+            res.json(user);
+        } catch (err) {
+            res.status(500).send({
+                error: 'Ha ocurrido un error al buscar el usuario'
+            })
+        }
+    },
+    async updateusers(req, res) {
         try {
             const newTask = {
                 email: req.body.email,
                 isAdmin: req.body.isAdmin,
                 isActive: req.body.isActive,
-                dependencies: req.body.Dependencies
+                dependencies: req.body.dependencies
             };
             await User.findByIdAndUpdate(req.body._id, newTask);
             res.json("Actualizado con exito");
@@ -95,7 +107,23 @@ module.exports = {
             })
         }
     },
-    async modpass (req, res) {
+    async updateuserper(req, res) {
+        try {
+            const newTask = {
+                name: req.body.name,
+                lastname: req.body.lastname,
+                school: req.body.school,
+                institute: req.body.institute
+            };
+            await User.findByIdAndUpdate(req.body._id, newTask);
+            res.json("Actualizado con exito");
+        } catch (err) {
+            res.status(500).send({
+                error: 'Ha ocurrido un error al actualizar el perfil'
+            })
+        }
+    },
+    async modpass(req, res) {
         var salt = bcrypt.genSaltSync(SALT_WORK_FACTOR);
         var hash = bcrypt.hashSync(req.body.password, salt);
 
@@ -111,7 +139,7 @@ module.exports = {
             })
         }
     },
-    async deleteusers (req, res) {
+    async deleteusers(req, res) {
         try {
             await User.findByIdAndDelete(req.body._id);
             res.json("Eliminado con exito");
@@ -121,7 +149,7 @@ module.exports = {
             })
         }
     },
-    async resetpass (req, res) {
+    async resetpass(req, res) {
         var password = generatePassword(12, false);
 
         var transporter = nodemailer.createTransport({
@@ -136,7 +164,7 @@ module.exports = {
             from: '"Portafolio UCV" <ciens@ciens.ucv.ve>',
             to: req.body.email,
             subject: 'Portafolio de Servicios UCV - Reinicio de contraseña',
-            text: 'Su nueva contraseña es: ' + password
+            html: '<html><body>Su nueva contraseña es: <b>' + password + '</b><br><br> Correo automático. Favor no responder.</body></html>'
         };
 
         var salt = bcrypt.genSaltSync(SALT_WORK_FACTOR);
@@ -147,7 +175,7 @@ module.exports = {
                 password: hash
             };
             await User.findByIdAndUpdate(req.body._id, newTask);
-            transporter.sendMail(mailOptions, function(error, info){
+            transporter.sendMail(mailOptions, function (error, info) {
                 if (error) {
                     console.log(error);
                 } else {

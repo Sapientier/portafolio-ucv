@@ -23,6 +23,18 @@ const UserSchema = new Schema({
     },
     dependencies: {
         type: String
+    },
+    name: {
+        type: String
+    },
+    lastname: {
+        type: String
+    },
+    school: {
+        type: String
+    },
+    institute: {
+        type: String
     }
 });
 
