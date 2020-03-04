@@ -1,6 +1,17 @@
 const AuthenticationController = require('./controllers/AuthenticationController');
 const UsersController = require('./controllers/UsersController');
+const ServicesController = require('./controllers/ServicesController');
 const path = require('path');
+const multer = require('multer');
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'ublic/uploads/');
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + file.originalname)
+    }
+});
+const upload = multer({ storage: storage });
 
 module.exports = (app) => {
     app.get('/', function (req, res) {
@@ -19,8 +30,8 @@ module.exports = (app) => {
             UsersController.getuserpass
         ),
         app.post('/getuserper',
-        UsersController.getuserper
-    ),
+            UsersController.getuserper
+        ),
         app.post('/deleteusers',
             UsersController.deleteusers
         ),
@@ -35,5 +46,9 @@ module.exports = (app) => {
         ),
         app.post('/modpass',
             UsersController.modpass
+        ),
+        app.post('/insertservices',
+            upload.single('image'),
+            ServicesController.insertservices
         )
 }

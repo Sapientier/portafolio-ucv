@@ -7,8 +7,9 @@
             <v-img :src="require(`@/assets/profile-avatar-icon.png`)"></v-img>
           </v-avatar>
           <v-card-text class="text-xs-center">
-            <h3 class="card-title font-weight-light">Brian Torres</h3>
-            <p class="card-description font-weight-light">Administrador</p>
+            <h3 class="card-title">{{name}} {{lastname}}</h3>
+            <p class="card-description font-weight-light" v-if="$store.state.user.isAdmin">Administrador</p>
+            <p class="card-description font-weight-light" v-if="!$store.state.user.isAdmin">Operador</p>
             <v-file-input
               :rules="rulesImg"
               accept="image/png, image/jpeg, image/bmp"
@@ -187,6 +188,7 @@ export default {
         "La contraseña a confirmar debe ser menor a 20 caracteres"
     ],
     itemsel: [
+      "N/A",
       "Biología",
       "Computación",
       "Física",
@@ -194,7 +196,7 @@ export default {
       "Matemática",
       "Química"
     ],
-    itemsel2: ["IBE", "ICTA", "ICT"]
+    itemsel2: ["N/A", "IBE", "ICTA", "ICT"]
   }),
   created() {
     this.initialize();

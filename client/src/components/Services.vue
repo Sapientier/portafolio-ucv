@@ -1,51 +1,31 @@
 <template>
-  <v-container
-    grid-list-xl
-  >
+  <v-container grid-list-xl>
     <v-layout wrap>
       <v-flex xs12>
         <div class="text-center">
-          <v-chip
-            class="ma-2"
-            outlined
-          >
-            <v-icon left>mdi-star</v-icon>
-            Todos
-          </v-chip>
-          <v-chip
-            class="ma-2"
-            color="success"
-            outlined
-          >
-            <v-icon left>mdi-server-plus</v-icon>
-            Investigación
+          <v-chip class="ma-2" outlined>
+            <v-icon left>mdi-star</v-icon>Todos
           </v-chip>
 
-          <v-chip
-            class="ma-2"
-            color="primary"
-            outlined
-          >
-            Desarrollo
+          <v-chip class="ma-2" color="success" outlined>
+            <v-icon left>mdi-server-plus</v-icon>Investigación
+          </v-chip>
+
+          <v-chip class="ma-2" color="primary" outlined>
+            Tecnología
             <v-icon right>mdi-account-outline</v-icon>
           </v-chip>
 
-          <v-chip
-            class="ma-2"
-            color="deep-purple accent-4"
-            outlined
-          >
-            <v-icon left>mdi-wrench</v-icon>
-            Mercadeo
+          <v-chip class="ma-2" color="deep-purple accent-4" outlined>
+            <v-icon left>mdi-wrench</v-icon>Mercadeo
           </v-chip>
 
-          <v-chip
-            class="ma-2"
-            color="indigo darken-3"
-            outlined
-          >
-            <v-icon left>mdi-fire</v-icon>
-            Medicina
+          <v-chip class="ma-2" color="indigo darken-3" outlined>
+            <v-icon left>mdi-fire</v-icon>Medicina
+          </v-chip>
+
+          <v-chip class="ma-2" color="red darken-3" outlined>
+            <v-icon left>mdi-book</v-icon>Educación
           </v-chip>
         </div>
         <v-divider></v-divider>
@@ -61,29 +41,14 @@
 
     <v-layout align-center>
       <v-flex xs3>
-        <base-btn
-          v-if="page !== 1"
-          class="ml-0"
-          title="Previous page"
-          square
-          @click="page--"
-        >
+        <base-btn v-if="page !== 1" class="ml-0" title="Previous page" square @click="page--">
           <v-icon>mdi-chevron-left</v-icon>
         </base-btn>
       </v-flex>
 
-      <v-flex
-        xs6
-        text-xs-center
-        subheading
-      >
-        PÁGINA {{ page }} DE {{ pages }}
-      </v-flex>
+      <v-flex xs6 text-xs-center subheading>PÁGINA {{ page }} DE {{ pages }}</v-flex>
 
-      <v-flex
-        xs3
-        text-xs-right
-      >
+      <v-flex xs3 text-xs-right>
         <base-btn
           v-if="pages > 1 && page < pages"
           class="mr-0"
@@ -97,167 +62,256 @@
     </v-layout>
     <v-dialog v-model="dialog" persistent max-width="600px">
       <template v-slot:activator="{ on }">
-        <v-btn
-          dark
-          fab
-          bottom
-          right
-          color="red"
-          fixed
-          v-if="$store.state.isUserLoggedIn"
-          v-on="on"
-        >
-         <v-icon>mdi-plus</v-icon>
+        <v-btn dark fab bottom right fixed color="red" v-if="$store.state.isUserLoggedIn" v-on="on">
+          <v-icon>mdi-plus</v-icon>
         </v-btn>
       </template>
       <v-card>
-        <v-card-title>
-          <span class="headline">Inserción de Servicio</span>
-        </v-card-title>
-        <v-card-text>
-          <v-container>
-            <v-row>
-              <v-col cols="12" sm="6">
-                <v-combobox
-                    v-model="categories"
-                    :items="itemsel"
-                    label="Categoría*"
-                ></v-combobox>
-              </v-col>
-              <v-col cols="12" sm="6">
-                <v-combobox
-                    v-model="dependencies"
-                    :items="itemsel2"
-                    label="Dependencias*"
-                ></v-combobox>
-              </v-col>
-              <v-col cols="12" sm="6">
-                <v-text-field label="Nombre*" required></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6">
-                <v-menu
-                  ref="menu"
-                  v-model="menu"
-                  :close-on-content-click="false"
-                  :return-value.sync="date"
-                  transition="scale-transition"
-                  offset-y
-                  min-width="290px"
-                >
-                  <template v-slot:activator="{ on }">
-                    <v-text-field
-                      v-model="computedDateFormatted"
-                      label="Fecha de Publicación *"
-                      prepend-icon="mdi-calendar"
-                      readonly
-                      @blur="date = parseDate(dateFormatted)"
-                      v-on="on"
-                    ></v-text-field>
-                  </template>
-                  <v-date-picker 
-                    v-model="date" 
-                    no-title 
-                    scrollable
-                    locale="es-es">
-                    <v-spacer></v-spacer>
-                    <v-btn text color="primary" @click="menu = false">Cancelar</v-btn>
-                    <v-btn text color="primary" @click="$refs.menu.save(date)">Aceptar</v-btn>
-                  </v-date-picker>
-                </v-menu>
-              </v-col>
-              <v-col cols="12">
-                <v-textarea
-                    label="Descripción"
-                  />
-              </v-col>
-              <v-col cols="12" sm="6">
-                <v-text-field
-                  v-model="autor"
-                  label="Autor *"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6">
-                <v-file-input label="Imagen"></v-file-input>
-              </v-col>
-            </v-row>
-          </v-container>
-          <small>*Indica que es un campo requerido</small>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="dialog = false">Cerrar</v-btn>
-          <v-btn color="blue darken-1" text @click="dialog = false">Guardar</v-btn>
-        </v-card-actions>
+        <v-form ref="form" v-model="valid" lazy-validation>
+          <v-card-title>
+            <span class="headline">Inserción de Servicio</span>
+          </v-card-title>
+          <v-card-text>
+            <v-container>
+              <v-row>
+                <v-col cols="12" sm="12">
+                  <v-text-field v-model="name" label="Nombre*" :rules="nameRules" required></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6">
+                  <v-combobox v-model="categories" :items="itemselCat" label="Categoría*" :rules="categoriaRules" required></v-combobox>
+                </v-col>
+                <v-col cols="12" sm="6">
+                  <v-text-field v-model="autor" label="Autor*" :rules="autorRules" required></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6">
+                  <v-combobox v-model="schools" :items="itemselSchool" label="Escuela"></v-combobox>
+                </v-col>
+                <v-col cols="12" sm="6">
+                  <v-combobox v-model="institutes" :items="itemselInst" label="Instituto"></v-combobox>
+                </v-col>
+                <v-col cols="12" sm="6">
+                  <v-menu
+                    ref="menu"
+                    v-model="menu"
+                    :close-on-content-click="false"
+                    :return-value.sync="date"
+                    transition="scale-transition"
+                    offset-y
+                    min-width="290px"
+                  >
+                    <template v-slot:activator="{ on }">
+                      <v-text-field
+                        v-model="computedDateFormatted"
+                        label="Fecha de Creación*"
+                        prepend-icon="mdi-calendar"
+                        readonly
+                        v-on="on"
+                      ></v-text-field>
+                    </template>
+                    <v-date-picker v-model="date" no-title scrollable locale="es-es">
+                      <v-spacer></v-spacer>
+                      <v-btn text color="primary" @click="menu = false">Cancelar</v-btn>
+                      <v-btn text color="primary" @click="$refs.menu.save(date)">Aceptar</v-btn>
+                    </v-date-picker>
+                  </v-menu>
+                </v-col>
+                <v-col cols="12" sm="6">
+                  <v-file-input
+                    v-model="selectedFile"
+                    :rules="rulesImg"
+                    accept="image/png, image/jpeg, image/bmp"
+                    placeholder="Imagen*"
+                    prepend-icon="mdi-camera"
+                  ></v-file-input>
+                </v-col>
+                <v-col cols="12">
+                  <v-text-field v-model="usuariospp" label="Usuarios Involucrados"></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                  <v-textarea v-model="descripcion" label="Descripción" />
+                </v-col>
+                <v-col cols="12">
+                  <v-text-field v-model="solicitud" label="Solicitud del Servicio"></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                  <v-text-field v-model="params" label="Parámetros del Servicio"></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                  <v-textarea v-model="direccion" label="Dirección" rows="3" />
+                </v-col>
+              </v-row>
+            </v-container>
+            <small>*Indica que es un campo requerido</small>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" text @click="close">Cerrar</v-btn>
+            <v-btn color="blue darken-1" text @click="insertService" :disabled="!valid">Guardar</v-btn>
+          </v-card-actions>
+        </v-form>
+        <v-snackbar v-model="snack" :timeout="3000" :color="snackColor">
+          {{ snackText }}
+          <v-btn text @click="snack = false">Cerrar</v-btn>
+        </v-snackbar>
       </v-card>
-    </v-dialog> 
+    </v-dialog>
   </v-container>
 </template>
 
 <script>
-  // Utilities
-  import {
-    mapState
-  } from 'vuex'
+// Utilities
+import { mapState } from "vuex";
+import UsersService from "@/services/UsersService";
+import Services from "@/services/Services";
 
-  export default {
-    name: 'Feed',
+export default {
+  name: "Feed",
 
-    components: {
-      FeedCard: () => import('@/components/FeedCard')
+  components: {
+    FeedCard: () => import("@/components/FeedCard")
+  },
+
+  data: () => ({
+    selectedFile: null,
+    layout: [2, 2, 1, 2, 2, 3, 3, 3, 3, 3, 3],
+    page: 1,
+    valid: true,
+    date: new Date().toISOString().substr(0, 10),
+    menu: false,
+    snack: false,
+    snackColor: "",
+    snackText: "",
+    name: "",
+    autor: "",
+    usuariospp: "",
+    schools: "",
+    categories: "",
+    institutes: "",
+    descripcion: "",
+    solicitud: "",
+    params: "",
+    direccion: "",
+    itemselCat: [
+      "Medicina",
+      "Tecnología",
+      "Educación",
+      "Mercadeo",
+      "Investigación"
+    ],
+    itemselSchool: [
+      "N/A",
+      "Biología",
+      "Computación",
+      "Física",
+      "Geoquímica",
+      "Matemática",
+      "Química"
+    ],
+    itemselInst: ["N/A", "IBE", "ICTA", "ICT"],
+    dialog: false,
+    rulesImg: [
+      value =>
+        !value ||
+        value.size < 2000000 ||
+        "¡El tamaño de la imagen debe ser inferior a 2 MB!"
+    ],
+    nameRules: [
+      v => !!v || "Nombre de servicio es requerida"
+    ],
+    categoriaRules: [
+      v => !!v || "La categoría es requerida"
+    ],
+    autorRules: [
+      v => !!v || "El autor es requerido"
+    ]
+  }),
+  created() {
+    this.initialize();
+  },
+  methods: {
+    async initialize() {
+      const response = await UsersService.getuserper({
+        _id: this.$store.state.user._id
+      })
+        .then(response => {
+          this.autor = response.data.name + " " + response.data.lastname;
+          this.schools = response.data.school;
+          this.institutes = response.data.institute;
+        })
+        .catch(error => console.log(error));
     },
+    async insertService() {
+      try {
+        const fd = new FormData();
+        fd.append("image", this.selectedFile, this.selectedFile.name);
+        fd.append("name", this.name);
+        fd.append("autor", this.autor);
+        fd.append("userspp", this.usuariospp);
+        fd.append("school", this.schools);
+        fd.append("category", this.categories);
+        fd.append("institute", this.institutes);
+        fd.append("description", this.descripcion);
+        fd.append("request", this.solicitud);
+        fd.append("paramserv", this.params);
+        fd.append("direction", this.direccion);
+        fd.append("date", this.date);
 
-    data: () => ({
-      layout: [2, 2, 1, 2, 2, 3, 3, 3, 3, 3, 3],
-      page: 1,
-      date: new Date().toISOString().substr(0, 10),
-      menu: false,
-      autor: '',
-      dependencies: '',
-      categories: '',
-      itemsel: [
-        'Medicina',
-        'Química',
-        'Tecnología',
-        'Alimentos',
-        'Eduación',
-        'Mercadeo'
-      ],
-      itemsel2: [
-        'Coordinador General',
-        'Coordinador de Extensión',
-        'Coordinador de Investigación',
-        'Profesor/Investigador'
-      ],
-      dialog: false
-    }),
-    
-    methods: {
-      formatDate (date) {
-        if (!date) return null
-        const [year, month, day] = date.split('-')
-        return `${day}/${month}/${year}`
-        }
-    },
-    computed: {
-      ...mapState(['servicios']),
-      computedDateFormatted () {
-        return this.formatDate(this.date)
-      },
-      pages () {
-        return Math.ceil(this.servicios.length / 11)
-      },
-      paginatedServices () {
-        const start = (this.page - 1) * 11
-        const stop = this.page * 11
+        const response = await Services.insertservices(fd).then(response =>
+          this.insertInline()
+        );
 
-        return this.servicios.slice(start, stop)
+        this.close();
+      } catch (error) {
+        this.snack = true;
+        this.snackColor = "error";
+        this.snackText = error.response.data.error;
       }
     },
+    resetValidation() {
+      this.$refs.form.resetValidation();
+    },
+    close() {
+      this.date = new Date().toISOString().substr(0, 10);
+      this.autor = "";
+      this.usuariospp = "";
+      this.schools = "";
+      this.categories = "";
+      this.institutes = "";
+      this.descripcion = "";
+      this.solicitud = "";
+      this.params = "";
+      this.name = "";
+      this.direccion = "";
+      this.selectedFile = null;
+      this.dialog = false;
+      this.resetValidation();
+    },
+    formatDate(date) {
+      if (!date) return null;
+      const [year, month, day] = date.split("-");
+      return `${day}/${month}/${year}`;
+    },
+    //toasts/snackbar messages for actions
+    insertInline() {
+      this.snack = true;
+      this.snackColor = "success";
+      this.snackText = "Servicio creado";
+    }
+  },
+  computed: {
+    ...mapState(["servicios"]),
+    computedDateFormatted() {
+      return this.formatDate(this.date);
+    },
+    pages() {
+      return Math.ceil(this.servicios.length / 11);
+    },
+    paginatedServices() {
+      const start = (this.page - 1) * 11;
+      const stop = this.page * 11;
 
-    watch: {
-      page () {
-        window.scrollTo(0, 0)
-      }
+      return this.servicios.slice(start, stop);
     }
   }
+};
 </script>

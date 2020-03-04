@@ -22,7 +22,7 @@ module.exports = {
             from: '"Portafolio UCV" <ciens@ciens.ucv.ve>',
             to: req.body.email,
             subject: 'Portafolio de Servicios UCV - Creación de Usuario',
-            html: '<html><body>Su usuario es: <b>' + req.body.email + '</b><br>Su contraseña es: <b>' + password + '</b><br><br> Correo automático. Favor no responder.</body></html>'
+            html: '<html><body>Su usuario es: <b>' + req.body.email + '</b><br>Su contraseña es: <b>' + password + '</b><br><br> Correo automático. Por favor no responder.</body></html>'
         };
 
         try {
@@ -164,7 +164,7 @@ module.exports = {
             from: '"Portafolio UCV" <ciens@ciens.ucv.ve>',
             to: req.body.email,
             subject: 'Portafolio de Servicios UCV - Reinicio de contraseña',
-            html: '<html><body>Su nueva contraseña es: <b>' + password + '</b><br><br> Correo automático. Favor no responder.</body></html>'
+            html: '<html><body>Su nueva contraseña es: <b>' + password + '</b><br><br> Correo automático. Por favor no responder.</body></html>'
         };
 
         var salt = bcrypt.genSaltSync(SALT_WORK_FACTOR);

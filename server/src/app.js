@@ -15,7 +15,7 @@ mongoose.connect(config.db.URI, config.db.options)
 // Middlewares -- Bloques de código que se ejecutan entre la petición que hace el usuario (request) hasta que la petición llega al servidor
 app.use(morgan('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }))
+app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(history());
 app.use(express.static(path.join(__dirname, '../public/')));
