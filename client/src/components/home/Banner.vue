@@ -1,7 +1,7 @@
 <template>
   <base-card dark>
     <v-parallax
-      :src="require('@/assets/articles/muralciencias.jpg')"
+      :src="require('@/assets/muralciencias.jpg')"
       height="400"
     >
       <v-row
