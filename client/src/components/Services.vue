@@ -32,10 +32,10 @@
       </v-flex>
 
       <feed-card
-        v-for="(article, i) in paginatedServices"
-        :key="article.title"
+        v-for="(ServicesList, i) in paginatedServices"
+        :key="ServicesList.name"
         :size="layout[i]"
-        :value="article"
+        :value="ServicesList"
       />
     </v-layout>
 
@@ -78,7 +78,13 @@
                   <v-text-field v-model="name" label="Nombre*" :rules="nameRules" required></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6">
-                  <v-combobox v-model="categories" :items="itemselCat" label="Categoría*" :rules="categoriaRules" required></v-combobox>
+                  <v-combobox
+                    v-model="categories"
+                    :items="itemselCat"
+                    label="Categoría*"
+                    :rules="categoriaRules"
+                    required
+                  ></v-combobox>
                 </v-col>
                 <v-col cols="12" sm="6">
                   <v-text-field v-model="autor" label="Autor*" :rules="autorRules" required></v-text-field>
@@ -159,8 +165,6 @@
 </template>
 
 <script>
-// Utilities
-import { mapState } from "vuex";
 import UsersService from "@/services/UsersService";
 import Services from "@/services/Services";
 
@@ -191,6 +195,7 @@ export default {
     solicitud: "",
     params: "",
     direccion: "",
+    ServicesList: [],
     itemselCat: [
       "Medicina",
       "Tecnología",
@@ -215,28 +220,18 @@ export default {
         value.size < 2000000 ||
         "¡El tamaño de la imagen debe ser inferior a 2 MB!"
     ],
-    nameRules: [
-      v => !!v || "Nombre de servicio es requerida"
-    ],
-    categoriaRules: [
-      v => !!v || "La categoría es requerida"
-    ],
-    autorRules: [
-      v => !!v || "El autor es requerido"
-    ]
+    nameRules: [v => !!v || "Nombre de servicio es requerida"],
+    categoriaRules: [v => !!v || "La categoría es requerida"],
+    autorRules: [v => !!v || "El autor es requerido"]
   }),
   created() {
     this.initialize();
   },
   methods: {
     async initialize() {
-      const response = await UsersService.getuserper({
-        _id: this.$store.state.user._id
-      })
+      const response = await Services.getservices()
         .then(response => {
-          this.autor = response.data.name + " " + response.data.lastname;
-          this.schools = response.data.school;
-          this.institutes = response.data.institute;
+          this.ServicesList = response.data;
         })
         .catch(error => console.log(error));
     },
@@ -259,7 +254,7 @@ export default {
         const response = await Services.insertservices(fd).then(response =>
           this.insertInline()
         );
-
+        this.initialize();
         this.close();
       } catch (error) {
         this.snack = true;
@@ -299,18 +294,17 @@ export default {
     }
   },
   computed: {
-    ...mapState(["servicios"]),
     computedDateFormatted() {
       return this.formatDate(this.date);
     },
     pages() {
-      return Math.ceil(this.servicios.length / 11);
+      return Math.ceil(this.ServicesList.length / 10);
     },
     paginatedServices() {
-      const start = (this.page - 1) * 11;
-      const stop = this.page * 11;
+      const start = (this.page - 1) * 10;
+      const stop = this.page * 10;
 
-      return this.servicios.slice(start, stop);
+      return this.ServicesList.slice(start, stop);
     }
   }
 };

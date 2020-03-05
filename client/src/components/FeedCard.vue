@@ -4,18 +4,17 @@
     :class="classes"
   >
     <base-card
-      :height="value.prominent ? 450 : 350"
+      :height="350"
       color="grey lighten-1"
       dark
       href="#!"
     >
       <v-img
-        :src="require(`@/assets/articles/${value.hero}`)"
+        :src="`${value.imageService}`"
         height="100%"
         gradient="rgba(0, 0, 0, .42), rgba(0, 0, 0, .42)"
       >
         <v-layout
-          v-if="!value.prominent"
           fill-height
           wrap
           text-xs-right
@@ -33,13 +32,13 @@
               {{ value.category }}
             </v-chip>
             <h3 class="title font-weight-bold mb-2">
-              {{ value.title }}
+              {{ value.name }}
             </h3>
             <div class="caption">
-              {{ value.author }}<br>16/02/2020
+              {{ value.autor }}<br>{{ formatDate(value.date) }}
             </div>
           </v-flex>
-          <v-flex align-self-end>
+          <v-flex d-flex justify-start align-self-end>
             <v-chip
               class="text-uppercase ma-0"
               color="primary"
@@ -49,6 +48,11 @@
             >
               Leer Más
             </v-chip>
+          </v-flex>
+          <v-flex align-self-end d-flex justify-end v-if="$store.state.isUserLoggedIn">
+            <v-btn color="primary" fab small dark>
+              <v-icon>mdi-pencil</v-icon>
+            </v-btn>
           </v-flex>
         </v-layout>
       </v-img>
@@ -68,7 +72,14 @@
         default: () => ({})
       }
     },
-
+    methods: {
+      formatDate(date) {
+        if (!date) return null;
+        const [newdate, x] = date.split("T");
+        const [year, month, day] = newdate.split("-");
+        return `${day}/${month}/${[year]}`;
+      }
+    },
     computed: {
       classes () {
         return {

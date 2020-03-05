@@ -5,7 +5,7 @@ const path = require('path');
 const multer = require('multer');
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'ublic/uploads/');
+        cb(null, 'public/uploads/');
     },
     filename: function (req, file, cb) {
         cb(null, Date.now() + file.originalname)
@@ -50,5 +50,8 @@ module.exports = (app) => {
         app.post('/insertservices',
             upload.single('image'),
             ServicesController.insertservices
+        ),
+        app.get('/getservices',
+            ServicesController.getservices
         )
 }

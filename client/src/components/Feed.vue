@@ -16,10 +16,10 @@
       </v-flex>
 
       <feed-card
-        v-for="(article, i) in paginatedArticles"
-        :key="article.title"
+        v-for="(ServicesList, i) in paginatedArticles"
+        :key="ServicesList.name"
         :size="layout[i]"
-        :value="article"
+        :value="ServicesList"
       />
     </v-layout>
 
@@ -40,39 +40,40 @@
 </template>
 
 <script>
-  // Utilities
-  import {
-    mapState
-  } from 'vuex'
-
+  import Services from "@/services/Services";
+  
   export default {
     name: 'Feed',
-
+    created() {
+      this.initialize();
+    },
     components: {
       FeedCard: () => import('@/components/FeedCard')
     },
 
     data: () => ({
-      layout: [2, 2, 3, 3, 3, 3, 3, 3, 3, 3],
-      page: 1
+      layout: [2, 2, 3, 3, 3],
+      page: 1,
+      ServicesList: []
     }),
-
-    computed: {
-      ...mapState(['articles']),
-      pages () {
-        return Math.ceil(this.articles.length / 11)
-      },
-      paginatedArticles () {
-        const start = (this.page - 1) * 11
-        const stop = this.page * 11
-
-        return this.articles.slice(start, stop)
+    methods: {
+      async initialize() {
+        const response = await Services.getservices()
+          .then(response => {
+            this.ServicesList = response.data;
+          })
+          .catch(error => console.log(error));
       }
     },
+    computed: {
+      pages () {
+        return Math.ceil(this.ServicesList.length / 10)
+      },
+      paginatedArticles () {
+        const start = (this.page - 1) * 10
+        const stop = this.page * 10
 
-    watch: {
-      page () {
-        window.scrollTo(0, 0)
+        return this.ServicesList.slice(start, stop)
       }
     }
   }
