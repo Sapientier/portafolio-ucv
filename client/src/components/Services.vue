@@ -8,20 +8,20 @@
           </v-chip>
 
           <v-chip class="ma-2" color="success" outlined>
-            <v-icon left>mdi-server-plus</v-icon>Investigación
+            <v-icon left>mdi-glasses</v-icon>Investigación
           </v-chip>
 
           <v-chip class="ma-2" color="primary" outlined>
             Tecnología
-            <v-icon right>mdi-account-outline</v-icon>
+            <v-icon right>mdi-server</v-icon>
           </v-chip>
 
           <v-chip class="ma-2" color="deep-purple accent-4" outlined>
-            <v-icon left>mdi-wrench</v-icon>Mercadeo
+            <v-icon left>mdi-currency-usd</v-icon>Mercadeo
           </v-chip>
 
           <v-chip class="ma-2" color="indigo darken-3" outlined>
-            <v-icon left>mdi-fire</v-icon>Medicina
+            <v-icon left>mdi-medical-bag</v-icon>Medicina
           </v-chip>
 
           <v-chip class="ma-2" color="red darken-3" outlined>
@@ -62,7 +62,7 @@
     </v-layout>
     <v-dialog v-model="dialog" persistent max-width="600px">
       <template v-slot:activator="{ on }">
-        <v-btn dark fab bottom right fixed color="red" v-if="$store.state.isUserLoggedIn" v-on="on">
+        <v-btn dark fab bottom right fixed color="indigo" v-if="$store.state.isUserLoggedIn" v-on="on">
           <v-icon>mdi-plus</v-icon>
         </v-btn>
       </template>
@@ -165,7 +165,6 @@
 </template>
 
 <script>
-import UsersService from "@/services/UsersService";
 import Services from "@/services/Services";
 
 export default {

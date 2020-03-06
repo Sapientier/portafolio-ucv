@@ -7,4 +7,7 @@ export default {
     getservices () {
         return Api().get('getservices')
     },
+    deleteservices (values) {
+        return Api().post('deleteservices', values)
+    },
 }

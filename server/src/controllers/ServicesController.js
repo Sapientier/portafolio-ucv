@@ -1,4 +1,5 @@
 const Service = require('../models/Service');
+const fs = require('fs')
 
 module.exports = {
     async insertservices(req, res) {
@@ -37,4 +38,21 @@ module.exports = {
             })
         }
     },
+    async deleteservices(req, res) {
+        try {
+            await Service.findByIdAndDelete(req.body._id);
+            const newpath = "public/" + req.body.imageService;
+            fs.unlink(newpath, (err) => {
+                if (err) {
+                    console.error(err)
+                    return
+                }
+            })
+            res.json("Eliminado con exito");
+        } catch (err) {
+            res.status(500).send({
+                error: 'Ha ocurrido un error al eliminar los usuarios'
+            })
+        }
+    }
 }

@@ -54,4 +54,7 @@ module.exports = (app) => {
         app.get('/getservices',
             ServicesController.getservices
         )
+        app.post('/deleteservices',
+            ServicesController.deleteservices
+        )
 }

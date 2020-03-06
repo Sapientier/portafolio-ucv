@@ -119,6 +119,7 @@
        <v-btn
         icon
         large
+        link to="/"
       >
         <v-avatar
           size="32px"

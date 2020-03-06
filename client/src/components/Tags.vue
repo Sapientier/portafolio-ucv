@@ -9,6 +9,7 @@
       small
       color="secondary"
       text-color="white"
+      class="ma-1"
     >
       {{ category.text }}
     </v-chip>

@@ -16,10 +16,10 @@
       </v-flex>
 
       <feed-card
-        v-for="(ServicesList, i) in paginatedArticles"
-        :key="ServicesList.name"
+        v-for="(servicios, i) in paginatedArticles"
+        :key="servicios.name"
         :size="layout[i]"
-        :value="ServicesList"
+        :value="servicios"
       />
     </v-layout>
 
@@ -40,40 +40,29 @@
 </template>
 
 <script>
-  import Services from "@/services/Services";
-  
+  // Utilities
+import { mapState } from "vuex";
+
   export default {
     name: 'Feed',
-    created() {
-      this.initialize();
-    },
     components: {
       FeedCard: () => import('@/components/FeedCard')
     },
 
     data: () => ({
       layout: [2, 2, 3, 3, 3],
-      page: 1,
-      ServicesList: []
+      page: 1
     }),
-    methods: {
-      async initialize() {
-        const response = await Services.getservices()
-          .then(response => {
-            this.ServicesList = response.data;
-          })
-          .catch(error => console.log(error));
-      }
-    },
     computed: {
+      ...mapState(["servicios"]),
       pages () {
-        return Math.ceil(this.ServicesList.length / 10)
+        return Math.ceil(this.servicios.length / 10)
       },
       paginatedArticles () {
         const start = (this.page - 1) * 10
         const stop = this.page * 10
 
-        return this.ServicesList.slice(start, stop)
+        return this.servicios.slice(start, stop)
       }
     }
   }
