@@ -19,8 +19,7 @@ const ServiceSchema = new Schema({
         required: true
     },
     imageService: {
-        type: String,
-        required: true
+        type: String
     },
     school: {
         type: String

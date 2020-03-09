@@ -10,4 +10,7 @@ export default {
     deleteservices (values) {
         return Api().post('deleteservices', values)
     },
+    updateservices (values) {
+        return Api().post('updateservices', values)
+    },
 }

@@ -62,7 +62,16 @@
     </v-layout>
     <v-dialog v-model="dialog" persistent max-width="600px">
       <template v-slot:activator="{ on }">
-        <v-btn dark fab bottom right fixed color="indigo" v-if="$store.state.isUserLoggedIn" v-on="on">
+        <v-btn
+          dark
+          fab
+          bottom
+          right
+          fixed
+          color="indigo"
+          v-if="$store.state.isUserLoggedIn"
+          v-on="on"
+        >
           <v-icon>mdi-plus</v-icon>
         </v-btn>
       </template>
@@ -126,7 +135,7 @@
                     v-model="selectedFile"
                     :rules="rulesImg"
                     accept="image/png, image/jpeg, image/bmp"
-                    placeholder="Imagen*"
+                    placeholder="Imagen"
                     prepend-icon="mdi-camera"
                   ></v-file-input>
                 </v-col>
@@ -155,12 +164,12 @@
             <v-btn color="blue darken-1" text @click="insertService" :disabled="!valid">Guardar</v-btn>
           </v-card-actions>
         </v-form>
-        <v-snackbar v-model="snack" :timeout="3000" :color="snackColor">
-          {{ snackText }}
-          <v-btn text @click="snack = false">Cerrar</v-btn>
-        </v-snackbar>
       </v-card>
     </v-dialog>
+    <v-snackbar v-model="snack" :timeout="3000" :color="snackColor">
+      {{ snackText }}
+      <v-btn text @click="snack = false">Cerrar</v-btn>
+    </v-snackbar>
   </v-container>
 </template>
 
@@ -229,15 +238,15 @@ export default {
   methods: {
     async initialize() {
       const response = await Services.getservices()
-        .then(response => {
-          this.ServicesList = response.data;
-        })
+        .then(response => (this.ServicesList = response.data))
         .catch(error => console.log(error));
     },
     async insertService() {
       try {
         const fd = new FormData();
-        fd.append("image", this.selectedFile, this.selectedFile.name);
+        if (this.selectedFile != null) {
+           fd.append("image", this.selectedFile, this.selectedFile.name);
+        }
         fd.append("name", this.name);
         fd.append("autor", this.autor);
         fd.append("userspp", this.usuariospp);

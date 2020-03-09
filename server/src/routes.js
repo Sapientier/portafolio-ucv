@@ -8,7 +8,7 @@ const storage = multer.diskStorage({
         cb(null, 'public/uploads/');
     },
     filename: function (req, file, cb) {
-        cb(null, Date.now() + file.originalname)
+        cb(null, Date.now() + '-' + file.originalname)
     }
 });
 const upload = multer({ storage: storage });
@@ -53,8 +53,12 @@ module.exports = (app) => {
         ),
         app.get('/getservices',
             ServicesController.getservices
-        )
+        ),
         app.post('/deleteservices',
             ServicesController.deleteservices
+        ),
+        app.post('/updateservices',
+            upload.single('image'),
+            ServicesController.updateservices
         )
 }

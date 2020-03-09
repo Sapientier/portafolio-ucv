@@ -49,6 +49,112 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
+      <v-dialog v-model="dialog2" persistent max-width="600px">
+        <v-card>
+          <v-form ref="form" v-model="valid" lazy-validation>
+            <v-card-title>
+              <span class="headline">Actualización de Servicio</span>
+            </v-card-title>
+            <v-card-text>
+              <v-container>
+                <v-row>
+                  <v-col cols="12" sm="12">
+                    <v-text-field
+                      v-model="editedItem.name"
+                      label="Nombre*"
+                      :rules="nameRules"
+                      required
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6">
+                    <v-combobox
+                      v-model="editedItem.category"
+                      :items="itemselCat"
+                      label="Categoría*"
+                      :rules="categoriaRules"
+                      required
+                    ></v-combobox>
+                  </v-col>
+                  <v-col cols="12" sm="6">
+                    <v-text-field
+                      v-model="editedItem.autor"
+                      label="Autor*"
+                      :rules="autorRules"
+                      required
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6">
+                    <v-combobox v-model="editedItem.school" :items="itemselSchool" label="Escuela"></v-combobox>
+                  </v-col>
+                  <v-col cols="12" sm="6">
+                    <v-combobox
+                      v-model="editedItem.institute"
+                      :items="itemselInst"
+                      label="Instituto"
+                    ></v-combobox>
+                  </v-col>
+                  <v-col cols="12" sm="6">
+                    <v-menu
+                      ref="menu"
+                      v-model="menu"
+                      :close-on-content-click="false"
+                      :return-value.sync="date"
+                      transition="scale-transition"
+                      offset-y
+                      min-width="290px"
+                    >
+                      <template v-slot:activator="{ on }">
+                        <v-text-field
+                          v-model="computedDateFormatted"
+                          label="Fecha de Creación*"
+                          prepend-icon="mdi-calendar"
+                          readonly
+                          v-on="on"
+                        ></v-text-field>
+                      </template>
+                      <v-date-picker v-model="date" no-title scrollable locale="es-es">
+                        <v-spacer></v-spacer>
+                        <v-btn text color="primary" @click="menu = false">Cancelar</v-btn>
+                        <v-btn text color="primary" @click="$refs.menu.save(date)">Aceptar</v-btn>
+                      </v-date-picker>
+                    </v-menu>
+                  </v-col>
+                  <v-col cols="12" sm="6">
+                    <v-file-input
+                      v-model="selectedFile"
+                      :rules="rulesImg"
+                      accept="image/png, image/jpeg, image/bmp"
+                      placeholder="Imagen"
+                      prepend-icon="mdi-camera"
+                    ></v-file-input>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-text-field v-model="editedItem.userspp" label="Usuarios Involucrados"></v-text-field>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-textarea v-model="editedItem.description" label="Descripción" />
+                  </v-col>
+                  <v-col cols="12">
+                    <v-text-field v-model="editedItem.request" label="Solicitud del Servicio"></v-text-field>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-text-field v-model="editedItem.paramserv" label="Parámetros del Servicio"></v-text-field>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-textarea v-model="editedItem.direction" label="Dirección" rows="3" />
+                  </v-col>
+                </v-row>
+              </v-container>
+              <small>*Indica que es un campo requerido</small>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="close">Cerrar</v-btn>
+              <v-btn color="blue darken-1" text @click="updateService" :disabled="!valid">Guardar</v-btn>
+            </v-card-actions>
+          </v-form>
+        </v-card>
+      </v-dialog>
       <v-snackbar v-model="snack" :timeout="3000" :color="snackColor">
         {{ snackText }}
         <v-btn text @click="snack = false">Cerrar</v-btn>
@@ -92,10 +198,41 @@ export default {
       paramserv: "",
       direction: ""
     },
+    selectedFile: null,
+    date: new Date().toISOString().substr(0, 10),
+    menu: false,
     snack: false,
     snackColor: "",
     snackText: "",
     dialog: false,
+    dialog2: false,
+    valid: true,
+    itemselCat: [
+      "Medicina",
+      "Tecnología",
+      "Educación",
+      "Mercadeo",
+      "Investigación"
+    ],
+    itemselSchool: [
+      "N/A",
+      "Biología",
+      "Computación",
+      "Física",
+      "Geoquímica",
+      "Matemática",
+      "Química"
+    ],
+    itemselInst: ["N/A", "IBE", "ICTA", "ICT"],
+    rulesImg: [
+      value =>
+        !value ||
+        value.size < 2000000 ||
+        "¡El tamaño de la imagen debe ser inferior a 2 MB!"
+    ],
+    nameRules: [v => !!v || "Nombre de servicio es requerida"],
+    categoriaRules: [v => !!v || "La categoría es requerida"],
+    autorRules: [v => !!v || "El autor es requerido"]
   }),
   props: {
     size: {
@@ -118,13 +255,45 @@ export default {
       this.editedItem = Object.assign({}, item);
       this.dialog = true;
     },
+    editItem(item) {
+      this.editedItem = Object.assign({}, item);
+      this.dialog2 = true;
+    },
     async deleteval() {
       try {
         const response = await Services.deleteservices({
           _id: this.editedItem._id,
           imageService: this.editedItem.imageService
         }).then(response => this.delete());
-
+        this.$parent.initialize();
+        this.close();
+      } catch (error) {
+        this.error = error.response.data.error;
+      }
+    },
+    async updateService() {
+      try {
+        const fd = new FormData();
+        if (this.selectedFile != null) {
+          fd.append("image", this.selectedFile, this.selectedFile.name);
+        }
+        fd.append("_id", this.editedItem._id);
+        fd.append("name", this.editedItem.name);
+        fd.append("autor", this.editedItem.autor);
+        fd.append("userspp", this.editedItem.userspp);
+        fd.append("school", this.editedItem.school);
+        fd.append("category", this.editedItem.category);
+        fd.append("institute", this.editedItem.institute);
+        fd.append("description", this.editedItem.description);
+        fd.append("request", this.editedItem.request);
+        fd.append("paramserv", this.editedItem.paramserv);
+        fd.append("direction", this.editedItem.direction);
+        fd.append("date", this.editedItem.date);
+        fd.append("imageService", this.editedItem.imageService);
+        const response = await Services.updateservices(fd).then(response =>
+          this.update()
+        );
+        this.$parent.initialize();
         this.close();
       } catch (error) {
         this.error = error.response.data.error;
@@ -132,6 +301,7 @@ export default {
     },
     close() {
       this.dialog = false;
+      this.dialog2 = false;
       setTimeout(() => {
         this.editedItem = Object.assign({}, this.defaultItem);
       }, 300);
@@ -140,6 +310,11 @@ export default {
       this.snack = true;
       this.snackColor = "success";
       this.snackText = "Datos eliminados";
+    },
+    update() {
+      this.snack = true;
+      this.snackColor = "success";
+      this.snackText = "Datos actualizados";
     }
   },
   computed: {
@@ -148,6 +323,9 @@ export default {
         md6: this.size === 2,
         md4: this.size === 3
       };
+    },
+    computedDateFormatted() {
+      return this.formatDate(this.editedItem.date);
     }
   }
 };
@@ -158,3 +336,4 @@ export default {
   transition: 0.3s linear;
 }
 </style>
+

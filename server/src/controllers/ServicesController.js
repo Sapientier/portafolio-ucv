@@ -4,7 +4,10 @@ const fs = require('fs')
 module.exports = {
     async insertservices(req, res) {
         try {
-            const newpath = req.file.path.substring(7);
+            var newpath = "";
+            if (req.file != null) {
+                newpath = req.file.path.substring(7);
+            }
             const task = new Service({
                 name: req.body.name,
                 category: req.body.category,
@@ -28,6 +31,44 @@ module.exports = {
             })
         }
     },
+    async updateservices(req, res) {
+        try {
+            var newpath = "";
+            if (req.file == null) {
+                newpath = req.body.imageService;
+            }
+            else {
+                const newpathdel = "public/" + req.body.imageService;
+                fs.unlink(newpathdel, (err) => {
+                    if (err) {
+                        console.error(err)
+                        return
+                    }
+                })
+                newpath = req.file.path.substring(7);
+            }
+            const newTask = {
+                name: req.body.name,
+                category: req.body.category,
+                autor: req.body.autor,
+                date: req.body.date,
+                imageService: newpath,
+                school: req.body.school,
+                institute: req.body.institute,
+                userspp: req.body.userspp,
+                description: req.body.description,
+                request: req.body.request,
+                paramserv: req.body.paramserv,
+                direction: req.body.direction
+            };
+            await Service.findByIdAndUpdate(req.body._id, newTask);
+            res.json("Actualizado con exito");
+        } catch (err) {
+            res.status(400).send({
+                error: 'Error en la inserción de datos.'
+            })
+        }
+    },
     async getservices(req, res) {
         try {
             const services = await Service.find();
@@ -41,13 +82,15 @@ module.exports = {
     async deleteservices(req, res) {
         try {
             await Service.findByIdAndDelete(req.body._id);
-            const newpath = "public/" + req.body.imageService;
-            fs.unlink(newpath, (err) => {
-                if (err) {
-                    console.error(err)
-                    return
-                }
-            })
+            if (req.body.imageService != "") {
+                const newpath = "public/" + req.body.imageService;
+                fs.unlink(newpath, (err) => {
+                    if (err) {
+                        console.error(err)
+                        return
+                    }
+                })
+            }
             res.json("Eliminado con exito");
         } catch (err) {
             res.status(500).send({
