@@ -30,7 +30,7 @@
         </div>
         <v-divider></v-divider>
       </v-flex>
-
+      
       <feed-card
         v-for="(ServicesList, i) in paginatedServices"
         :key="ServicesList.name"
@@ -80,6 +80,7 @@
           <v-card-title>
             <span class="headline">Inserción de Servicio</span>
           </v-card-title>
+          <v-divider></v-divider>
           <v-card-text>
             <v-container>
               <v-row>
@@ -158,6 +159,7 @@
             </v-container>
             <small>*Indica que es un campo requerido</small>
           </v-card-text>
+          <v-divider></v-divider>
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="blue darken-1" text @click="close">Cerrar</v-btn>
@@ -185,7 +187,7 @@ export default {
 
   data: () => ({
     selectedFile: null,
-    layout: [2, 2, 1, 2, 2, 3, 3, 3, 3, 3, 3],
+    layout: [2, 2, 1, 2, 2, 3, 3, 3],
     page: 1,
     valid: true,
     date: new Date().toISOString().substr(0, 10),
@@ -306,11 +308,11 @@ export default {
       return this.formatDate(this.date);
     },
     pages() {
-      return Math.ceil(this.ServicesList.length / 10);
+      return Math.ceil(this.ServicesList.length / 8);
     },
     paginatedServices() {
-      const start = (this.page - 1) * 10;
-      const stop = this.page * 10;
+      const start = (this.page - 1) * 8;
+      const stop = this.page * 8;
 
       return this.ServicesList.slice(start, stop);
     }

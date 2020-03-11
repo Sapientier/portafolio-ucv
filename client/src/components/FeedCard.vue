@@ -1,6 +1,6 @@
 <template>
   <v-flex xs12 :class="classes">
-    <base-card :height="350" color="grey lighten-1" dark href="#!">
+    <base-card :height="350" color="grey lighten-1" dark>
       <v-img
         :src="`${value.imageService}`"
         height="100%"
@@ -22,9 +22,16 @@
               <br />
               {{ formatDate(value.date) }}
             </div>
+            <v-checkbox v-model="approve" disabled v-if="$store.state.isUserLoggedIn"></v-checkbox>
           </v-flex>
           <v-flex d-flex justify-start align-self-end>
-            <v-chip class="text-uppercase ma-0" color="primary" label small>Leer Más</v-chip>
+            <v-chip
+              class="text-uppercase ma-0"
+              color="primary"
+              label
+              small
+              @click="seeItem(value)"
+            >Leer Más</v-chip>
           </v-flex>
           <v-flex align-self-end d-flex justify-end v-if="$store.state.isUserLoggedIn">
             <v-btn color="green" class="ml-1" fab small dark @click="editItem(value)">
@@ -55,6 +62,7 @@
             <v-card-title>
               <span class="headline">Actualización de Servicio</span>
             </v-card-title>
+            <v-divider></v-divider>
             <v-card-text>
               <v-container>
                 <v-row>
@@ -147,12 +155,55 @@
               </v-container>
               <small>*Indica que es un campo requerido</small>
             </v-card-text>
+            <v-divider></v-divider>
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" text @click="close">Cerrar</v-btn>
               <v-btn color="blue darken-1" text @click="updateService" :disabled="!valid">Guardar</v-btn>
             </v-card-actions>
           </v-form>
+        </v-card>
+      </v-dialog>
+      <v-dialog v-model="dialog3" fullscreen hide-overlay transition="dialog-bottom-transition">
+        <v-card>
+          <v-toolbar dark color="primary">
+            <v-btn icon dark @click="dialog3 = false">
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+            <v-toolbar-title>{{ value.name }} ({{ value.school != 'N/A' ? value.school : value.institute}})</v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-toolbar-items>
+              <v-btn dark text @click="dialog3 = false">Suscribirse</v-btn>
+            </v-toolbar-items>
+          </v-toolbar>
+          <v-container>
+            <v-row>
+              <v-col cols="12" sm="6">
+                <div class="title">Usuarios del Servicio, Producto o Proceso:</div>
+                <p class="body-1">{{ value.userspp }}</p>
+                <br />
+                <div class="title">Descripción:</div>
+                <p class="body-1">{{ value.description }}</p>
+                <br />
+                <div class="title">Solicitud del servicio:</div>
+                <p class="body-1">{{ value.request }}</p>
+              </v-col>
+              <v-col cols="12" sm="6">
+                <v-img :src="`${value.imageService}`" height="100%"></v-img>
+              </v-col>
+            </v-row>
+            <v-divider></v-divider>
+            <v-row>
+              <v-col cols="12" sm="6">
+                <div class="title">Parámetros del servicio:</div>
+                <p class="body-1">{{ value.paramserv }}</p>
+              </v-col>
+              <v-col cols="12" sm="6">
+                <div class="title">Dirección:</div>
+                <p class="body-1">{{ value.direction }}</p>
+              </v-col>
+            </v-row>
+          </v-container>
         </v-card>
       </v-dialog>
       <v-snackbar v-model="snack" :timeout="3000" :color="snackColor">
@@ -198,6 +249,7 @@ export default {
       paramserv: "",
       direction: ""
     },
+    approve: false,
     selectedFile: null,
     date: new Date().toISOString().substr(0, 10),
     menu: false,
@@ -206,6 +258,7 @@ export default {
     snackText: "",
     dialog: false,
     dialog2: false,
+    dialog3: false,
     valid: true,
     itemselCat: [
       "Medicina",
@@ -258,6 +311,10 @@ export default {
     editItem(item) {
       this.editedItem = Object.assign({}, item);
       this.dialog2 = true;
+    },
+    seeItem(item) {
+      this.editedItem = Object.assign({}, item);
+      this.dialog3 = true;
     },
     async deleteval() {
       try {

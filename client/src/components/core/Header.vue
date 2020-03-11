@@ -24,7 +24,7 @@
         </v-list-item>
         <v-list-item link to="/reports" v-if="$store.state.isUserLoggedIn">
           <v-list-item-action>
-            <v-icon>mdi-file-document-box-search</v-icon>
+            <v-icon>mdi-text-box-search</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>Reportes</v-list-item-title>

@@ -56,11 +56,11 @@ import { mapState } from "vuex";
     computed: {
       ...mapState(["servicios"]),
       pages () {
-        return Math.ceil(this.servicios.length / 10)
+        return Math.ceil(this.servicios.length / 5)
       },
       paginatedArticles () {
-        const start = (this.page - 1) * 10
-        const stop = this.page * 10
+        const start = (this.page - 1) * 5
+        const stop = this.page * 5
 
         return this.servicios.slice(start, stop)
       }
