@@ -30,12 +30,12 @@
         </div>
         <v-divider></v-divider>
       </v-flex>
-      
+
       <feed-card
-        v-for="(ServicesList, i) in paginatedServices"
-        :key="ServicesList.name"
+        v-for="(services, i) in paginatedServices"
+        :key="services.name"
         :size="layout[i]"
-        :value="ServicesList"
+        :value="services"
       />
     </v-layout>
 
@@ -176,7 +176,8 @@
 </template>
 
 <script>
-import Services from "@/services/Services";
+// Utilities
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "Feed",
@@ -205,7 +206,6 @@ export default {
     solicitud: "",
     params: "",
     direccion: "",
-    ServicesList: [],
     itemselCat: [
       "Medicina",
       "Tecnología",
@@ -235,19 +235,15 @@ export default {
     autorRules: [v => !!v || "El autor es requerido"]
   }),
   created() {
-    this.initialize();
+    this.getServicios();
   },
   methods: {
-    async initialize() {
-      const response = await Services.getservices()
-        .then(response => (this.ServicesList = response.data))
-        .catch(error => console.log(error));
-    },
+    ...mapActions(["getServicios", "setServicios"]),
     async insertService() {
       try {
         const fd = new FormData();
         if (this.selectedFile != null) {
-           fd.append("image", this.selectedFile, this.selectedFile.name);
+          fd.append("image", this.selectedFile, this.selectedFile.name);
         }
         fd.append("name", this.name);
         fd.append("autor", this.autor);
@@ -260,11 +256,9 @@ export default {
         fd.append("paramserv", this.params);
         fd.append("direction", this.direccion);
         fd.append("date", this.date);
-
-        const response = await Services.insertservices(fd).then(response =>
+        const response = this.setServicios(fd).then(response =>
           this.insertInline()
         );
-        this.initialize();
         this.close();
       } catch (error) {
         this.snack = true;
@@ -304,17 +298,18 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(["services"]),
     computedDateFormatted() {
       return this.formatDate(this.date);
     },
     pages() {
-      return Math.ceil(this.ServicesList.length / 8);
+      return Math.ceil(this.services.length / 8);
     },
     paginatedServices() {
       const start = (this.page - 1) * 8;
       const stop = this.page * 8;
 
-      return this.ServicesList.slice(start, stop);
+      return this.services.slice(start, stop);
     }
   }
 };

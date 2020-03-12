@@ -61,8 +61,8 @@ module.exports = {
                 paramserv: req.body.paramserv,
                 direction: req.body.direction
             };
-            await Service.findByIdAndUpdate(req.body._id, newTask);
-            res.json("Actualizado con exito");
+            const user = await Service.findByIdAndUpdate(req.body._id, newTask, {new: true});
+            res.json(user.toJSON());
         } catch (err) {
             res.status(400).send({
                 error: 'Error en la inserción de datos.'

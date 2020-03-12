@@ -215,7 +215,7 @@
 </template>
 
 <script>
-import Services from "@/services/Services";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   data: () => ({
@@ -298,6 +298,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(["removeServicios", "updateServicios"]),
     formatDate(date) {
       if (!date) return null;
       const [newdate, x] = date.split("T");
@@ -318,11 +319,10 @@ export default {
     },
     async deleteval() {
       try {
-        const response = await Services.deleteservices({
+        const response = await this.removeServicios({
           _id: this.editedItem._id,
           imageService: this.editedItem.imageService
         }).then(response => this.delete());
-        this.$parent.initialize();
         this.close();
       } catch (error) {
         this.error = error.response.data.error;
@@ -347,10 +347,9 @@ export default {
         fd.append("direction", this.editedItem.direction);
         fd.append("date", this.editedItem.date);
         fd.append("imageService", this.editedItem.imageService);
-        const response = await Services.updateservices(fd).then(response =>
+        const response = await this.updateServicios(fd).then(response =>
           this.update()
         );
-        this.$parent.initialize();
         this.close();
       } catch (error) {
         this.error = error.response.data.error;

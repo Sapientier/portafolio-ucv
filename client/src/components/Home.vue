@@ -13,11 +13,11 @@
 </template>
 
 <script>
-import Services from "@/services/Services";
+import { mapActions } from "vuex";
 
 export default {
   created() {
-    this.initialize();
+    this.getServicios();
   },
   components: {
     About: () => import("@/components/home/About"),
@@ -27,13 +27,7 @@ export default {
     Subscribe: () => import("@/components/home/Subscribe")
   },
   methods: {
-    async initialize() {
-      const response = await Services.getservices()
-        .then(response => {
-          this.$store.dispatch("setServicios", response.data);
-        })
-        .catch(error => console.log(error));
-    }
+    ...mapActions(["getServicios"])
   }
 };
 </script>
