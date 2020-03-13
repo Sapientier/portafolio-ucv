@@ -163,7 +163,7 @@
               <v-divider></v-divider>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-switch v-model="approve" label="Aprobado" :disabled="$store.state.user.dependencies == 'Profesor/Investigador'"></v-switch>
+                <!-- <v-switch v-model="approve" label="Aprobado" :disabled="$store.state.user.dependencies == 'Profesor/Investigador'"></v-switch> -->
                 <v-spacer></v-spacer>
                 <v-btn color="blue darken-1" text @click="close">Cerrar</v-btn>
                 <v-btn color="blue darken-1" text @click="updateService" :disabled="!valid">Guardar</v-btn>
