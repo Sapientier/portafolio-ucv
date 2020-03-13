@@ -1,216 +1,224 @@
 <template>
   <v-flex xs12 :class="classes">
-    <base-card :height="350" color="grey lighten-1" dark>
-      <v-img
-        :src="`${value.imageService}`"
-        height="100%"
-        gradient="rgba(0, 0, 0, .42), rgba(0, 0, 0, .42)"
-      >
-        <v-layout fill-height wrap text-xs-right ma-0>
-          <v-flex xs12>
-            <v-chip
-              label
-              class="mx-0 mb-2 text-uppercase"
-              color="grey darken-3"
-              text-color="white"
-              small
-              @click.stop
-            >{{ value.category }}</v-chip>
-            <h3 class="title font-weight-bold mb-2">{{ value.name }}</h3>
-            <div class="caption">
-              {{ value.autor }}
-              <br />
-              {{ formatDate(value.date) }}
-            </div>
-            <v-checkbox v-model="approve" disabled v-if="$store.state.isUserLoggedIn"></v-checkbox>
-          </v-flex>
-          <v-flex d-flex justify-start align-self-end>
-            <v-chip
-              class="text-uppercase ma-0"
-              color="primary"
-              label
-              small
-              @click="seeItem(value)"
-            >Leer Más</v-chip>
-          </v-flex>
-          <v-flex align-self-end d-flex justify-end v-if="$store.state.isUserLoggedIn">
-            <v-btn color="green" class="ml-1" fab small dark @click="editItem(value)">
-              <v-icon>mdi-pencil</v-icon>
-            </v-btn>
-            <v-btn color="red" class="ml-1" fab dark small @click="deleteItem(value)">
-              <v-icon>mdi-delete</v-icon>
-            </v-btn>
-          </v-flex>
-        </v-layout>
-      </v-img>
-      <v-dialog v-model="dialog" persistent max-width="350px">
-        <v-card>
-          <v-card-title>
-            <span class="headline">Atención</span>
-          </v-card-title>
-          <v-card-text>¿Esta seguro que desea eliminar este servicio?</v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="close">Cancelar</v-btn>
-            <v-btn color="blue darken-1" text @click="deleteval">Aceptar</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-      <v-dialog v-model="dialog2" persistent max-width="600px">
-        <v-card>
-          <v-form ref="form" v-model="valid" lazy-validation>
+    <v-hover v-slot:default="{ hover }">
+      <base-card :height="350" color="grey lighten-1" dark :elevation="hover ? 16 : 2">
+        <v-img
+          :src="`${value.imageService}`"
+          height="100%"
+          gradient="rgba(0, 0, 0, .42), rgba(0, 0, 0, .42)"
+        >
+          <v-layout fill-height wrap text-xs-right ma-0>
+            <v-flex xs12>
+              <v-chip
+                label
+                class="mx-0 mb-2 text-uppercase"
+                color="grey darken-3"
+                text-color="white"
+                small
+                @click.stop
+              >{{ value.category }}</v-chip>
+              <h3 class="title font-weight-bold mb-2">{{ value.name }}</h3>
+              <div class="caption">
+                {{ value.autor }}
+                <br />
+                {{ formatDate(value.date) }}
+              </div>
+              <v-checkbox v-model="approve" disabled v-if="$store.state.isUserLoggedIn"></v-checkbox>
+            </v-flex>
+            <v-flex d-flex justify-start align-self-end>
+              <v-chip
+                class="text-uppercase ma-0"
+                color="primary"
+                label
+                small
+                @click="seeItem(value)"
+              >Leer Más</v-chip>
+            </v-flex>
+            <v-flex align-self-end d-flex justify-end v-if="$store.state.isUserLoggedIn">
+              <v-btn color="green" class="ml-1" fab small dark @click="editItem(value)">
+                <v-icon>mdi-pencil</v-icon>
+              </v-btn>
+              <v-btn color="red" class="ml-1" fab dark small @click="deleteItem(value)">
+                <v-icon>mdi-delete</v-icon>
+              </v-btn>
+            </v-flex>
+          </v-layout>
+        </v-img>
+        <v-dialog v-model="dialog" persistent max-width="350px">
+          <v-card>
             <v-card-title>
-              <span class="headline">Actualización de Servicio</span>
+              <span class="headline">Atención</span>
             </v-card-title>
-            <v-divider></v-divider>
-            <v-card-text>
-              <v-container>
-                <v-row>
-                  <v-col cols="12" sm="12">
-                    <v-text-field
-                      v-model="editedItem.name"
-                      label="Nombre*"
-                      :rules="nameRules"
-                      required
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6">
-                    <v-combobox
-                      v-model="editedItem.category"
-                      :items="itemselCat"
-                      label="Categoría*"
-                      :rules="categoriaRules"
-                      required
-                    ></v-combobox>
-                  </v-col>
-                  <v-col cols="12" sm="6">
-                    <v-text-field
-                      v-model="editedItem.autor"
-                      label="Autor*"
-                      :rules="autorRules"
-                      required
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6">
-                    <v-combobox v-model="editedItem.school" :items="itemselSchool" label="Escuela"></v-combobox>
-                  </v-col>
-                  <v-col cols="12" sm="6">
-                    <v-combobox
-                      v-model="editedItem.institute"
-                      :items="itemselInst"
-                      label="Instituto"
-                    ></v-combobox>
-                  </v-col>
-                  <v-col cols="12" sm="6">
-                    <v-menu
-                      ref="menu"
-                      v-model="menu"
-                      :close-on-content-click="false"
-                      :return-value.sync="date"
-                      transition="scale-transition"
-                      offset-y
-                      min-width="290px"
-                    >
-                      <template v-slot:activator="{ on }">
-                        <v-text-field
-                          v-model="computedDateFormatted"
-                          label="Fecha de Creación*"
-                          prepend-icon="mdi-calendar"
-                          readonly
-                          v-on="on"
-                        ></v-text-field>
-                      </template>
-                      <v-date-picker v-model="date" no-title scrollable locale="es-es">
-                        <v-spacer></v-spacer>
-                        <v-btn text color="primary" @click="menu = false">Cancelar</v-btn>
-                        <v-btn text color="primary" @click="$refs.menu.save(date)">Aceptar</v-btn>
-                      </v-date-picker>
-                    </v-menu>
-                  </v-col>
-                  <v-col cols="12" sm="6">
-                    <v-file-input
-                      v-model="selectedFile"
-                      :rules="rulesImg"
-                      accept="image/png, image/jpeg, image/bmp"
-                      placeholder="Imagen"
-                      prepend-icon="mdi-camera"
-                    ></v-file-input>
-                  </v-col>
-                  <v-col cols="12">
-                    <v-text-field v-model="editedItem.userspp" label="Usuarios Involucrados"></v-text-field>
-                  </v-col>
-                  <v-col cols="12">
-                    <v-textarea v-model="editedItem.description" label="Descripción" />
-                  </v-col>
-                  <v-col cols="12">
-                    <v-text-field v-model="editedItem.request" label="Solicitud del Servicio"></v-text-field>
-                  </v-col>
-                  <v-col cols="12">
-                    <v-text-field v-model="editedItem.paramserv" label="Parámetros del Servicio"></v-text-field>
-                  </v-col>
-                  <v-col cols="12">
-                    <v-textarea v-model="editedItem.direction" label="Dirección" rows="3" />
-                  </v-col>
-                </v-row>
-              </v-container>
-              <small>*Indica que es un campo requerido</small>
-            </v-card-text>
-            <v-divider></v-divider>
+            <v-card-text>¿Esta seguro que desea eliminar este servicio?</v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="close">Cerrar</v-btn>
-              <v-btn color="blue darken-1" text @click="updateService" :disabled="!valid">Guardar</v-btn>
+              <v-btn color="blue darken-1" text @click="close">Cancelar</v-btn>
+              <v-btn color="blue darken-1" text @click="deleteval">Aceptar</v-btn>
             </v-card-actions>
-          </v-form>
-        </v-card>
-      </v-dialog>
-      <v-dialog v-model="dialog3" fullscreen hide-overlay transition="dialog-bottom-transition">
-        <v-card>
-          <v-toolbar dark color="primary">
-            <v-btn icon dark @click="dialog3 = false">
-              <v-icon>mdi-close</v-icon>
-            </v-btn>
-            <v-toolbar-title>{{ value.name }} ({{ value.school != 'N/A' ? value.school : value.institute}})</v-toolbar-title>
-            <v-spacer></v-spacer>
-            <v-toolbar-items>
-              <v-btn dark text @click="dialog3 = false">Suscribirse</v-btn>
-            </v-toolbar-items>
-          </v-toolbar>
-          <v-container>
-            <v-row>
-              <v-col cols="12" sm="6">
-                <div class="title">Usuarios del Servicio, Producto o Proceso:</div>
-                <p class="body-1">{{ value.userspp }}</p>
-                <br />
-                <div class="title">Descripción:</div>
-                <p class="body-1">{{ value.description }}</p>
-                <br />
-                <div class="title">Solicitud del servicio:</div>
-                <p class="body-1">{{ value.request }}</p>
-              </v-col>
-              <v-col cols="12" sm="6">
-                <v-img :src="`${value.imageService}`" height="100%"></v-img>
-              </v-col>
-            </v-row>
-            <v-divider></v-divider>
-            <v-row>
-              <v-col cols="12" sm="6">
-                <div class="title">Parámetros del servicio:</div>
-                <p class="body-1">{{ value.paramserv }}</p>
-              </v-col>
-              <v-col cols="12" sm="6">
-                <div class="title">Dirección:</div>
-                <p class="body-1">{{ value.direction }}</p>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-card>
-      </v-dialog>
-      <v-snackbar v-model="snack" :timeout="3000" :color="snackColor">
-        {{ snackText }}
-        <v-btn text @click="snack = false">Cerrar</v-btn>
-      </v-snackbar>
-    </base-card>
+          </v-card>
+        </v-dialog>
+        <v-dialog v-model="dialog2" persistent max-width="600px">
+          <v-card>
+            <v-form ref="form" v-model="valid" lazy-validation>
+              <v-card-title>
+                <span class="headline">Actualización de Servicio</span>
+              </v-card-title>
+              <v-divider></v-divider>
+              <v-card-text>
+                <v-container>
+                  <v-row>
+                    <v-col cols="12" sm="12">
+                      <v-text-field
+                        v-model="editedItem.name"
+                        label="Nombre*"
+                        :rules="nameRules"
+                        required
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6">
+                      <v-combobox
+                        v-model="editedItem.category"
+                        :items="itemselCat"
+                        label="Categoría*"
+                        :rules="categoriaRules"
+                        required
+                      ></v-combobox>
+                    </v-col>
+                    <v-col cols="12" sm="6">
+                      <v-text-field
+                        v-model="editedItem.autor"
+                        label="Autor*"
+                        :rules="autorRules"
+                        required
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6">
+                      <v-combobox
+                        v-model="editedItem.school"
+                        :items="itemselSchool"
+                        label="Escuela"
+                      ></v-combobox>
+                    </v-col>
+                    <v-col cols="12" sm="6">
+                      <v-combobox
+                        v-model="editedItem.institute"
+                        :items="itemselInst"
+                        label="Instituto"
+                      ></v-combobox>
+                    </v-col>
+                    <v-col cols="12" sm="6">
+                      <v-menu
+                        ref="menu"
+                        v-model="menu"
+                        :close-on-content-click="false"
+                        :return-value.sync="date"
+                        transition="scale-transition"
+                        offset-y
+                        min-width="290px"
+                      >
+                        <template v-slot:activator="{ on }">
+                          <v-text-field
+                            v-model="computedDateFormatted"
+                            label="Fecha de Creación*"
+                            prepend-icon="mdi-calendar"
+                            readonly
+                            v-on="on"
+                          ></v-text-field>
+                        </template>
+                        <v-date-picker v-model="date" no-title scrollable locale="es-es">
+                          <v-spacer></v-spacer>
+                          <v-btn text color="primary" @click="menu = false">Cancelar</v-btn>
+                          <v-btn text color="primary" @click="$refs.menu.save(date)">Aceptar</v-btn>
+                        </v-date-picker>
+                      </v-menu>
+                    </v-col>
+                    <v-col cols="12" sm="6">
+                      <v-file-input
+                        v-model="selectedFile"
+                        :rules="rulesImg"
+                        accept="image/png, image/jpeg, image/bmp"
+                        placeholder="Imagen"
+                        prepend-icon="mdi-camera"
+                      ></v-file-input>
+                    </v-col>
+                    <v-col cols="12">
+                      <v-text-field v-model="editedItem.userspp" label="Usuarios Involucrados"></v-text-field>
+                    </v-col>
+                    <v-col cols="12">
+                      <v-textarea v-model="editedItem.description" label="Descripción" />
+                    </v-col>
+                    <v-col cols="12">
+                      <v-text-field v-model="editedItem.request" label="Solicitud del Servicio"></v-text-field>
+                    </v-col>
+                    <v-col cols="12">
+                      <v-text-field v-model="editedItem.paramserv" label="Parámetros del Servicio"></v-text-field>
+                    </v-col>
+                    <v-col cols="12">
+                      <v-textarea v-model="editedItem.direction" label="Dirección" rows="3" />
+                    </v-col>
+                  </v-row>
+                </v-container>
+                <small>*Indica que es un campo requerido</small>
+              </v-card-text>
+              <v-divider></v-divider>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-switch v-model="approve" label="Aprobado" :disabled="$store.state.user.dependencies == 'Profesor/Investigador'"></v-switch>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" text @click="close">Cerrar</v-btn>
+                <v-btn color="blue darken-1" text @click="updateService" :disabled="!valid">Guardar</v-btn>
+              </v-card-actions>
+            </v-form>
+          </v-card>
+        </v-dialog>
+        <v-dialog v-model="dialog3" fullscreen hide-overlay transition="dialog-bottom-transition">
+          <v-card>
+            <v-toolbar dark color="primary">
+              <v-btn icon dark @click="dialog3 = false">
+                <v-icon>mdi-close</v-icon>
+              </v-btn>
+              <v-toolbar-title>{{ value.name }} ({{ value.school != 'N/A' ? value.school : value.institute}})</v-toolbar-title>
+              <v-spacer></v-spacer>
+              <v-toolbar-items>
+                <v-btn dark text @click="dialog3 = false">Suscribirse</v-btn>
+              </v-toolbar-items>
+            </v-toolbar>
+            <v-container>
+              <v-row>
+                <v-col cols="12" sm="6">
+                  <div class="title">Usuarios del Servicio, Producto o Proceso:</div>
+                  <p class="body-1">{{ value.userspp }}</p>
+                  <br />
+                  <div class="title">Descripción:</div>
+                  <p class="body-1">{{ value.description }}</p>
+                  <br />
+                  <div class="title">Solicitud del servicio:</div>
+                  <p class="body-1">{{ value.request }}</p>
+                </v-col>
+                <v-col cols="12" sm="6">
+                  <v-img :src="`${value.imageService}`" height="100%"></v-img>
+                </v-col>
+              </v-row>
+              <v-divider></v-divider>
+              <v-row>
+                <v-col cols="12" sm="6">
+                  <div class="title">Parámetros del servicio:</div>
+                  <p class="body-1">{{ value.paramserv }}</p>
+                </v-col>
+                <v-col cols="12" sm="6">
+                  <div class="title">Dirección:</div>
+                  <p class="body-1">{{ value.direction }}</p>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-card>
+        </v-dialog>
+        <v-snackbar v-model="snack" :timeout="3000" :color="snackColor">
+          {{ snackText }}
+          <v-btn text @click="snack = false">Cerrar</v-btn>
+        </v-snackbar>
+      </base-card>
+    </v-hover>
   </v-flex>
 </template>
 

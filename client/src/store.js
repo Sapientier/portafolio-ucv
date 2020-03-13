@@ -92,6 +92,15 @@ export default new Vuex.Store({
                     commit('updateServicios', response.data)
                 })
                 .catch(error => console.log(error));
+        },
+        async filterServicios({ commit }, value) {
+            await Services.getuniservice({
+                category: value
+            })
+                .then(response => {
+                    commit('getServicios', response.data)
+                })
+                .catch(error => console.log(error));
         }
     }
 })

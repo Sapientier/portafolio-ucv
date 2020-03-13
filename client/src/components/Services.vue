@@ -3,28 +3,69 @@
     <v-layout wrap>
       <v-flex xs12>
         <div class="text-center">
-          <v-chip class="ma-2" outlined>
+          <v-chip
+            class="ma-2"
+            outlined
+            :input-value="active0"
+            filter
+            @click="getServicios(); activefilter(0)"
+          >
             <v-icon left>mdi-star</v-icon>Todos
           </v-chip>
 
-          <v-chip class="ma-2" color="success" outlined>
+          <v-chip
+            class="ma-2"
+            color="success"
+            :input-value="active1"
+            filter
+            outlined
+            @click="filterServicios('Investigación'); activefilter(1)"
+          >
             <v-icon left>mdi-glasses</v-icon>Investigación
           </v-chip>
 
-          <v-chip class="ma-2" color="primary" outlined>
+          <v-chip
+            class="ma-2"
+            color="primary"
+            :input-value="active2"
+            filter
+            outlined
+            @click="filterServicios('Tecnología'); activefilter(2)"
+          >
             Tecnología
             <v-icon right>mdi-server</v-icon>
           </v-chip>
 
-          <v-chip class="ma-2" color="deep-purple accent-4" outlined>
+          <v-chip
+            class="ma-2"
+            color="deep-purple accent-4"
+            :input-value="active3"
+            filter
+            outlined
+            @click="filterServicios('Mercadeo'); activefilter(3)"
+          >
             <v-icon left>mdi-currency-usd</v-icon>Mercadeo
           </v-chip>
 
-          <v-chip class="ma-2" color="indigo darken-3" outlined>
+          <v-chip
+            class="ma-2"
+            color="indigo darken-3"
+            :input-value="active4"
+            filter
+            outlined
+            @click="filterServicios('Medicina'); activefilter(4)"
+          >
             <v-icon left>mdi-medical-bag</v-icon>Medicina
           </v-chip>
 
-          <v-chip class="ma-2" color="red darken-3" outlined>
+          <v-chip
+            class="ma-2"
+            color="red darken-3"
+            :input-value="active5"
+            filter
+            outlined
+            @click="filterServicios('Educación'); activefilter(5)"
+          >
             <v-icon left>mdi-book</v-icon>Educación
           </v-chip>
         </div>
@@ -40,25 +81,7 @@
     </v-layout>
 
     <v-layout align-center>
-      <v-flex xs3>
-        <base-btn v-if="page !== 1" class="ml-0" title="Previous page" square @click="page--">
-          <v-icon>mdi-chevron-left</v-icon>
-        </base-btn>
-      </v-flex>
-
-      <v-flex xs6 text-xs-center subheading>PÁGINA {{ page }} DE {{ pages }}</v-flex>
-
-      <v-flex xs3 text-xs-right>
-        <base-btn
-          v-if="pages > 1 && page < pages"
-          class="mr-0"
-          title="Siguiente página"
-          square
-          @click="page++"
-        >
-          <v-icon>mdi-chevron-right</v-icon>
-        </base-btn>
-      </v-flex>
+      <v-pagination v-model="page" :length="pages" :total-visible="7"></v-pagination>
     </v-layout>
     <v-dialog v-model="dialog" persistent max-width="600px">
       <template v-slot:activator="{ on }">
@@ -191,6 +214,7 @@ export default {
     layout: [2, 2, 1, 2, 2, 3, 3, 3],
     page: 1,
     valid: true,
+    active: false,
     date: new Date().toISOString().substr(0, 10),
     menu: false,
     snack: false,
@@ -206,6 +230,12 @@ export default {
     solicitud: "",
     params: "",
     direccion: "",
+    active0: true,
+    active1: false,
+    active2: false,
+    active3: false,
+    active4: false,
+    active5: false,
     itemselCat: [
       "Medicina",
       "Tecnología",
@@ -238,7 +268,7 @@ export default {
     this.getServicios();
   },
   methods: {
-    ...mapActions(["getServicios", "setServicios"]),
+    ...mapActions(["getServicios", "setServicios", "filterServicios"]),
     async insertService() {
       try {
         const fd = new FormData();
@@ -284,6 +314,34 @@ export default {
       this.selectedFile = null;
       this.dialog = false;
       this.resetValidation();
+    },
+    activefilter(num) {
+      this.active0 = false;
+      this.active1 = false;
+      this.active2 = false;
+      this.active3 = false;
+      this.active4 = false;
+      this.active5 = false;
+      switch (num) {
+        case 0:
+          this.active0 = true;
+          break;
+        case 1:
+          this.active1 = true;
+          break;
+        case 2:
+          this.active2 = true;
+          break;
+        case 3:
+          this.active3 = true;
+          break;
+        case 4:
+          this.active4 = true;
+          break;
+        case 5:
+          this.active5 = true;
+          break;
+      }
     },
     formatDate(date) {
       if (!date) return null;

@@ -4,6 +4,9 @@ export default {
     insertservices (values) {
         return Api().post('insertservices', values)
     },
+    getuniservice (values) {
+        return Api().post('getuniservice', values)
+    },
     getservices () {
         return Api().get('getservices')
     },

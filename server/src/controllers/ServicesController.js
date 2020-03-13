@@ -97,5 +97,15 @@ module.exports = {
                 error: 'Ha ocurrido un error al eliminar los usuarios'
             })
         }
-    }
+    },
+    async getuniservice(req, res) {
+        try {
+            const services = await Service.find({ category: req.body.category });
+            res.json(services);
+        } catch (err) {
+            res.status(500).send({
+                error: 'Ha ocurrido un error al buscar los servicios'
+            })
+        }
+    },
 }
