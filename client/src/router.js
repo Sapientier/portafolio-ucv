@@ -6,6 +6,7 @@ import Services from '@/components/Services'
 import UserProfile from '@/components/admin/UserProfile'
 import UsersTable from '@/components/admin/UsersTable'
 import Reports from '@/components/admin/Reports'
+import Credits from '@/components/Credits'
 
 Vue.use(VueRouter)
 
@@ -41,6 +42,11 @@ export default new VueRouter({
             path: '/reports',
             name: 'Reports',
             component: Reports
+        },
+        {
+            path: '/credits',
+            name: 'Credits',
+            component: Credits
         }
     ]
 })

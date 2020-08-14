@@ -22,6 +22,14 @@
             <v-list-item-title>Servicios</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item link to="/credits">
+          <v-list-item-action>
+            <v-icon>mdi-newspaper-variant</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Créditos</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
         <v-list-item link to="/reports" v-if="$store.state.isUserLoggedIn">
           <v-list-item-action>
             <v-icon>mdi-text-box-search</v-icon>
@@ -36,14 +44,6 @@
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>Tabla de Usuarios</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item link to="/login" v-if="!$store.state.isUserLoggedIn">
-          <v-list-item-action>
-            <v-icon>mdi-login</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Iniciar Sesión</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -71,6 +71,32 @@
       dark
     >
     <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+    <v-btn
+        icon
+        large
+      >
+        <v-avatar
+          size="32px"
+          item
+        >
+          <v-img
+            :src="require('@/assets/UCV.png')"
+            alt="Vuetify"
+          /></v-avatar>
+      </v-btn>
+      <v-btn
+        icon
+        large
+      >
+      <v-avatar
+          size="32px"
+          item
+        >
+          <v-img
+            :src="require('@/assets/ciencia.png')"
+            alt="Vuetify"
+          /></v-avatar>
+          </v-btn>
       <v-toolbar-title
         style="width: 300px"
         class="ml-0 pl-4"
@@ -116,20 +142,17 @@
           <span>Cerrar Sesión</span>
         </v-tooltip>
       </v-btn>
-       <v-btn
-        icon
-        large
-        link to="/"
-      >
-        <v-avatar
-          size="32px"
-          item
-        >
-          <v-img
-            :src="require('@/assets/UCV.png')"
-            alt="Vuetify"
-          /></v-avatar>
+
+      <v-btn icon v-if="!$store.state.isUserLoggedIn" @click="navigateTo({name: 'Login'})">
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <v-icon v-on="on">mdi-login</v-icon>
+          </template>
+          <span>Iniciar Sesión</span>
+        </v-tooltip>
       </v-btn>
+
+       
     </v-app-bar>  
   </div>
 </template>
