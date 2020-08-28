@@ -1,10 +1,6 @@
 <template>
   <div>
-    <v-navigation-drawer
-      v-model="drawer"
-      :clipped="$vuetify.breakpoint.lgAndUp"
-      app
-    >
+    <v-navigation-drawer v-model="drawer" :clipped="$vuetify.breakpoint.lgAndUp" app>
       <v-list dense>
         <v-list-item link to="/">
           <v-list-item-action>
@@ -38,7 +34,11 @@
             <v-list-item-title>Reportes</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item link to="/userstable" v-if="$store.state.isUserLoggedIn && $store.state.user.isAdmin">
+        <v-list-item
+          link
+          to="/userstable"
+          v-if="$store.state.isUserLoggedIn && $store.state.user.isAdmin"
+        >
           <v-list-item-action>
             <v-icon>mdi-table-edit</v-icon>
           </v-list-item-action>
@@ -47,10 +47,7 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
-      <v-bottom-navigation
-        absolute
-        color="indigo"
-      >
+      <v-bottom-navigation absolute color="indigo">
         <v-btn>
           <v-icon>mdi-twitter</v-icon>
         </v-btn>
@@ -64,47 +61,23 @@
         </v-btn>
       </v-bottom-navigation>
     </v-navigation-drawer>
-    <v-app-bar
-      :clipped-left="$vuetify.breakpoint.lgAndUp"
-      app
-      color="indigo"
-      dark
-    >
-    <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-    <v-btn
-        icon
-        large
-      >
-        <v-avatar
-          size="32px"
-          item
-        >
-          <v-img
-            :src="require('@/assets/UCV.png')"
-            alt="Vuetify"
-          /></v-avatar>
+    <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app color="indigo" dark>
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+      <v-btn icon large>
+        <v-avatar size="32px" item>
+          <v-img :src="require('@/assets/UCV.png')" alt="Vuetify" />
+        </v-avatar>
       </v-btn>
-      <v-btn
-        icon
-        large
-      >
-      <v-avatar
-          size="32px"
-          item
-        >
-          <v-img
-            :src="require('@/assets/ciencia.png')"
-            alt="Vuetify"
-          /></v-avatar>
-          </v-btn>
-      <v-toolbar-title
-        style="width: 300px"
-        class="ml-0 pl-4"
-      >
-        <span 
-        class="hidden-sm-and-down home"
-        @click="navigateTo({name: 'Home'})"
-        title="Pagina de Inicio"
+      <v-btn icon large>
+        <v-avatar size="32px" item>
+          <v-img :src="require('@/assets/ciencia.png')" alt="Vuetify" />
+        </v-avatar>
+      </v-btn>
+      <v-toolbar-title style="width: 300px" class="ml-0 pl-4">
+        <span
+          class="hidden-sm-and-down home"
+          @click="navigateTo({name: 'Home'})"
+          title="Pagina de Inicio"
         >Portafolio Digital UCV</span>
       </v-toolbar-title>
       <v-text-field
@@ -119,9 +92,8 @@
 
       <v-btn icon v-if="$store.state.isUserLoggedIn">
         <v-badge overlap>
-          <template v-slot:badge
-          >0</template>
-            <v-icon>mdi-bell</v-icon>
+          <template v-slot:badge>0</template>
+          <v-icon>mdi-bell</v-icon>
         </v-badge>
       </v-btn>
 
@@ -151,35 +123,35 @@
           <span>Iniciar Sesión</span>
         </v-tooltip>
       </v-btn>
-
-       
-    </v-app-bar>  
+    </v-app-bar>
   </div>
 </template>
 
 <script>
 export default {
   methods: {
-    navigateTo (route) {
-      this.$router.push(route).catch(err => {})
+    navigateTo(route) {
+      this.$router.push(route).catch((err) => {});
     },
-    logout () {
-      this.$store.dispatch('setToken', null)
-      this.$store.dispatch('setUser', null)
+    logout() {
+      this.$store.dispatch("setToken", null);
+      this.$store.dispatch("setUser", null);
       // Redirigimos al Inicio
-      this.$router.push({
-        name: 'Home'
-      }).catch(err => {})
-    }
+      this.$router
+        .push({
+          name: "Home",
+        })
+        .catch((err) => {});
+    },
   },
   data: () => ({
-    drawer: null
+    drawer: null,
   }),
 };
 </script>
 
 <style scoped>
 .home {
-  cursor: pointer
+  cursor: pointer;
 }
 </style>>

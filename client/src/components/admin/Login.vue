@@ -53,31 +53,31 @@ export default {
     error: null,
     alert: false,
     passwordRules: [
-      v => !!v || "Contraseña es requerida",
-      v => v.length <= 20 || "La contraseña debe ser menor a 20 caracteres"
+      (v) => !!v || "Contraseña es requerida",
+      (v) => v.length <= 20 || "La contraseña debe ser menor a 20 caracteres",
     ],
     emailRules: [
-      v => !!v || "El correo es requerido",
-      v => /.+@.+\..+/.test(v) || "El correo debe ser valido"
-    ]
+      (v) => !!v || "El correo es requerido",
+      (v) => /.+@.+\..+/.test(v) || "El correo debe ser valido",
+    ],
   }),
   methods: {
     async login() {
       try {
         const response = await AuthenticationService.login({
           email: this.email,
-          password: this.password
+          password: this.password,
         });
         this.$store.dispatch("setToken", response.data.token);
         this.$store.dispatch("setUser", response.data.user);
         this.$router.push({
-          name: "Home"
+          name: "Home",
         });
       } catch (error) {
         this.alert = true;
         this.error = error.response.data.error;
       }
-    }
-  }
+    },
+  },
 };
 </script>
