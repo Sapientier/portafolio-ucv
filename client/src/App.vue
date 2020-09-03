@@ -11,14 +11,23 @@
 </template>
 
 <script>
-import PageHeader from '@/components/core/Header.vue'
-import PageFooter from '@/components/core/Footer.vue'
+import PageHeader from "@/components/core/Header.vue";
+import PageFooter from "@/components/core/Footer.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
     PageHeader,
-    PageFooter
+    PageFooter,
+  },
+  created () {
+    if (!this.$store.state.isUserLoggedIn && (this.$router.currentRoute.fullPath !== '/login' )) {
+      this.$router
+        .push({
+          name: "Home",
+        })
+        .catch((err) => {});
+    }
   },
   data: () => ({
     //

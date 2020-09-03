@@ -7,6 +7,7 @@ import UserProfile from '@/components/admin/UserProfile'
 import UsersTable from '@/components/admin/UsersTable'
 import Reports from '@/components/admin/Reports'
 import Credits from '@/components/Credits'
+import NotFound from '@/components/core/NotFound'
 
 Vue.use(VueRouter)
 
@@ -47,6 +48,11 @@ export default new VueRouter({
             path: '/credits',
             name: 'Credits',
             component: Credits
+        },
+        {
+            path: '*',
+            name: 'NotFound',
+            component: NotFound
         }
     ]
 })

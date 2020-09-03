@@ -105,14 +105,14 @@
               </v-toolbar>
             </template>
             <!-- change table header background and text color(or other properties) -->
-            <template v-slot:item.action="{ item }">
+            <template v-slot:[`item.action`]="{ item }">
               <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
               <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
             </template>
-            <template v-slot:item.isAdmin="{ item }">
+            <template v-slot:[`item.isAdmin`]="{ item }">
               <v-checkbox v-model="item.isAdmin" disabled></v-checkbox>
             </template>
-            <template v-slot:item.isActive="{ item }">
+            <template v-slot:[`item.isActive`]="{ item }">
               <v-checkbox v-model="item.isActive" disabled></v-checkbox>
             </template>
             <template v-slot:no-data>
