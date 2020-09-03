@@ -7,7 +7,7 @@
             <h1 class="display-3 font-weight-light">Servicios Ciencias</h1>
             <h4
               class="font-weight-light mt-3 mb-3"
-            >Para aquellos problemas que requieren modernas soluciones de alta tecnología, la Facultad de Ciencias de la Universidad Central de Venezuela pone a disposición la aplicación de su conocimiento científico adquirido y perfeccionado en sus 62 años de recorrido</h4>
+            >Para aquellos problemas que requieren modernas soluciones de alta tecnología, la Facultad de Ciencias de la Universidad Central de Venezuela pone a disposición la aplicación de su conocimiento científico adquirido y perfeccionado en sus {{facultyAge}} años de recorrido</h4>
             <v-btn color="primary" depressed rounded>Suscribirse</v-btn>
           </v-col>
         </v-row>
@@ -57,5 +57,18 @@ export default {
       slides: ["Noticia 1", "Second", "Third", "Fourth", "Fifth"],
     };
   },
+  computed: {
+    facultyAge() {
+      const date = new Date()
+      const year = date.getFullYear()
+      const month = date.getMonth()
+      const day = date.getDate()
+      let facultyAge = year - 1958
+      if (month<2 || (month==2 && day<13)) {
+        facultyAge--
+      }
+      return facultyAge
+    }
+  }
 };
 </script>
