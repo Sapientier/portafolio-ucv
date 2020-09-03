@@ -41,7 +41,7 @@
           link: 'https://correo.ciens.ucv.ve/mail/'
         }
       ],
-      model: 1,
+      model: -1,
     }),
     methods: {
       navigateTo (route) {
