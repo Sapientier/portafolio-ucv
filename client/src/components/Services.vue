@@ -80,9 +80,10 @@
       />
     </v-layout>
 
-    <v-layout align-center>
+    <div class="text-center">
       <v-pagination v-model="page" :length="pages" :total-visible="7"></v-pagination>
-    </v-layout>
+    </div>
+    
     <v-dialog v-model="dialog" persistent max-width="600px">
       <template v-slot:activator="{ on }">
         <v-btn
@@ -206,7 +207,7 @@ export default {
   name: "Feed",
 
   components: {
-    FeedCard: () => import("@/components/FeedCard")
+    FeedCard: () => import("@/components/FeedCard"),
   },
 
   data: () => ({
@@ -241,7 +242,7 @@ export default {
       "Tecnología",
       "Educación",
       "Mercadeo",
-      "Investigación"
+      "Investigación",
     ],
     itemselSchool: [
       "N/A",
@@ -250,19 +251,19 @@ export default {
       "Física",
       "Geoquímica",
       "Matemática",
-      "Química"
+      "Química",
     ],
     itemselInst: ["N/A", "IBE", "ICTA", "ICT"],
     dialog: false,
     rulesImg: [
-      value =>
+      (value) =>
         !value ||
         value.size < 2000000 ||
-        "¡El tamaño de la imagen debe ser inferior a 2 MB!"
+        "¡El tamaño de la imagen debe ser inferior a 2 MB!",
     ],
-    nameRules: [v => !!v || "Nombre de servicio es requerida"],
-    categoriaRules: [v => !!v || "La categoría es requerida"],
-    autorRules: [v => !!v || "El autor es requerido"]
+    nameRules: [(v) => !!v || "Nombre de servicio es requerida"],
+    categoriaRules: [(v) => !!v || "La categoría es requerida"],
+    autorRules: [(v) => !!v || "El autor es requerido"],
   }),
   created() {
     this.getServicios();
@@ -286,7 +287,7 @@ export default {
         fd.append("paramserv", this.params);
         fd.append("direction", this.direccion);
         fd.append("date", this.date);
-        const response = this.setServicios(fd).then(response =>
+        const response = this.setServicios(fd).then((response) =>
           this.insertInline()
         );
         this.close();
@@ -353,7 +354,7 @@ export default {
       this.snack = true;
       this.snackColor = "success";
       this.snackText = "Servicio creado";
-    }
+    },
   },
   computed: {
     ...mapGetters(["services"]),
@@ -368,7 +369,7 @@ export default {
       const stop = this.page * 8;
 
       return this.services.slice(start, stop);
-    }
-  }
+    },
+  },
 };
 </script>
