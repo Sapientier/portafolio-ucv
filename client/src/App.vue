@@ -20,11 +20,16 @@ export default {
     PageHeader,
     PageFooter,
   },
-  created () {
-    if (!this.$store.state.isUserLoggedIn && (this.$router.currentRoute.fullPath !== '/login' )) {
+  created() {
+    if (
+      !this.$store.state.isUserLoggedIn &&
+      (this.$router.currentRoute.fullPath == "/reports" ||
+        this.$router.currentRoute.fullPath == "/userprofile" ||
+        this.$router.currentRoute.fullPath == "/userstable")
+    ) {
       this.$router
         .push({
-          name: "Home",
+          name: "Login",
         })
         .catch((err) => {});
     }
