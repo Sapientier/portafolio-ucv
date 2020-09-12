@@ -8,7 +8,10 @@
           </v-avatar>
           <v-card-text class="text-xs-center">
             <h3 class="card-title">{{name}} {{lastname}}</h3>
-            <p class="card-description font-weight-light" v-if="$store.state.user.isAdmin">Administrador</p>
+            <p
+              class="card-description font-weight-light"
+              v-if="$store.state.user.isAdmin"
+            >Administrador</p>
             <p class="card-description font-weight-light" v-if="!$store.state.user.isAdmin">Operador</p>
             <v-file-input
               :rules="rulesImg"
@@ -134,7 +137,9 @@
           </v-form>
           <v-snackbar v-model="snack" :timeout="3000" :color="snackColor">
             {{ snackText }}
-            <v-btn text @click="snack = false">Cerrar</v-btn>
+            <template v-slot:action="{ attrs }">
+              <v-btn text v-bind="attrs" @click="snack = false">Cerrar</v-btn>
+            </template>
           </v-snackbar>
         </v-card>
       </v-flex>
@@ -166,26 +171,26 @@ export default {
     show2: false,
     show3: false,
     rulesImg: [
-      value =>
+      (value) =>
         !value ||
         value.size < 2000000 ||
-        "¡El tamaño de la imagen debe ser inferior a 2 MB!"
+        "¡El tamaño de la imagen debe ser inferior a 2 MB!",
     ],
     passwordActRules: [
-      v => !!v || "Contraseña actual es requerida",
-      v =>
-        v.length <= 20 || "La contraseña actual debe ser menor a 20 caracteres"
+      (v) => !!v || "Contraseña actual es requerida",
+      (v) =>
+        v.length <= 20 || "La contraseña actual debe ser menor a 20 caracteres",
     ],
     passwordNewRules: [
-      v => !!v || "Contraseña nueva es requerida",
-      v =>
-        v.length <= 20 || "La contraseña nueva debe ser menor a 20 caracteres"
+      (v) => !!v || "Contraseña nueva es requerida",
+      (v) =>
+        v.length <= 20 || "La contraseña nueva debe ser menor a 20 caracteres",
     ],
     passwordNew2Rules: [
-      v => !!v || "Confirmar contraseña nueva es requerida",
-      v =>
+      (v) => !!v || "Confirmar contraseña nueva es requerida",
+      (v) =>
         v.length <= 20 ||
-        "La contraseña a confirmar debe ser menor a 20 caracteres"
+        "La contraseña a confirmar debe ser menor a 20 caracteres",
     ],
     itemsel: [
       "N/A",
@@ -194,9 +199,9 @@ export default {
       "Física",
       "Geoquímica",
       "Matemática",
-      "Química"
+      "Química",
     ],
-    itemsel2: ["N/A", "IBE", "ICTA", "ICT"]
+    itemsel2: ["N/A", "IBE", "ICTA", "ICT"],
   }),
   created() {
     this.initialize();
@@ -204,15 +209,15 @@ export default {
   methods: {
     async initialize() {
       const response = await UsersService.getuserper({
-        _id: this.$store.state.user._id
+        _id: this.$store.state.user._id,
       })
-        .then(response => {
+        .then((response) => {
           this.name = response.data.name;
           this.lastname = response.data.lastname;
           this.escuelas = response.data.school;
           this.institutos = response.data.institute;
         })
-        .catch(error => console.log(error));
+        .catch((error) => console.log(error));
     },
     resetValidation() {
       this.$refs.form.resetValidation();
@@ -237,8 +242,8 @@ export default {
           try {
             const response = await UsersService.getuserpass({
               _id: this.$store.state.user._id,
-              password: this.actPass
-            }).then(response => this.modPassword(response.data._id));
+              password: this.actPass,
+            }).then((response) => this.modPassword(response.data._id));
 
             this.close();
           } catch (error) {
@@ -252,8 +257,8 @@ export default {
       try {
         const response = await UsersService.modpass({
           _id: id,
-          password: this.newPass
-        }).then(response => this.passwordInline());
+          password: this.newPass,
+        }).then((response) => this.passwordInline());
 
         this.close();
       } catch (error) {
@@ -268,8 +273,8 @@ export default {
           name: this.name,
           lastname: this.lastname,
           school: this.escuelas,
-          institute: this.institutos
-        }).then(response => this.updateInline());
+          institute: this.institutos,
+        }).then((response) => this.updateInline());
       } catch (error) {
         this.snack = true;
         this.snackColor = "error";
@@ -286,7 +291,7 @@ export default {
       this.snack = true;
       this.snackColor = "success";
       this.snackText = "Contraseña actualizada";
-    }
-  }
+    },
+  },
 };
 </script>

@@ -215,7 +215,9 @@
         </v-dialog>
         <v-snackbar v-model="snack" :timeout="3000" :color="snackColor">
           {{ snackText }}
-          <v-btn text @click="snack = false">Cerrar</v-btn>
+          <template v-slot:action="{ attrs }">
+            <v-btn text v-bind="attrs" @click="snack = false">Cerrar</v-btn>
+          </template>
         </v-snackbar>
       </base-card>
     </v-hover>
@@ -240,7 +242,7 @@ export default {
       description: "",
       request: "",
       paramserv: "",
-      direction: ""
+      direction: "",
     },
     editedItem: {
       _id: "",
@@ -255,7 +257,7 @@ export default {
       description: "",
       request: "",
       paramserv: "",
-      direction: ""
+      direction: "",
     },
     approve: false,
     selectedFile: null,
@@ -273,7 +275,7 @@ export default {
       "Tecnología",
       "Educación",
       "Mercadeo",
-      "Investigación"
+      "Investigación",
     ],
     itemselSchool: [
       "N/A",
@@ -282,28 +284,28 @@ export default {
       "Física",
       "Geoquímica",
       "Matemática",
-      "Química"
+      "Química",
     ],
     itemselInst: ["N/A", "IBE", "ICTA", "ICT"],
     rulesImg: [
-      value =>
+      (value) =>
         !value ||
         value.size < 2000000 ||
-        "¡El tamaño de la imagen debe ser inferior a 2 MB!"
+        "¡El tamaño de la imagen debe ser inferior a 2 MB!",
     ],
-    nameRules: [v => !!v || "Nombre de servicio es requerida"],
-    categoriaRules: [v => !!v || "La categoría es requerida"],
-    autorRules: [v => !!v || "El autor es requerido"]
+    nameRules: [(v) => !!v || "Nombre de servicio es requerida"],
+    categoriaRules: [(v) => !!v || "La categoría es requerida"],
+    autorRules: [(v) => !!v || "El autor es requerido"],
   }),
   props: {
     size: {
       type: Number,
-      required: true
+      required: true,
     },
     value: {
       type: Object,
-      default: () => ({})
-    }
+      default: () => ({}),
+    },
   },
   methods: {
     ...mapActions(["removeServicios", "updateServicios"]),
@@ -325,18 +327,18 @@ export default {
       this.editedItem = Object.assign({}, item);
       this.dialog3 = true;
     },
-    async deleteval() {
+    deleteval() {
       try {
-        const response = await this.removeServicios({
+        const response = this.removeServicios({
           _id: this.editedItem._id,
-          imageService: this.editedItem.imageService
-        }).then(response => this.delete());
+          imageService: this.editedItem.imageService,
+        }).then((response) => this.delete());
         this.close();
       } catch (error) {
         this.error = error.response.data.error;
       }
     },
-    async updateService() {
+    updateService() {
       try {
         const fd = new FormData();
         if (this.selectedFile != null) {
@@ -355,7 +357,7 @@ export default {
         fd.append("direction", this.editedItem.direction);
         fd.append("date", this.editedItem.date);
         fd.append("imageService", this.editedItem.imageService);
-        const response = await this.updateServicios(fd).then(response =>
+        const response = this.updateServicios(fd).then((response) =>
           this.update()
         );
         this.close();
@@ -379,19 +381,19 @@ export default {
       this.snack = true;
       this.snackColor = "success";
       this.snackText = "Datos actualizados";
-    }
+    },
   },
   computed: {
     classes() {
       return {
         md6: this.size === 2,
-        md4: this.size === 3
+        md4: this.size === 3,
       };
     },
     computedDateFormatted() {
       return this.formatDate(this.editedItem.date);
-    }
-  }
+    },
+  },
 };
 </script>
 

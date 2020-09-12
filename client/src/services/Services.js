@@ -4,8 +4,11 @@ export default {
     insertservices (values) {
         return Api().post('insertservices', values)
     },
-    getuniservice (values) {
-        return Api().post('getuniservice', values)
+    getuniservicebycat (values) {
+        return Api().post('getuniservicebycat', values)
+    },
+    getuniservicebyname (values) {
+        return Api().post('getuniservicebyname', values)
     },
     getservices () {
         return Api().get('getservices')
@@ -15,5 +18,8 @@ export default {
     },
     updateservices (values) {
         return Api().post('updateservices', values)
+    },
+    suscribeservices (values) {
+        return Api().post('suscribeservices', values)
     },
 }

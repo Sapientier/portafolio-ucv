@@ -6,7 +6,8 @@
           <v-list-item>
             <v-list-item-content>
               <div class="overline mb-4">CRÉDITOS</div>Este sitio web fue conceptualizado, diseñado y elaborado por los estudiantes de computación Brian Torres y Jorge Ramirez,
-              siendo su Director la Prof. Yosly Hernandez. Este proyecto de “Aplicación Web Del Portafolio Digital Para La Gestión Del Conocimiento De La Facultad De Ciencias 
+              siendo su directora la Prof. Yosly Hernandez.
+              <div class="mb-4"></div>Este proyecto de “Aplicación Web Del Portafolio Digital Para La Gestión Del Conocimiento De La Facultad De Ciencias
               De La Universidad Central De Venezuela”, tiene como propósito el refrescamiento y relanzamiento de la Imagen corporativa
               y la visualización de los diferentes servicios que ofrece la Facultad de Ciencias en sus distintas áreas de funcionamiento.
             </v-list-item-content>
@@ -46,6 +47,8 @@
 
 <script>
 export default {
-  data: () => ({}),
+  data: () => ({
+    //
+  }),
 };
 </script>

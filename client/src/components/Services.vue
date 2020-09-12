@@ -19,7 +19,7 @@
             :input-value="active1"
             filter
             outlined
-            @click="filterServicios('Investigación'); activefilter(1)"
+            @click="filterServiciosbyCat('Investigación'); activefilter(1)"
           >
             <v-icon left>mdi-glasses</v-icon>Investigación
           </v-chip>
@@ -30,10 +30,9 @@
             :input-value="active2"
             filter
             outlined
-            @click="filterServicios('Tecnología'); activefilter(2)"
+            @click="filterServiciosbyCat('Tecnología'); activefilter(2)"
           >
-            Tecnología
-            <v-icon right>mdi-server</v-icon>
+            <v-icon left>mdi-server</v-icon>Tecnología
           </v-chip>
 
           <v-chip
@@ -42,7 +41,7 @@
             :input-value="active3"
             filter
             outlined
-            @click="filterServicios('Mercadeo'); activefilter(3)"
+            @click="filterServiciosbyCat('Mercadeo'); activefilter(3)"
           >
             <v-icon left>mdi-currency-usd</v-icon>Mercadeo
           </v-chip>
@@ -53,7 +52,7 @@
             :input-value="active4"
             filter
             outlined
-            @click="filterServicios('Medicina'); activefilter(4)"
+            @click="filterServiciosbyCat('Medicina'); activefilter(4)"
           >
             <v-icon left>mdi-medical-bag</v-icon>Medicina
           </v-chip>
@@ -64,12 +63,26 @@
             :input-value="active5"
             filter
             outlined
-            @click="filterServicios('Educación'); activefilter(5)"
+            @click="filterServiciosbyCat('Educación'); activefilter(5)"
           >
             <v-icon left>mdi-book</v-icon>Educación
           </v-chip>
         </div>
-        <v-divider></v-divider>
+
+        <v-autocomplete
+          v-model="select"
+          :loading="loading"
+          :items="items"
+          :search-input.sync="search"
+          cache-items
+          class="mx-4"
+          flat
+          hide-no-data
+          hide-details
+          label="Buscar servicios"
+          solo-inverted
+          prepend-inner-icon="mdi-magnify"
+        ></v-autocomplete>
       </v-flex>
 
       <feed-card
@@ -83,7 +96,7 @@
     <div class="text-center">
       <v-pagination v-model="page" :length="pages" :total-visible="7"></v-pagination>
     </div>
-    
+
     <v-dialog v-model="dialog" persistent max-width="600px">
       <template v-slot:activator="{ on }">
         <v-btn
@@ -194,7 +207,9 @@
     </v-dialog>
     <v-snackbar v-model="snack" :timeout="3000" :color="snackColor">
       {{ snackText }}
-      <v-btn text @click="snack = false">Cerrar</v-btn>
+      <template v-slot:action="{ attrs }">
+        <v-btn text v-bind="attrs" @click="snack = false">Cerrar</v-btn>
+      </template>
     </v-snackbar>
   </v-container>
 </template>
@@ -202,6 +217,7 @@
 <script>
 // Utilities
 import { mapGetters, mapActions } from "vuex";
+import Services from "@/services/Services";
 
 export default {
   name: "Feed",
@@ -211,6 +227,11 @@ export default {
   },
 
   data: () => ({
+    loading: false,
+    items: [],
+    servicesnames: [],
+    search: null,
+    select: null,
     selectedFile: null,
     layout: [2, 2, 1, 2, 2, 3, 3, 3],
     page: 1,
@@ -267,10 +288,35 @@ export default {
   }),
   created() {
     this.getServicios();
+    this.getServiciosNames();
+  },
+  watch: {
+    search(val) {
+      val && val !== this.select && this.querySelections(val);
+      if (val != null) {
+        this.activefilter(-1);
+        this.filterServiciosbyName(this.search);
+      }
+    },
   },
   methods: {
-    ...mapActions(["getServicios", "setServicios", "filterServicios"]),
-    async insertService() {
+    ...mapActions([
+      "getServicios",
+      "setServicios",
+      "filterServiciosbyCat",
+      "filterServiciosbyName",
+    ]),
+    querySelections(v) {
+      this.loading = true;
+      // Simulated ajax query
+      setTimeout(() => {
+        this.items = this.servicesnames.filter((e) => {
+          return (e || "").toLowerCase().indexOf((v || "").toLowerCase()) > -1;
+        });
+        this.loading = false;
+      }, 500);
+    },
+    insertService() {
       try {
         const fd = new FormData();
         if (this.selectedFile != null) {
@@ -296,6 +342,25 @@ export default {
         this.snackColor = "error";
         this.snackText = error.response.data.error;
       }
+    },
+    async getServiciosNames() {
+      await Services.getservices()
+        .then((response) => {
+          const servicios = response.data;
+
+          for (const servicio of servicios) {
+            if (
+              !servicio.name ||
+              this.servicesnames.find((name) => name.text === servicio.name)
+            )
+              continue;
+
+            this.servicesnames.push(servicio.name);
+          }
+
+          this.servicesnames.sort();
+        })
+        .catch((error) => console.log(error));
     },
     resetValidation() {
       this.$refs.form.resetValidation();

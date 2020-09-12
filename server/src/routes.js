@@ -61,7 +61,13 @@ module.exports = (app) => {
             upload.single('image'),
             ServicesController.updateservices
         ),
-        app.post('/getuniservice',
-            ServicesController.getuniservice
+        app.post('/getuniservicebycat',
+            ServicesController.getuniservicebycat
+        ),
+        app.post('/getuniservicebyname',
+            ServicesController.getuniservicebyname
+        ),
+        app.post('/suscribeservices',
+            ServicesController.suscribeservices
         )
-}
+}   

@@ -80,14 +80,7 @@
           title="Pagina de Inicio"
         >Portafolio Digital UCV</span>
       </v-toolbar-title>
-      <v-text-field
-        flat
-        solo-inverted
-        hide-details
-        prepend-inner-icon="mdi-magnify"
-        label="Buscar"
-        class="hidden-sm-and-down"
-      />
+
       <v-spacer />
 
       <v-btn icon v-if="$store.state.isUserLoggedIn">
@@ -97,7 +90,7 @@
         </v-badge>
       </v-btn>
 
-      <v-btn icon v-if="$store.state.isUserLoggedIn" @click="navigateTo({name: 'UserProfile'})">
+      <v-btn icon v-if="$store.state.isUserLoggedIn" :to="{name: 'UserProfile'}">
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-icon v-on="on">mdi-account</v-icon>
@@ -115,7 +108,7 @@
         </v-tooltip>
       </v-btn>
 
-      <v-btn icon v-if="!$store.state.isUserLoggedIn" @click="navigateTo({name: 'Login'})">
+      <v-btn icon v-if="!$store.state.isUserLoggedIn" :to="{name: 'Login'}">
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-icon v-on="on">mdi-login</v-icon>
@@ -131,7 +124,7 @@
 export default {
   methods: {
     navigateTo(route) {
-      this.$router.push(route).catch((err) => {});
+      this.$router.push(route);
     },
     logout() {
       this.$store.dispatch("setToken", null);

@@ -45,7 +45,7 @@
     }),
     methods: {
       navigateTo (route) {
-        window.open(route, 'blank');
+        window.open(route, '_blank');
       }
     },
   }

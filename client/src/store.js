@@ -14,29 +14,7 @@ export default new Vuex.Store({
         isUserLoggedIn: false
     },
     getters: {
-        services: state => state.servicios,
-        categories: state => {
-            const categories = []
-
-            for (const servicio of state.servicios) {
-                if (
-                    !servicio.category ||
-                    categories.find(category => category.text === servicio.category)
-                ) continue
-
-                const text = servicio.category
-
-                categories.push({
-                    text,
-                    to: `/category/${text}`
-                })
-            }
-
-            return categories.sort().slice(0, 4)
-        },
-        links: (state, getters) => {
-            return state.items.concat(getters.categories)
-        }
+        services: state => state.servicios
     },
     mutations: {
         setToken: (state, token) => {
@@ -93,9 +71,18 @@ export default new Vuex.Store({
                 })
                 .catch(error => console.log(error));
         },
-        async filterServicios({ commit }, value) {
-            await Services.getuniservice({
+        async filterServiciosbyCat({ commit }, value) {
+            await Services.getuniservicebycat({
                 category: value
+            })
+                .then(response => {
+                    commit('getServicios', response.data)
+                })
+                .catch(error => console.log(error));
+        },
+        async filterServiciosbyName({ commit }, value) {
+            await Services.getuniservicebyname({
+                name: value
             })
                 .then(response => {
                     commit('getServicios', response.data)

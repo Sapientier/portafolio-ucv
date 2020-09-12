@@ -30,8 +30,13 @@ export default {
       this.$router
         .push({
           name: "Login",
-        })
-        .catch((err) => {});
+        });
+    }
+    else if (this.$store.state.isUserLoggedIn && this.$router.currentRoute.fullPath == "/login") {
+      this.$router
+        .push({
+          name: "Home",
+        });
     }
   },
   data: () => ({

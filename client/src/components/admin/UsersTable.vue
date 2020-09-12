@@ -124,7 +124,9 @@
           </div>
           <v-snackbar v-model="snack" :timeout="3000" :color="snackColor">
             {{ snackText }}
-            <v-btn text @click="snack = false">Cerrar</v-btn>
+            <template v-slot:action="{ attrs }">
+              <v-btn text v-bind="attrs" @click="snack = false">Cerrar</v-btn>
+            </template>
           </v-snackbar>
         </v-card>
       </v-flex>
