@@ -62,7 +62,8 @@ module.exports = {
                 description: req.body.description,
                 request: req.body.request,
                 paramserv: req.body.paramserv,
-                direction: req.body.direction
+                direction: req.body.direction,
+                approve: req.body.approve,
             };
             const user = await Service.findByIdAndUpdate(req.body._id, newTask, {new: true});
             res.json(user.toJSON());

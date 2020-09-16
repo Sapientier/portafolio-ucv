@@ -197,7 +197,13 @@
             <small>*Indica que es un campo requerido</small>
           </v-card-text>
           <v-divider></v-divider>
-          <v-card-actions>
+          <v-card-actions v-if="$store.state.isUserLoggedIn">
+            <v-spacer></v-spacer>
+            <v-switch
+              v-model="approve"
+              label="Aprobado"
+              :disabled="$store.state.user.dependencies == 'Profesor/Investigador'"
+            ></v-switch>
             <v-spacer></v-spacer>
             <v-btn color="blue darken-1" text @click="close">Cerrar</v-btn>
             <v-btn color="blue darken-1" text @click="insertService" :disabled="!valid">Guardar</v-btn>
@@ -230,6 +236,7 @@ export default {
     loading: false,
     items: [],
     servicesnames: [],
+    newServices: [],
     search: null,
     select: null,
     selectedFile: null,
@@ -252,6 +259,7 @@ export default {
     solicitud: "",
     params: "",
     direccion: "",
+    approve: false,
     active0: true,
     active1: false,
     active2: false,
@@ -333,6 +341,7 @@ export default {
         fd.append("paramserv", this.params);
         fd.append("direction", this.direccion);
         fd.append("date", this.date);
+        fd.append("approve", this.approve);
         const response = this.setServicios(fd).then((response) =>
           this.insertInline()
         );
@@ -420,6 +429,19 @@ export default {
       this.snackColor = "success";
       this.snackText = "Servicio creado";
     },
+    removeItemAll(arr) {
+      if(!this.$store.state.isUserLoggedIn){
+        var i = 0;
+        while (i < arr.length) {
+          if (arr[i].approve === false) {
+            arr.splice(i, 1);
+          } else {
+            ++i;
+          }
+        }
+      }
+      return arr;
+    },
   },
   computed: {
     ...mapGetters(["services"]),
@@ -427,13 +449,16 @@ export default {
       return this.formatDate(this.date);
     },
     pages() {
-      return Math.ceil(this.services.length / 8);
+      return Math.ceil(this.newServices.length / 8);
     },
     paginatedServices() {
       const start = (this.page - 1) * 8;
       const stop = this.page * 8;
 
-      return this.services.slice(start, stop);
+      this.newServices = this.services.slice();
+      this.newServices = this.removeItemAll(this.newServices);
+
+      return this.newServices.slice(start, stop);
     },
   },
 };

@@ -81,7 +81,19 @@
                               class="ml-auto mr-auto"
                               v-if="editedIndex > -1"
                             >
-                              <v-btn color="warning" @click="reset">Reiniciar Contraseña</v-btn>
+                              <v-btn
+                                color="warning"
+                                @click="reset"
+                                :loading="dialog3"
+                              >Reiniciar Contraseña</v-btn>
+                              <v-dialog v-model="dialog3" hide-overlay persistent width="300">
+                                <v-card color="primary" dark>
+                                  <v-card-text>
+                                    Por favor espere...
+                                    <v-progress-linear indeterminate color="white" class="mb-0"></v-progress-linear>
+                                  </v-card-text>
+                                </v-card>
+                              </v-dialog>
                             </v-col>
                           </v-row>
                         </v-container>
@@ -141,8 +153,8 @@ import AuthenticationService from "@/services/AuthenticationService";
 export default {
   data: () => ({
     emailRules: [
-      v => !!v || "El correo es requerido",
-      v => /.+@.+\..+/.test(v) || "El correo debe ser valido"
+      (v) => !!v || "El correo es requerido",
+      (v) => /.+@.+\..+/.test(v) || "El correo debe ser valido",
     ],
     valid: true,
     page: 1,
@@ -157,19 +169,20 @@ export default {
     UserList: [],
     dialog: false,
     dialog2: false,
+    dialog3: false,
     itemsel: [
       "Coordinador General",
       "Coordinador de Extensión",
       "Coordinador de Investigación",
-      "Profesor/Investigador"
+      "Profesor/Investigador",
     ],
     search: "",
     headers: [
       { text: "Correo", value: "email" },
       { text: "Administrador", value: "isAdmin" },
       { text: "Bloqueado", value: "isActive" },
-      { text: "dependencies", value: "dependencies" },
-      { text: "Acciones", value: "action", sortable: false }
+      { text: "Dependencias", value: "dependencies" },
+      { text: "Acciones", value: "action", sortable: false },
     ],
     editedIndex: -1,
     editedItem: {
@@ -178,7 +191,7 @@ export default {
       email: "",
       isAdmin: false,
       isActive: false,
-      dependencies: ""
+      dependencies: "",
     },
     defaultItem: {
       _id: "",
@@ -186,13 +199,13 @@ export default {
       email: "",
       isAdmin: false,
       isActive: false,
-      dependencies: ""
-    }
+      dependencies: "",
+    },
   }),
   computed: {
     formTitle() {
       return this.editedIndex === -1 ? "Nuevo Usuario" : "Editar Usuario";
-    }
+    },
   },
   watch: {
     dialog(val) {
@@ -200,6 +213,13 @@ export default {
     },
     dialog2(val) {
       val || this.close();
+    },
+    dialog3(val) {
+      if (!val) return;
+
+      setTimeout(() => {
+        this.dialog3 = false;
+      }, 2000);
     }
   },
   // called when page is created before dom
@@ -209,10 +229,10 @@ export default {
   methods: {
     async initialize() {
       const response = await UsersService.getusers()
-        .then(response => {
+        .then((response) => {
           this.UserList = response.data;
         })
-        .catch(error => console.log(error));
+        .catch((error) => console.log(error));
     },
     // object.assign fills in the empty object with the properties of item
     editItem(item) {
@@ -228,8 +248,8 @@ export default {
     async deleteval() {
       try {
         const response = await UsersService.deleteusers({
-          _id: this.editedItem._id
-        }).then(response => this.delete());
+          _id: this.editedItem._id,
+        }).then((response) => this.delete());
         this.UserList.splice(this.editedIndex, 1);
         this.close();
       } catch (error) {
@@ -257,8 +277,8 @@ export default {
             email: this.editedItem.email,
             isAdmin: this.editedItem.isAdmin,
             isActive: this.editedItem.isActive,
-            dependencies: this.editedItem.dependencies
-          }).then(response => this.updateInline());
+            dependencies: this.editedItem.dependencies,
+          }).then((response) => this.updateInline());
           Object.assign(this.UserList[this.editedIndex], this.editedItem);
           this.close();
         } catch (error) {
@@ -271,8 +291,8 @@ export default {
             email: this.editedItem.email,
             isAdmin: this.editedItem.isAdmin,
             isActive: this.editedItem.isActive,
-            dependencies: this.editedItem.dependencies
-          }).then(response => this.saveInline());
+            dependencies: this.editedItem.dependencies,
+          }).then((response) => this.saveInline());
           this.UserList.push(this.editedItem);
           this.close();
         } catch (error) {
@@ -283,10 +303,11 @@ export default {
     },
     async reset() {
       try {
+        this.dialog3 = true;
         const response = await UsersService.resetpass({
           _id: this.editedItem._id,
-          email: this.editedItem.email
-        }).then(response => this.emailInline());
+          email: this.editedItem.email,
+        }).then((response) => this.emailInline());
       } catch (error) {
         this.error = error.response.data.error;
       }
@@ -311,7 +332,7 @@ export default {
       this.snack = true;
       this.snackColor = "success";
       this.snackText = "Datos eliminados";
-    }
-  }
+    },
+  },
 };
 </script>

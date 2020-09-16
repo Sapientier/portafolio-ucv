@@ -41,6 +41,9 @@ const ServiceSchema = new Schema({
     },
     direction: {
         type: String
+    },
+    approve: {
+        type: Boolean
     }
 });
 

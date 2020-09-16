@@ -23,7 +23,7 @@
                 <br />
                 {{ formatDate(value.date) }}
               </div>
-              <v-checkbox v-model="approve" disabled v-if="$store.state.isUserLoggedIn"></v-checkbox>
+              <v-checkbox v-model="value.approve" disabled v-if="$store.state.isUserLoggedIn"></v-checkbox>
             </v-flex>
             <v-flex d-flex justify-start align-self-end>
               <v-chip
@@ -111,24 +111,25 @@
                         ref="menu"
                         v-model="menu"
                         :close-on-content-click="false"
-                        :return-value.sync="date"
+                        :return-value.sync="editedItem.date"
                         transition="scale-transition"
                         offset-y
                         min-width="290px"
                       >
-                        <template v-slot:activator="{ on }">
+                        <template v-slot:activator="{ on, attrs }">
                           <v-text-field
                             v-model="computedDateFormatted"
                             label="Fecha de Creación*"
                             prepend-icon="mdi-calendar"
                             readonly
+                            v-bind="attrs"
                             v-on="on"
                           ></v-text-field>
                         </template>
-                        <v-date-picker v-model="date" no-title scrollable locale="es-es">
+                        <v-date-picker v-model="editedItem.date" no-title scrollable locale="es-es">
                           <v-spacer></v-spacer>
                           <v-btn text color="primary" @click="menu = false">Cancelar</v-btn>
-                          <v-btn text color="primary" @click="$refs.menu.save(date)">Aceptar</v-btn>
+                          <v-btn text color="primary" @click="$refs.menu.save(editedItem.date)">Aceptar</v-btn>
                         </v-date-picker>
                       </v-menu>
                     </v-col>
@@ -161,9 +162,9 @@
                 <small>*Indica que es un campo requerido</small>
               </v-card-text>
               <v-divider></v-divider>
-              <v-card-actions>
+              <v-card-actions v-if="$store.state.isUserLoggedIn">
                 <v-spacer></v-spacer>
-                <!-- <v-switch v-model="approve" label="Aprobado" :disabled="$store.state.user.dependencies == 'Profesor/Investigador'"></v-switch> -->
+                <v-switch v-model="editedItem.approve" label="Aprobado" :disabled="$store.state.user.dependencies == 'Profesor/Investigador'"></v-switch>
                 <v-spacer></v-spacer>
                 <v-btn color="blue darken-1" text @click="close">Cerrar</v-btn>
                 <v-btn color="blue darken-1" text @click="updateService" :disabled="!valid">Guardar</v-btn>
@@ -234,7 +235,7 @@ export default {
       name: "",
       category: "",
       autor: "",
-      date: "",
+      date: new Date().toISOString().substr(0, 10),
       imageService: "",
       school: "",
       institute: "",
@@ -243,13 +244,14 @@ export default {
       request: "",
       paramserv: "",
       direction: "",
+      approve: false,
     },
     editedItem: {
       _id: "",
       name: "",
       category: "",
       autor: "",
-      date: "",
+      date: new Date().toISOString().substr(0, 10),
       imageService: "",
       school: "",
       institute: "",
@@ -258,10 +260,9 @@ export default {
       request: "",
       paramserv: "",
       direction: "",
+      approve: false,
     },
-    approve: false,
     selectedFile: null,
-    date: new Date().toISOString().substr(0, 10),
     menu: false,
     snack: false,
     snackColor: "",
@@ -357,6 +358,7 @@ export default {
         fd.append("direction", this.editedItem.direction);
         fd.append("date", this.editedItem.date);
         fd.append("imageService", this.editedItem.imageService);
+        fd.append("approve", this.editedItem.approve);
         const response = this.updateServicios(fd).then((response) =>
           this.update()
         );
