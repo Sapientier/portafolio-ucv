@@ -1,5 +1,7 @@
 const Service = require('../models/Service');
 const Subscriber = require('../models/Subscriber');
+const NotificationCon = require('../controllers/NotificationsController');
+const User = require('../models/User');
 const nodemailer = require('nodemailer');
 const config = require('../config');
 const fs = require('fs')
@@ -23,14 +25,43 @@ module.exports = {
                 description: req.body.description,
                 request: req.body.request,
                 paramserv: req.body.paramserv,
-                direction: req.body.direction
+                direction: req.body.direction,
+                approve: req.body.approve
             });
 
             const user = await task.save();
+
+            try {
+                const emails = [];
+                var descripcion = "";
+                const date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
+                if(req.body.approve == "true"){
+                    descripcion = "Se ha creado un nuevo servicio ya aprobado con nombre: " + req.body.name;
+                }
+                else{
+                    descripcion = "Se ha creado un nuevo servicio sin aprobar con nombre: " + req.body.name;
+                }
+                const usersNoti = await User.find({
+                    '_id': { $ne: req.body.id }
+                });
+                for (const element of usersNoti) {
+                    emails.push(element.email);
+                    const newTask = {
+                        numNoti: (element.numNoti + 1)
+                    };
+                    await User.findByIdAndUpdate(element._id, newTask);
+                }
+
+                // Llamar a la insercion de Notificaciones
+                NotificationCon.insertnotifications(emails, "Service", "Nuevo Servicio", descripcion, date);
+            } catch (err) {
+                console.log(err);
+            }
+
             res.json(user.toJSON());
         } catch (err) {
             res.status(400).send({
-                error: 'Error en la inserción de datos.'
+                error: 'Error en la inserción de datos de servicios.'
             })
         }
     },
@@ -65,7 +96,7 @@ module.exports = {
                 direction: req.body.direction,
                 approve: req.body.approve,
             };
-            const user = await Service.findByIdAndUpdate(req.body._id, newTask, {new: true});
+            const user = await Service.findByIdAndUpdate(req.body._id, newTask, { new: true });
             res.json(user.toJSON());
         } catch (err) {
             res.status(400).send({
@@ -143,9 +174,9 @@ module.exports = {
                 'email': req.body.email
             });
 
-            if(correo) {
+            if (correo) {
                 return res.status(403).send({
-                   error: 'El correo electronico ingresado ya existe.' 
+                    error: 'El correo electronico ingresado ya existe.'
                 })
             }
 

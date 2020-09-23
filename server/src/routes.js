@@ -41,6 +41,9 @@ module.exports = (app) => {
         app.post('/updateuserper',
             UsersController.updateuserper
         ),
+        app.post('/updateusernoti',
+            UsersController.updateusernoti
+        ),
         app.post('/resetpass',
             UsersController.resetpass
         ),

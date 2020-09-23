@@ -277,7 +277,7 @@ export default {
             email: this.editedItem.email,
             isAdmin: this.editedItem.isAdmin,
             isActive: this.editedItem.isActive,
-            dependencies: this.editedItem.dependencies,
+            dependencies: this.editedItem.dependencies
           }).then((response) => this.updateInline());
           Object.assign(this.UserList[this.editedIndex], this.editedItem);
           this.close();

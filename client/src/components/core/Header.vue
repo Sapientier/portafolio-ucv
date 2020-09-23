@@ -77,18 +77,21 @@
         <span
           class="hidden-sm-and-down home"
           @click="navigateTo({name: 'Home'})"
-          title="Pagina de Inicio"
         >Portafolio Digital UCV</span>
       </v-toolbar-title>
 
       <v-spacer />
 
-      <v-btn icon v-if="$store.state.isUserLoggedIn">
-        <v-badge overlap>
-          <template v-slot:badge>0</template>
-          <v-icon>mdi-bell</v-icon>
-        </v-badge>
-      </v-btn>
+      <v-tooltip v-if="$store.state.isUserLoggedIn" bottom>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn icon v-on="on" v-bind="attrs" @click="updateNumNoti">
+            <v-badge overlap :value="$store.state.user.numNoti" :content="$store.state.user.numNoti">
+              <v-icon>mdi-bell</v-icon>
+            </v-badge>
+          </v-btn>
+        </template>
+        <span>Notificaciones</span>
+      </v-tooltip>
 
       <v-btn icon v-if="$store.state.isUserLoggedIn" :to="{name: 'UserProfile'}">
         <v-tooltip bottom>
@@ -121,8 +124,22 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
+import UsersService from "@/services/UsersService";
+
 export default {
   methods: {
+    async updateNumNoti() {
+      this.$store.dispatch("setUserNumNoti", 0);
+      try {
+        const response = await UsersService.updateusernoti({
+          _id: this.$store.state.user._id,
+          numnoti: 0,
+        }).then(response);
+      } catch (error) {
+        console.log(error.response.data.error);
+      }
+    },
     navigateTo(route) {
       this.$router.push(route);
     },
@@ -132,13 +149,16 @@ export default {
       // Redirigimos al Inicio
       this.$router
         .push({
-          name: "Home",
+          name: "Login",
         })
         .catch((err) => {});
     },
   },
+  computed: {
+    ...mapGetters(["notifications"]),
+  },
   data: () => ({
-    drawer: null,
+    drawer: null
   }),
 };
 </script>

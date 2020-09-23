@@ -262,6 +262,7 @@ export default {
       direction: "",
       approve: false,
     },
+    error: null,
     selectedFile: null,
     menu: false,
     snack: false,
@@ -333,7 +334,10 @@ export default {
         const response = this.removeServicios({
           _id: this.editedItem._id,
           imageService: this.editedItem.imageService,
-        }).then((response) => this.delete());
+        }).then((response) => 
+          //Revisar bien este Snackbar que no aparecer
+          this.delete()
+        );
         this.close();
       } catch (error) {
         this.error = error.response.data.error;
@@ -377,12 +381,12 @@ export default {
     delete() {
       this.snack = true;
       this.snackColor = "success";
-      this.snackText = "Datos eliminados";
+      this.snackText = "Servicio eliminado";
     },
     update() {
       this.snack = true;
       this.snackColor = "success";
-      this.snackText = "Datos actualizados";
+      this.snackText = "Servicio actualizado";
     },
   },
   computed: {

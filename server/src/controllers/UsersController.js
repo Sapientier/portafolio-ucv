@@ -31,7 +31,8 @@ module.exports = {
                 password: password,
                 isAdmin: req.body.isAdmin,
                 isActive: req.body.isActive,
-                dependencies: req.body.dependencies
+                dependencies: req.body.dependencies,
+                numNoti: 0
             });
 
             const user = await task.save();
@@ -120,6 +121,19 @@ module.exports = {
         } catch (err) {
             res.status(500).send({
                 error: 'Ha ocurrido un error al actualizar el perfil'
+            })
+        }
+    },
+    async updateusernoti(req, res) {
+        try {
+            const newTask = {
+                numNoti: req.body.numnoti
+            };
+            await User.findByIdAndUpdate(req.body._id, newTask);
+            res.json("Actualizado con exito");
+        } catch (err) {
+            res.status(500).send({
+                error: 'Ha ocurrido un error al actualizar el número de notificaciones'
             })
         }
     },

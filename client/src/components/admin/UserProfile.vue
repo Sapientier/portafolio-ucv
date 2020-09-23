@@ -43,10 +43,10 @@
                   />
                 </v-flex>
                 <v-flex xs12 md6>
-                  <v-text-field v-model="name" label="Nombre" />
+                  <v-text-field v-model="name" label="Nombres" />
                 </v-flex>
                 <v-flex xs12 md6>
-                  <v-text-field v-model="lastname" label="Apellido" />
+                  <v-text-field v-model="lastname" label="Apellidos" />
                 </v-flex>
                 <v-flex xs12 md6>
                   <v-combobox v-model="escuelas" :items="itemsel" label="Escuelas"></v-combobox>

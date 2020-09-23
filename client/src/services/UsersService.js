@@ -19,6 +19,9 @@ export default {
     updateuserper (values) {
         return Api().post('updateuserper', values)
     },
+    updateusernoti (values) {
+        return Api().post('updateusernoti', values)
+    },
     deleteusers (values) {
         return Api().post('deleteusers', values)
     },

@@ -342,9 +342,10 @@ export default {
         fd.append("direction", this.direccion);
         fd.append("date", this.date);
         fd.append("approve", this.approve);
-        const response = this.setServicios(fd).then((response) =>
-          this.insertInline()
-        );
+        fd.append("id", this.$store.state.user._id);
+        const response = this.setServicios(fd).then((response) => {
+          this.insertInline();
+        });
         this.close();
       } catch (error) {
         this.snack = true;
@@ -388,6 +389,7 @@ export default {
       this.direccion = "";
       this.selectedFile = null;
       this.dialog = false;
+      this.approve = false;
       this.resetValidation();
     },
     activefilter(num) {

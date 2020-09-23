@@ -11,10 +11,12 @@ export default new Vuex.Store({
         servicios: [],
         token: null,
         user: null,
-        isUserLoggedIn: false
+        isUserLoggedIn: false,
+        notificaciones: []
     },
     getters: {
-        services: state => state.servicios
+        services: state => state.servicios,
+        notifications: state => state.notificaciones
     },
     mutations: {
         setToken: (state, token) => {
@@ -26,6 +28,7 @@ export default new Vuex.Store({
             }
         },
         setUser: (state, user) => state.user = user,
+        setUserNumNoti: (state, numnoti) => state.user.numNoti = numnoti,
         getServicios: (state, servicios) => state.servicios = servicios,
         setServicios: (state, servicios) => state.servicios.unshift(servicios),
         removeServicios: (state, id) => (state.servicios = state.servicios.filter(servicio => servicio._id !== id)),
@@ -42,6 +45,9 @@ export default new Vuex.Store({
         },
         setUser({ commit }, user) {
             commit('setUser', user)
+        },
+        setUserNumNoti({ commit }, numnoti) {
+            commit('setUserNumNoti', numnoti)
         },
         async getServicios({ commit }) {
             await Services.getservices()
@@ -60,7 +66,8 @@ export default new Vuex.Store({
         async removeServicios({ commit }, fd) {
             await Services.deleteservices(fd)
                 .then(response => {
-                    commit('removeServicios', fd._id)
+                    commit('removeServicios', fd._id),
+                    console.log(response.data)
                 })
                 .catch(error => console.log(error));
         },

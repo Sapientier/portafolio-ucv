@@ -35,6 +35,9 @@ const UserSchema = new Schema({
     },
     institute: {
         type: String
+    },
+    numNoti: {
+        type: Number
     }
 });
 
