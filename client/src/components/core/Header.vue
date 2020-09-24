@@ -82,16 +82,49 @@
 
       <v-spacer />
 
-      <v-tooltip v-if="$store.state.isUserLoggedIn" bottom>
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn icon v-on="on" v-bind="attrs" @click="updateNumNoti">
-            <v-badge overlap :value="$store.state.user.numNoti" :content="$store.state.user.numNoti">
-              <v-icon>mdi-bell</v-icon>
-            </v-badge>
-          </v-btn>
+      <v-menu
+        bottom
+        left
+        offset-y
+        :close-on-content-click="false"
+        max-width="400"
+        max-height="600"
+        origin="center center"
+        transition="scale-transition"
+        v-if="$store.state.isUserLoggedIn" 
+      >
+        <template v-slot:activator="{ on: menu, attrs }">
+          <v-tooltip left>
+            <template v-slot:activator="{ on: tooltip  }">
+              <v-btn icon v-on="{ ...tooltip, ...menu }" v-bind="attrs" @click="updateNumNoti">
+                <v-badge
+                  overlap
+                  :value="$store.state.user.numNoti"
+                  :content="$store.state.user.numNoti"
+                >
+                  <v-icon>mdi-bell</v-icon>
+                </v-badge>
+              </v-btn>
+            </template>
+            <span>Notificaciones</span>
+          </v-tooltip>
         </template>
-        <span>Notificaciones</span>
-      </v-tooltip>
+
+        <v-list v-for="item in $store.state.notificaciones" :key="item._id">
+            <v-card class="on-hover">
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-title>{{ item.title }}</v-list-item-title>
+                  <v-list-item-subtitle>{{ formatDate(item.dateNoti) }}</v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+              <v-divider></v-divider>
+              <v-list-item>
+                <v-list-item-content>{{ item.description }}</v-list-item-content>
+              </v-list-item>
+            </v-card>
+        </v-list>
+      </v-menu>
 
       <v-btn icon v-if="$store.state.isUserLoggedIn" :to="{name: 'UserProfile'}">
         <v-tooltip bottom>
@@ -129,6 +162,12 @@ import UsersService from "@/services/UsersService";
 
 export default {
   methods: {
+    formatDate(date) {
+      if (!date) return null;
+      var aux = date.replace(/\T.+/, '');
+      const [year, month, day] = aux.split("-");
+      return `${day}/${month}/${year}`;
+    },
     async updateNumNoti() {
       this.$store.dispatch("setUserNumNoti", 0);
       try {
@@ -158,12 +197,16 @@ export default {
     ...mapGetters(["notifications"]),
   },
   data: () => ({
-    drawer: null
+    drawer: null,
   }),
 };
 </script>
 
 <style scoped>
+.on-hover:hover {
+  background-color: rgba(0,0,0,0.05);
+ }
+
 .home {
   cursor: pointer;
 }

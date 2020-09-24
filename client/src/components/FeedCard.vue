@@ -331,13 +331,11 @@ export default {
     },
     deleteval() {
       try {
+        this.delete();
         const response = this.removeServicios({
           _id: this.editedItem._id,
           imageService: this.editedItem.imageService,
-        }).then((response) => 
-          //Revisar bien este Snackbar que no aparecer
-          this.delete()
-        );
+        });
         this.close();
       } catch (error) {
         this.error = error.response.data.error;

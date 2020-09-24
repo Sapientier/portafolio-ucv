@@ -1,6 +1,7 @@
 const AuthenticationController = require('./controllers/AuthenticationController');
 const UsersController = require('./controllers/UsersController');
 const ServicesController = require('./controllers/ServicesController');
+const NotificationsController = require('./controllers/NotificationsController');
 const path = require('path');
 const multer = require('multer');
 const storage = multer.diskStorage({
@@ -72,5 +73,7 @@ module.exports = (app) => {
         ),
         app.post('/suscribeservices',
             ServicesController.suscribeservices
-        )
+        ),
+        app.post('/getnotifications',
+            NotificationsController.getnotifications)
 }   

@@ -28,6 +28,7 @@ export default new Vuex.Store({
             }
         },
         setUser: (state, user) => state.user = user,
+        setNoti: (state, notificaciones) => state.notificaciones = notificaciones,
         setUserNumNoti: (state, numnoti) => state.user.numNoti = numnoti,
         getServicios: (state, servicios) => state.servicios = servicios,
         setServicios: (state, servicios) => state.servicios.unshift(servicios),
@@ -45,6 +46,9 @@ export default new Vuex.Store({
         },
         setUser({ commit }, user) {
             commit('setUser', user)
+        },
+        setNoti({ commit }, notificaciones) {
+            commit('setNoti', notificaciones)
         },
         setUserNumNoti({ commit }, numnoti) {
             commit('setUserNumNoti', numnoti)

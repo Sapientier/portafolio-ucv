@@ -36,10 +36,10 @@ module.exports = {
                 var descripcion = "";
                 const date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
                 if(req.body.approve == "true"){
-                    descripcion = "Se ha creado un nuevo servicio ya aprobado con nombre: " + req.body.name;
+                    descripcion = "Aprobado con nombre: " + req.body.name;
                 }
                 else{
-                    descripcion = "Se ha creado un nuevo servicio sin aprobar con nombre: " + req.body.name;
+                    descripcion = "No aprobado con nombre: " + req.body.name;
                 }
                 const usersNoti = await User.find({
                     '_id': { $ne: req.body.id }

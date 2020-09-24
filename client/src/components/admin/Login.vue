@@ -43,6 +43,7 @@
 
 <script>
 import AuthenticationService from "@/services/AuthenticationService";
+import NotificationService from "@/services/NotificationService";
 
 export default {
   data: () => ({
@@ -68,8 +69,14 @@ export default {
           email: this.email,
           password: this.password,
         });
+
+        const responsenoti = await NotificationService.getnotifications({
+          email: this.email
+        });
+
         this.$store.dispatch("setToken", response.data.token);
         this.$store.dispatch("setUser", response.data.user);
+        this.$store.dispatch("setNoti", responsenoti.data);
         this.$router.push({
           name: "Home",
         });

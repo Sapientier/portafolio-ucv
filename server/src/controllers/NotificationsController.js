@@ -17,9 +17,12 @@ module.exports = {
             console.log(err);
         }
     },
-    async getservices(req, res) {
+    async getnotifications(req, res) {
         try {
-            const notifications = await Notification.find();
+            const notifications = await Notification.find({
+                'emailsToNoti': { $in: req.body.email }
+            });
+
             res.json(notifications);
         } catch (err) {
             res.status(500).send({
