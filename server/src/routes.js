@@ -75,5 +75,9 @@ module.exports = (app) => {
             ServicesController.suscribeservices
         ),
         app.post('/getnotifications',
-            NotificationsController.getnotifications)
+            NotificationsController.getnotifications
+        ),
+        app.post('/insertnotifications',
+            NotificationsController.insertnotifications
+        )
 }   

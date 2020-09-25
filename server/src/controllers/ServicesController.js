@@ -1,7 +1,5 @@
 const Service = require('../models/Service');
 const Subscriber = require('../models/Subscriber');
-const NotificationCon = require('../controllers/NotificationsController');
-const User = require('../models/User');
 const nodemailer = require('nodemailer');
 const config = require('../config');
 const fs = require('fs')
@@ -30,33 +28,6 @@ module.exports = {
             });
 
             const user = await task.save();
-
-            try {
-                const emails = [];
-                var descripcion = "";
-                const date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
-                if(req.body.approve == "true"){
-                    descripcion = "Aprobado con nombre: " + req.body.name;
-                }
-                else{
-                    descripcion = "No aprobado con nombre: " + req.body.name;
-                }
-                const usersNoti = await User.find({
-                    '_id': { $ne: req.body.id }
-                });
-                for (const element of usersNoti) {
-                    emails.push(element.email);
-                    const newTask = {
-                        numNoti: (element.numNoti + 1)
-                    };
-                    await User.findByIdAndUpdate(element._id, newTask);
-                }
-
-                // Llamar a la insercion de Notificaciones
-                NotificationCon.insertnotifications(emails, "Service", "Nuevo Servicio", descripcion, date);
-            } catch (err) {
-                console.log(err);
-            }
 
             res.json(user.toJSON());
         } catch (err) {

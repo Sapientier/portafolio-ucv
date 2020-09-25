@@ -8,7 +8,10 @@
             outlined
             :input-value="active0"
             filter
-            @click="getServicios(); activefilter(0)"
+            @click="
+              getServicios();
+              activefilter(0);
+            "
           >
             <v-icon left>mdi-star</v-icon>Todos
           </v-chip>
@@ -19,7 +22,10 @@
             :input-value="active1"
             filter
             outlined
-            @click="filterServiciosbyCat('Investigación'); activefilter(1)"
+            @click="
+              filterServiciosbyCat('Investigación');
+              activefilter(1);
+            "
           >
             <v-icon left>mdi-glasses</v-icon>Investigación
           </v-chip>
@@ -30,7 +36,10 @@
             :input-value="active2"
             filter
             outlined
-            @click="filterServiciosbyCat('Tecnología'); activefilter(2)"
+            @click="
+              filterServiciosbyCat('Tecnología');
+              activefilter(2);
+            "
           >
             <v-icon left>mdi-server</v-icon>Tecnología
           </v-chip>
@@ -41,7 +50,10 @@
             :input-value="active3"
             filter
             outlined
-            @click="filterServiciosbyCat('Mercadeo'); activefilter(3)"
+            @click="
+              filterServiciosbyCat('Mercadeo');
+              activefilter(3);
+            "
           >
             <v-icon left>mdi-currency-usd</v-icon>Mercadeo
           </v-chip>
@@ -52,7 +64,10 @@
             :input-value="active4"
             filter
             outlined
-            @click="filterServiciosbyCat('Medicina'); activefilter(4)"
+            @click="
+              filterServiciosbyCat('Medicina');
+              activefilter(4);
+            "
           >
             <v-icon left>mdi-medical-bag</v-icon>Medicina
           </v-chip>
@@ -63,7 +78,10 @@
             :input-value="active5"
             filter
             outlined
-            @click="filterServiciosbyCat('Educación'); activefilter(5)"
+            @click="
+              filterServiciosbyCat('Educación');
+              activefilter(5);
+            "
           >
             <v-icon left>mdi-book</v-icon>Educación
           </v-chip>
@@ -94,7 +112,11 @@
     </v-layout>
 
     <div class="text-center">
-      <v-pagination v-model="page" :length="pages" :total-visible="7"></v-pagination>
+      <v-pagination
+        v-model="page"
+        :length="pages"
+        :total-visible="7"
+      ></v-pagination>
     </div>
 
     <v-dialog v-model="dialog" persistent max-width="600px">
@@ -122,7 +144,12 @@
             <v-container>
               <v-row>
                 <v-col cols="12" sm="12">
-                  <v-text-field v-model="name" label="Nombre*" :rules="nameRules" required></v-text-field>
+                  <v-text-field
+                    v-model="name"
+                    label="Nombre*"
+                    :rules="nameRules"
+                    required
+                  ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6">
                   <v-combobox
@@ -134,13 +161,26 @@
                   ></v-combobox>
                 </v-col>
                 <v-col cols="12" sm="6">
-                  <v-text-field v-model="autor" label="Autor*" :rules="autorRules" required></v-text-field>
+                  <v-text-field
+                    v-model="autor"
+                    label="Autor*"
+                    :rules="autorRules"
+                    required
+                  ></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="6">
-                  <v-combobox v-model="schools" :items="itemselSchool" label="Escuela"></v-combobox>
+                  <v-combobox
+                    v-model="schools"
+                    :items="itemselSchool"
+                    label="Escuela"
+                  ></v-combobox>
                 </v-col>
                 <v-col cols="12" sm="6">
-                  <v-combobox v-model="institutes" :items="itemselInst" label="Instituto"></v-combobox>
+                  <v-combobox
+                    v-model="institutes"
+                    :items="itemselInst"
+                    label="Instituto"
+                  ></v-combobox>
                 </v-col>
                 <v-col cols="12" sm="6">
                   <v-menu
@@ -161,10 +201,19 @@
                         v-on="on"
                       ></v-text-field>
                     </template>
-                    <v-date-picker v-model="date" no-title scrollable locale="es-es">
+                    <v-date-picker
+                      v-model="date"
+                      no-title
+                      scrollable
+                      locale="es-es"
+                    >
                       <v-spacer></v-spacer>
-                      <v-btn text color="primary" @click="menu = false">Cancelar</v-btn>
-                      <v-btn text color="primary" @click="$refs.menu.save(date)">Aceptar</v-btn>
+                      <v-btn text color="primary" @click="menu = false"
+                        >Cancelar</v-btn
+                      >
+                      <v-btn text color="primary" @click="$refs.menu.save(date)"
+                        >Aceptar</v-btn
+                      >
                     </v-date-picker>
                   </v-menu>
                 </v-col>
@@ -178,16 +227,25 @@
                   ></v-file-input>
                 </v-col>
                 <v-col cols="12">
-                  <v-text-field v-model="usuariospp" label="Usuarios Involucrados"></v-text-field>
+                  <v-text-field
+                    v-model="usuariospp"
+                    label="Usuarios Involucrados"
+                  ></v-text-field>
                 </v-col>
                 <v-col cols="12">
                   <v-textarea v-model="descripcion" label="Descripción" />
                 </v-col>
                 <v-col cols="12">
-                  <v-text-field v-model="solicitud" label="Solicitud del Servicio"></v-text-field>
+                  <v-text-field
+                    v-model="solicitud"
+                    label="Solicitud del Servicio"
+                  ></v-text-field>
                 </v-col>
                 <v-col cols="12">
-                  <v-text-field v-model="params" label="Parámetros del Servicio"></v-text-field>
+                  <v-text-field
+                    v-model="params"
+                    label="Parámetros del Servicio"
+                  ></v-text-field>
                 </v-col>
                 <v-col cols="12">
                   <v-textarea v-model="direccion" label="Dirección" rows="3" />
@@ -202,11 +260,19 @@
             <v-switch
               v-model="approve"
               label="Aprobado"
-              :disabled="$store.state.user.dependencies == 'Profesor/Investigador'"
+              :disabled="
+                $store.state.user.dependencies == 'Profesor/Investigador'
+              "
             ></v-switch>
             <v-spacer></v-spacer>
             <v-btn color="blue darken-1" text @click="close">Cerrar</v-btn>
-            <v-btn color="blue darken-1" text @click="insertService" :disabled="!valid">Guardar</v-btn>
+            <v-btn
+              color="blue darken-1"
+              text
+              @click="insertService"
+              :disabled="!valid"
+              >Guardar</v-btn
+            >
           </v-card-actions>
         </v-form>
       </v-card>
@@ -224,6 +290,7 @@
 // Utilities
 import { mapGetters, mapActions } from "vuex";
 import Services from "@/services/Services";
+import NotificationService from "@/services/NotificationService";
 
 export default {
   name: "Feed",
@@ -324,9 +391,10 @@ export default {
         this.loading = false;
       }, 500);
     },
-    insertService() {
+    async insertService() {
       try {
         const fd = new FormData();
+
         if (this.selectedFile != null) {
           fd.append("image", this.selectedFile, this.selectedFile.name);
         }
@@ -342,10 +410,17 @@ export default {
         fd.append("direction", this.direccion);
         fd.append("date", this.date);
         fd.append("approve", this.approve);
-        fd.append("id", this.$store.state.user._id);
+
         const response = this.setServicios(fd).then((response) => {
           this.insertInline();
         });
+
+        const responsenoti = await NotificationService.insertnotifications({
+          id: this.$store.state.user._id,
+          name: this.name,
+          approve: this.approve,
+        });
+
         this.close();
       } catch (error) {
         this.snack = true;
@@ -432,7 +507,7 @@ export default {
       this.snackText = "Servicio creado";
     },
     removeItemAll(arr) {
-      if(!this.$store.state.isUserLoggedIn){
+      if (!this.$store.state.isUserLoggedIn) {
         var i = 0;
         while (i < arr.length) {
           if (arr[i].approve === false) {

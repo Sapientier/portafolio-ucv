@@ -4,4 +4,7 @@ export default {
     getnotifications (values) {
         return Api().post('getnotifications', values)
     },
+    insertnotifications (values) {
+        return Api().post('insertnotifications', values)
+    },
 }

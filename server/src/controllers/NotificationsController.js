@@ -1,18 +1,39 @@
 const Notification = require('../models/Notification');
+const User = require('../models/User');
 
 module.exports = {
-    async insertnotifications(emails, tipo, titulo, descripcion, fecha) {
+    async insertnotifications(req, res) {
         try {
+            const emails = [];
+            var descripcion = "";
+            const date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
+            if(req.body.approve == "true"){
+                descripcion = "Aprobado con nombre: " + req.body.name;
+            }
+            else{
+                descripcion = "No aprobado con nombre: " + req.body.name;
+            }
+            const usersNoti = await User.find({
+                '_id': { $ne: req.body.id }
+            });
+            for (const element of usersNoti) {
+                emails.push(element.email);
+                const newTask = {
+                    numNoti: (element.numNoti + 1)
+                };
+                await User.findByIdAndUpdate(element._id, newTask);
+            }
+
             const task = new Notification({
                 emailsToNoti: emails,
-                typeNoti: tipo,
-                title: titulo,
+                typeNoti: "Service",
+                title: "Nuevo Servicio",
                 description: descripcion,
-                dateNoti: fecha
+                dateNoti: date
             });
 
             const notificacion = await task.save();
-            return notificacion;
+            res.json(notificacion.toJSON());
         } catch (err) {
             console.log(err);
         }
@@ -26,7 +47,7 @@ module.exports = {
             res.json(notifications);
         } catch (err) {
             res.status(500).send({
-                error: 'Ha ocurrido un error al buscar los servicios'
+                error: 'Ha ocurrido un error al buscar las notificaciones'
             })
         }
     },
