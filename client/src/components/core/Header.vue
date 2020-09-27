@@ -91,12 +91,12 @@
         max-height="600"
         origin="center center"
         transition="scale-transition"
-        v-if="$store.state.isUserLoggedIn" 
+        v-if="$store.state.isUserLoggedIn"
       >
         <template v-slot:activator="{ on: menu, attrs }">
           <v-tooltip left>
-            <template v-slot:activator="{ on: tooltip  }">
-              <v-btn icon v-on="{ ...tooltip, ...menu }" v-bind="attrs" @click="updateNumNoti">
+            <template v-slot:activator="{ on: tooltip }">
+              <v-btn icon v-on="{ ...tooltip, ...menu }" v-bind="attrs" @click="updateNumNoti" :disabled="$store.state.notificaciones == ''">
                 <v-badge
                   overlap
                   :value="$store.state.user.numNoti"
@@ -110,15 +110,33 @@
           </v-tooltip>
         </template>
 
-        <v-list v-for="item in $store.state.notificaciones" :key="item._id">
+        <v-list class="list-header">
+          <v-list-item class="list-item">
+            <v-list-item-content>
+              <v-list-item-title class="font-weight-medium">Notificaciones</v-list-item-title>
+            </v-list-item-content>
+
+            <v-list-item-action>
+              <v-btn
+                icon
+              >
+                <v-icon>mdi-cog</v-icon>
+              </v-btn>
+            </v-list-item-action>
+          </v-list-item>
+        </v-list>
+
+        <v-divider></v-divider>
+  
+        <v-list v-for="item in $store.state.notificaciones" :key="item._id" class="list-noti">
             <v-card class="on-hover">
               <v-list-item>
-                <v-list-item-content>
+                <v-list-item-content class="list-cont">
                   <v-list-item-title>{{ item.title }}</v-list-item-title>
                   <v-list-item-subtitle>{{ formatDate(item.dateNoti) }}</v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
-              <v-divider></v-divider>
+              
               <v-list-item>
                 <v-list-item-content>{{ item.description }}</v-list-item-content>
               </v-list-item>
@@ -185,7 +203,7 @@ export default {
     logout() {
       this.$store.dispatch("setToken", null);
       this.$store.dispatch("setUser", null);
-      // Redirigimos al Inicio
+      // Redirigimos al Login
       this.$router
         .push({
           name: "Login",
@@ -203,6 +221,24 @@ export default {
 </script>
 
 <style scoped>
+.list-header {
+  max-height: 40px;
+  padding: 0
+}
+
+.list-item {
+   max-height: 40px;
+   min-height: 40px;
+}
+
+.list-noti {
+  padding: 0;
+}
+
+.list-cont {
+  padding: 0
+}
+
 .on-hover:hover {
   background-color: rgba(0,0,0,0.05);
  }
