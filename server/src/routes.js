@@ -79,5 +79,8 @@ module.exports = (app) => {
         ),
         app.post('/insertnotifications',
             NotificationsController.insertnotifications
+        ),
+        app.post('/deletenotifications',
+            NotificationsController.deletenotifications
         )
 }   

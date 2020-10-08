@@ -1,6 +1,10 @@
 <template>
   <div>
-    <v-navigation-drawer v-model="drawer" :clipped="$vuetify.breakpoint.lgAndUp" app>
+    <v-navigation-drawer
+      v-model="drawer"
+      :clipped="$vuetify.breakpoint.lgAndUp"
+      app
+    >
       <v-list dense>
         <v-list-item link to="/">
           <v-list-item-action>
@@ -61,7 +65,12 @@
         </v-btn>
       </v-bottom-navigation>
     </v-navigation-drawer>
-    <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app color="indigo" dark>
+    <v-app-bar
+      :clipped-left="$vuetify.breakpoint.lgAndUp"
+      app
+      color="indigo"
+      dark
+    >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-btn icon large>
         <v-avatar size="32px" item>
@@ -76,13 +85,15 @@
       <v-toolbar-title style="width: 300px" class="ml-0 pl-4">
         <span
           class="hidden-sm-and-down home"
-          @click="navigateTo({name: 'Home'})"
-        >Portafolio Digital UCV</span>
+          @click="navigateTo({ name: 'Home' })"
+          >Portafolio Digital UCV</span
+        >
       </v-toolbar-title>
 
       <v-spacer />
 
       <v-menu
+        v-model="shown"
         bottom
         left
         offset-y
@@ -94,9 +105,15 @@
         v-if="$store.state.isUserLoggedIn"
       >
         <template v-slot:activator="{ on: menu, attrs }">
-          <v-tooltip left>
+          <v-tooltip bottom>
             <template v-slot:activator="{ on: tooltip }">
-              <v-btn icon v-on="{ ...tooltip, ...menu }" v-bind="attrs" @click="updateNumNoti" :disabled="$store.state.notificaciones == ''">
+              <v-btn
+                icon
+                v-on="{ ...tooltip, ...menu }"
+                v-bind="attrs"
+                @click="updateNumNoti"
+                :disabled="$store.state.notificaciones == ''"
+              >
                 <v-badge
                   overlap
                   :value="$store.state.user.numNoti"
@@ -110,41 +127,48 @@
           </v-tooltip>
         </template>
 
-        <v-list class="list-header">
-          <v-list-item class="list-item">
-            <v-list-item-content>
-              <v-list-item-title class="font-weight-medium">Notificaciones</v-list-item-title>
-            </v-list-item-content>
+        <v-toolbar dark color="indigo lighten-1">
+          <v-toolbar-title>Notificaciones</v-toolbar-title>
 
-            <v-list-item-action>
-              <v-btn
-                icon
-              >
-                <v-icon>mdi-cog</v-icon>
+          <v-spacer></v-spacer>
+
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn icon v-bind="attrs" v-on="on" @click="cleanNoti">
+                <v-icon>mdi-check</v-icon>
               </v-btn>
-            </v-list-item-action>
-          </v-list-item>
-        </v-list>
+            </template>
+            <span>Limpiar</span>
+          </v-tooltip>
+        </v-toolbar>
 
-        <v-divider></v-divider>
-  
-        <v-list v-for="item in $store.state.notificaciones" :key="item._id" class="list-noti">
-            <v-card class="on-hover">
-              <v-list-item>
-                <v-list-item-content class="list-cont">
-                  <v-list-item-title>{{ item.title }}</v-list-item-title>
-                  <v-list-item-subtitle>{{ formatDate(item.dateNoti) }}</v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
-              
-              <v-list-item>
-                <v-list-item-content>{{ item.description }}</v-list-item-content>
-              </v-list-item>
-            </v-card>
+        <v-list
+          v-for="item in $store.state.notificaciones"
+          :key="item._id"
+          class="list-noti"
+        >
+          <v-card class="on-hover">
+            <v-list-item>
+              <v-list-item-content class="list-cont">
+                <v-list-item-title>{{ item.title }}</v-list-item-title>
+                <v-list-item-subtitle>{{
+                  formatDate(item.dateNoti)
+                }}</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+
+            <v-list-item>
+              <v-list-item-content>{{ item.description }}</v-list-item-content>
+            </v-list-item>
+          </v-card>
         </v-list>
       </v-menu>
 
-      <v-btn icon v-if="$store.state.isUserLoggedIn" :to="{name: 'UserProfile'}">
+      <v-btn
+        icon
+        v-if="$store.state.isUserLoggedIn"
+        :to="{ name: 'UserProfile' }"
+      >
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-icon v-on="on">mdi-account</v-icon>
@@ -162,7 +186,7 @@
         </v-tooltip>
       </v-btn>
 
-      <v-btn icon v-if="!$store.state.isUserLoggedIn" :to="{name: 'Login'}">
+      <v-btn icon v-if="!$store.state.isUserLoggedIn" :to="{ name: 'Login' }">
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
             <v-icon v-on="on">mdi-login</v-icon>
@@ -177,12 +201,13 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import UsersService from "@/services/UsersService";
+import NotificationService from "@/services/NotificationService";
 
 export default {
   methods: {
     formatDate(date) {
       if (!date) return null;
-      var aux = date.replace(/\T.+/, '');
+      var aux = date.replace(/\T.+/, "");
       const [year, month, day] = aux.split("-");
       return `${day}/${month}/${year}`;
     },
@@ -193,6 +218,17 @@ export default {
           _id: this.$store.state.user._id,
           numnoti: 0,
         }).then(response);
+      } catch (error) {
+        console.log(error.response.data.error);
+      }
+    },
+    async cleanNoti() {
+      this.$store.dispatch("cleanNoti");
+      try {
+        const response = await NotificationService.deletenotifications({
+          email: this.$store.state.user.email,
+        }).then(response);
+        this.shown = false;
       } catch (error) {
         console.log(error.response.data.error);
       }
@@ -216,32 +252,23 @@ export default {
   },
   data: () => ({
     drawer: null,
+    shown: false
   }),
 };
 </script>
 
 <style scoped>
-.list-header {
-  max-height: 40px;
-  padding: 0
-}
-
-.list-item {
-   max-height: 40px;
-   min-height: 40px;
-}
-
 .list-noti {
   padding: 0;
 }
 
 .list-cont {
-  padding: 0
+  padding: 0;
 }
 
 .on-hover:hover {
-  background-color: rgba(0,0,0,0.05);
- }
+  background-color: rgba(0, 0, 0, 0.05);
+}
 
 .home {
   cursor: pointer;

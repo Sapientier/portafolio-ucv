@@ -51,4 +51,17 @@ module.exports = {
             })
         }
     },
+    async deletenotifications(req, res) {
+        try {
+            await Notification.updateMany({}, {
+                $pull: { emailsToNoti: { $in: req.body.email } },
+            });
+
+            res.json("Limpieza con exito");
+        } catch (err) {
+            res.status(500).send({
+                error: 'Ha ocurrido un error al limpiar notificaciones'
+            })
+        }
+    }
 }

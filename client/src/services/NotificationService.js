@@ -7,4 +7,7 @@ export default {
     insertnotifications (values) {
         return Api().post('insertnotifications', values)
     },
+    deletenotifications (values) {
+        return Api().post('deletenotifications', values)
+    }
 }
