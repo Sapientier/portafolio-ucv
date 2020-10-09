@@ -98,11 +98,11 @@
         left
         offset-y
         :close-on-content-click="false"
-        max-width="400"
-        max-height="600"
+        max-width="500"
         origin="center center"
         transition="scale-transition"
         v-if="$store.state.isUserLoggedIn"
+        class="hideover"
       >
         <template v-slot:activator="{ on: menu, attrs }">
           <v-tooltip bottom>
@@ -135,33 +135,46 @@
           <v-tooltip bottom>
             <template v-slot:activator="{ on, attrs }">
               <v-btn icon v-bind="attrs" v-on="on" @click="cleanNoti">
-                <v-icon>mdi-check</v-icon>
+                <v-icon>mdi-checkbox-marked-circle</v-icon>
               </v-btn>
             </template>
             <span>Limpiar</span>
           </v-tooltip>
         </v-toolbar>
 
-        <v-list
-          v-for="item in $store.state.notificaciones"
-          :key="item._id"
-          class="list-noti"
-        >
-          <v-card class="on-hover">
-            <v-list-item>
-              <v-list-item-content class="list-cont">
-                <v-list-item-title>{{ item.title }}</v-list-item-title>
-                <v-list-item-subtitle>{{
-                  formatDate(item.dateNoti)
-                }}</v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
+        <v-card class="mx-auto showover" max-height="500" overflow="auto">
+          <v-list three-line>
+            <v-list-item-group multiple>
+              <template v-for="(item, index) in $store.state.notificaciones">
+                <v-list-item :key="item._id">
+                  <v-list-item-content>
+                    <v-list-item-title v-text="item.owner"></v-list-item-title>
 
-            <v-list-item>
-              <v-list-item-content>{{ item.description }}</v-list-item-content>
-            </v-list-item>
-          </v-card>
-        </v-list>
+                    <v-list-item-subtitle
+                      class="text--primary"
+                      v-text="item.title"
+                    ></v-list-item-subtitle>
+
+                    <v-list-item-subtitle
+                      v-text="item.description"
+                    ></v-list-item-subtitle>
+                  </v-list-item-content>
+
+                  <v-list-item-action>
+                    <v-list-item-action-text
+                      v-text="formatDate(item.dateNoti)"
+                    ></v-list-item-action-text>
+                  </v-list-item-action>
+                </v-list-item>
+
+                <v-divider
+                  v-if="index < $store.state.notificaciones.length - 1"
+                  :key="index"
+                ></v-divider>
+              </template>
+            </v-list-item-group>
+          </v-list>
+        </v-card>
       </v-menu>
 
       <v-btn
@@ -252,12 +265,20 @@ export default {
   },
   data: () => ({
     drawer: null,
-    shown: false
+    shown: false,
   }),
 };
 </script>
 
 <style scoped>
+.hideover {
+  overflow: hidden
+}
+
+.showover {
+  overflow: auto
+}
+
 .list-noti {
   padding: 0;
 }

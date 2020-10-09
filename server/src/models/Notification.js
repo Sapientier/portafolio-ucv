@@ -19,6 +19,9 @@ const NotificationSchema = new Schema({
     dateNoti: {
         type: Date
     },
+    owner: {
+        type: String
+    }
 });
 
 module.exports = mongoose.model('Notification', NotificationSchema);

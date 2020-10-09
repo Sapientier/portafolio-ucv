@@ -7,15 +7,17 @@ module.exports = {
             const emails = [];
             var descripcion = "";
             const date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
+
             if(req.body.approve == "true"){
-                descripcion = "Aprobado con nombre: " + req.body.name;
+                descripcion = "Aprobado: " + req.body.name;
             }
             else{
-                descripcion = "No aprobado con nombre: " + req.body.name;
+                descripcion = "No aprobado: " + req.body.name;
             }
             const usersNoti = await User.find({
                 '_id': { $ne: req.body.id }
             });
+
             for (const element of usersNoti) {
                 emails.push(element.email);
                 const newTask = {
@@ -29,7 +31,8 @@ module.exports = {
                 typeNoti: "Service",
                 title: "Nuevo Servicio",
                 description: descripcion,
-                dateNoti: date
+                dateNoti: date,
+                owner: req.body.email
             });
 
             const notificacion = await task.save();

@@ -419,6 +419,7 @@ export default {
           id: this.$store.state.user._id,
           name: this.name,
           approve: this.approve,
+          email: this.$store.state.user.email,
         });
 
         this.close();
