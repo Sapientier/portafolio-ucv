@@ -394,7 +394,7 @@ export default {
     async insertService() {
       try {
         const fd = new FormData();
-
+    
         if (this.selectedFile != null) {
           fd.append("image", this.selectedFile, this.selectedFile.name);
         }

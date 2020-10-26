@@ -134,9 +134,9 @@ module.exports = {
         });
 
         var mailOptions = {
-            from: '"Portafolio UCV" <ciens@ciens.ucv.ve>',
+            from: '"Portafolio Digital UCV" <portafolioucv@gmail.com>',
             to: req.body.email,
-            subject: 'Portafolio de Servicios UCV - Suscripción realizada',
+            subject: 'Suscripción realizada',
             html: '<html><body>Usted se encuentra suscrito a todos los servicios de la Facultad de Ciencias.<br><br> Correo automático. Por favor no responder.</body></html>'
         };
 
