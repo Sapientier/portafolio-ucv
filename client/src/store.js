@@ -74,8 +74,7 @@ export default new Vuex.Store({
         async removeServicios({ commit }, fd) {
             await Services.deleteservices(fd)
                 .then(response => {
-                    commit('removeServicios', fd._id),
-                    console.log(response.data)
+                    commit('removeServicios', fd._id)
                 })
                 .catch(error => console.log(error));
         },

@@ -10,7 +10,7 @@ module.exports = {
     },
     authentication: {
         jwtSecret: process.env.JWT_SECRET || 'secret',
-        email: 'macroplusmail@gmail.com',
-        password: '02082006'
+        email: 'portafolioucv@gmail.com',
+        password: '25082020'
     }
 }

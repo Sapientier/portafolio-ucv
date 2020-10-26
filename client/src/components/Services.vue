@@ -418,6 +418,7 @@ export default {
         const responsenoti = await NotificationService.insertnotifications({
           id: this.$store.state.user._id,
           name: this.name,
+          category: this.categories,
           approve: this.approve,
           email: this.$store.state.user.email,
         });
