@@ -12,21 +12,21 @@
 </template>
 
 <script>
-  export default {
-    name: 'BaseBtn',
+export default {
+  name: "BaseBtn",
 
-    inheritAttrs: false,
+  inheritAttrs: false,
 
-    props: {
-      square: Boolean
+  props: {
+    square: Boolean,
+  },
+
+  computed: {
+    styles() {
+      return {
+        borderRadius: this.square ? "2px" : undefined,
+      };
     },
-
-    computed: {
-      styles () {
-        return {
-          borderRadius: this.square ? '2px' : undefined
-        }
-      }
-    }
-  }
+  },
+};
 </script>

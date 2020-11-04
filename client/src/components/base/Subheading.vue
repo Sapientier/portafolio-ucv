@@ -9,9 +9,9 @@
 </template>
 
 <script>
-  export default {
-    name: 'BaseSubheading',
+export default {
+  name: "BaseSubheading",
 
-    inheritAttrs: false
-  }
+  inheritAttrs: false,
+};
 </script>

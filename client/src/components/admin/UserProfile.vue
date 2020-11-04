@@ -7,12 +7,19 @@
             <v-img :src="require(`@/assets/profile-avatar-icon.png`)"></v-img>
           </v-avatar>
           <v-card-text class="text-xs-center">
-            <h3 class="card-title">{{name}} {{lastname}}</h3>
+            <h3 class="card-title">{{ name }} {{ lastname }}</h3>
             <p
               class="card-description font-weight-light"
               v-if="$store.state.user.isAdmin"
-            >Administrador</p>
-            <p class="card-description font-weight-light" v-if="!$store.state.user.isAdmin">Operador</p>
+            >
+              Administrador
+            </p>
+            <p
+              class="card-description font-weight-light"
+              v-if="!$store.state.user.isAdmin"
+            >
+              Operador
+            </p>
             <v-file-input
               :rules="rulesImg"
               accept="image/png, image/jpeg, image/bmp"
@@ -49,15 +56,25 @@
                   <v-text-field v-model="lastname" label="Apellidos" />
                 </v-flex>
                 <v-flex xs12 md6>
-                  <v-combobox v-model="escuelas" :items="itemsel" label="Escuelas"></v-combobox>
+                  <v-combobox
+                    v-model="escuelas"
+                    :items="itemsel"
+                    label="Escuelas"
+                  ></v-combobox>
                 </v-flex>
                 <v-flex xs12 md6>
-                  <v-combobox v-model="institutos" :items="itemsel2" label="Institutos"></v-combobox>
+                  <v-combobox
+                    v-model="institutos"
+                    :items="itemsel2"
+                    label="Institutos"
+                  ></v-combobox>
                 </v-flex>
                 <v-flex md8>
                   <v-dialog v-model="dialog" persistent max-width="400px">
                     <template v-slot:activator="{ on }">
-                      <v-btn color="primary" dark v-on="on">Cambiar contraseña</v-btn>
+                      <v-btn color="primary" dark v-on="on"
+                        >Cambiar contraseña</v-btn
+                      >
                     </template>
                     <v-card>
                       <v-form ref="form" v-model="valid" lazy-validation>
@@ -72,7 +89,9 @@
                                   label="Contraseña actual*"
                                   v-model="actPass"
                                   :counter="20"
-                                  :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                                  :append-icon="
+                                    show1 ? 'mdi-eye' : 'mdi-eye-off'
+                                  "
                                   :type="show1 ? 'text' : 'password'"
                                   @click:append="show1 = !show1"
                                   :rules="passwordActRules"
@@ -84,7 +103,9 @@
                                   label="Contraseña nueva*"
                                   v-model="newPass"
                                   :counter="20"
-                                  :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+                                  :append-icon="
+                                    show2 ? 'mdi-eye' : 'mdi-eye-off'
+                                  "
                                   :type="show2 ? 'text' : 'password'"
                                   @click:append="show2 = !show2"
                                   :rules="passwordNewRules"
@@ -96,7 +117,9 @@
                                   v-model="newPass2"
                                   label="Confirmar contraseña nueva*"
                                   :counter="20"
-                                  :append-icon="show3 ? 'mdi-eye' : 'mdi-eye-off'"
+                                  :append-icon="
+                                    show3 ? 'mdi-eye' : 'mdi-eye-off'
+                                  "
                                   :type="show3 ? 'text' : 'password'"
                                   @click:append="show3 = !show3"
                                   :rules="passwordNew2Rules"
@@ -117,20 +140,25 @@
                         </v-alert>
                         <v-card-actions>
                           <v-spacer></v-spacer>
-                          <v-btn color="blue darken-1" text @click="close">Cerrar</v-btn>
+                          <v-btn color="blue darken-1" text @click="close"
+                            >Cerrar</v-btn
+                          >
                           <v-btn
                             color="blue darken-1"
                             text
                             @click="checkPassword"
                             :disabled="!valid"
-                          >Aceptar</v-btn>
+                            >Aceptar</v-btn
+                          >
                         </v-card-actions>
                       </v-form>
                     </v-card>
                   </v-dialog>
                 </v-flex>
                 <v-flex md4>
-                  <v-btn color="primary" @click="updateUser">Actualizar Perfil</v-btn>
+                  <v-btn color="primary" @click="updateUser"
+                    >Actualizar Perfil</v-btn
+                  >
                 </v-flex>
               </v-layout>
             </v-container>

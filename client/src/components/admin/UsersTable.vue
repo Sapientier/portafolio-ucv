@@ -7,7 +7,7 @@
             <v-text-field
               v-model="search"
               append-icon="mdi-magnify"
-              label="Buscar"
+              label="Buscar usuarios"
               single-line
               hide-details
             ></v-text-field>
@@ -32,17 +32,26 @@
                     <v-card-title>
                       <span class="headline">Atención</span>
                     </v-card-title>
-                    <v-card-text>¿Esta seguro que desea eliminar este usuario?</v-card-text>
+                    <v-card-text
+                      >¿Esta seguro que desea eliminar este
+                      usuario?</v-card-text
+                    >
                     <v-card-actions>
                       <v-spacer></v-spacer>
-                      <v-btn color="blue darken-1" text @click="close">Cancelar</v-btn>
-                      <v-btn color="blue darken-1" text @click="deleteval">Aceptar</v-btn>
+                      <v-btn color="blue darken-1" text @click="close"
+                        >Cancelar</v-btn
+                      >
+                      <v-btn color="blue darken-1" text @click="deleteval"
+                        >Aceptar</v-btn
+                      >
                     </v-card-actions>
                   </v-card>
                 </v-dialog>
                 <v-dialog v-model="dialog" persistent max-width="600px">
                   <template v-slot:activator="{ on }">
-                    <v-btn color="primary" dark class="mb-2" v-on="on">Agregar</v-btn>
+                    <v-btn color="primary" dark class="mb-2" v-on="on"
+                      >Agregar</v-btn
+                    >
                   </template>
                   <v-card>
                     <v-form ref="form" v-model="valid" lazy-validation>
@@ -69,10 +78,16 @@
                               ></v-combobox>
                             </v-col>
                             <v-col cols="12" sm="6" md="6">
-                              <v-switch v-model="editedItem.isAdmin" label="Administrador"></v-switch>
+                              <v-switch
+                                v-model="editedItem.isAdmin"
+                                label="Administrador"
+                              ></v-switch>
                             </v-col>
                             <v-col cols="12" sm="6" md="6">
-                              <v-switch v-model="editedItem.isActive" label="Bloqueado"></v-switch>
+                              <v-switch
+                                v-model="editedItem.isActive"
+                                label="Bloqueado"
+                              ></v-switch>
                             </v-col>
                             <v-col
                               cols="12"
@@ -85,12 +100,22 @@
                                 color="warning"
                                 @click="reset"
                                 :loading="dialog3"
-                              >Reiniciar Contraseña</v-btn>
-                              <v-dialog v-model="dialog3" hide-overlay persistent width="300">
+                                >Reiniciar Contraseña</v-btn
+                              >
+                              <v-dialog
+                                v-model="dialog3"
+                                hide-overlay
+                                persistent
+                                width="300"
+                              >
                                 <v-card color="primary" dark>
                                   <v-card-text>
                                     Por favor espere...
-                                    <v-progress-linear indeterminate color="white" class="mb-0"></v-progress-linear>
+                                    <v-progress-linear
+                                      indeterminate
+                                      color="white"
+                                      class="mb-0"
+                                    ></v-progress-linear>
                                   </v-card-text>
                                 </v-card>
                               </v-dialog>
@@ -108,8 +133,16 @@
                       </v-alert>
                       <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn color="blue darken-1" text @click="close">Cancelar</v-btn>
-                        <v-btn color="blue darken-1" text @click="save" :disabled="!valid">Aceptar</v-btn>
+                        <v-btn color="blue darken-1" text @click="close"
+                          >Cancelar</v-btn
+                        >
+                        <v-btn
+                          color="blue darken-1"
+                          text
+                          @click="save"
+                          :disabled="!valid"
+                          >Aceptar</v-btn
+                        >
                       </v-card-actions>
                     </v-form>
                   </v-card>
@@ -118,7 +151,9 @@
             </template>
             <!-- change table header background and text color(or other properties) -->
             <template v-slot:[`item.action`]="{ item }">
-              <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
+              <v-icon small class="mr-2" @click="editItem(item)"
+                >mdi-pencil</v-icon
+              >
               <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
             </template>
             <template v-slot:[`item.isAdmin`]="{ item }">
@@ -220,7 +255,7 @@ export default {
       setTimeout(() => {
         this.dialog3 = false;
       }, 2000);
-    }
+    },
   },
   // called when page is created before dom
   created() {
@@ -277,7 +312,7 @@ export default {
             email: this.editedItem.email,
             isAdmin: this.editedItem.isAdmin,
             isActive: this.editedItem.isActive,
-            dependencies: this.editedItem.dependencies
+            dependencies: this.editedItem.dependencies,
           }).then((response) => this.updateInline());
           Object.assign(this.UserList[this.editedIndex], this.editedItem);
           this.close();

@@ -1,7 +1,7 @@
 import Api from '@/services/Api'
 
 export default {
-    login (credentials) {
+    login(credentials) {
         return Api().post('login', credentials)
     }
 }

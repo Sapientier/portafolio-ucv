@@ -1,34 +1,34 @@
 import Api from '@/services/Api'
 
 export default {
-    insertusers (credentials) {
+    insertusers(credentials) {
         return Api().post('insertusers', credentials)
     },
-    getusers () {
+    getusers() {
         return Api().get('getusers')
     },
-    getuserpass (values) {
+    getuserpass(values) {
         return Api().post('getuserpass', values)
     },
-    getuserper (values) {
+    getuserper(values) {
         return Api().post('getuserper', values)
     },
-    updateusers (values) {
+    updateusers(values) {
         return Api().post('updateusers', values)
     },
-    updateuserper (values) {
+    updateuserper(values) {
         return Api().post('updateuserper', values)
     },
-    updateusernoti (values) {
+    updateusernoti(values) {
         return Api().post('updateusernoti', values)
     },
-    deleteusers (values) {
+    deleteusers(values) {
         return Api().post('deleteusers', values)
     },
-    resetpass (values) {
+    resetpass(values) {
         return Api().post('resetpass', values)
     },
-    modpass (values) {
+    modpass(values) {
         return Api().post('modpass', values)
     }
 }

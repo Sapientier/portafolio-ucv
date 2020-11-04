@@ -1,21 +1,9 @@
 <template>
-  <v-container
-    pa-0
-    grid-list-md
-  >
+  <v-container pa-0 grid-list-md>
     <base-subheading>Instagram</base-subheading>
     <v-layout wrap>
-      <v-flex
-        v-for="(post, i) in posts"
-        :key="i"
-        xs4
-      >
-        <base-card
-          tag="a"
-          :href="post.href"
-          height="88"
-          color="grey lighten-2"
-        >
+      <v-flex v-for="(post, i) in posts" :key="i" xs4>
+        <base-card tag="a" :href="post.href" height="88" color="grey lighten-2">
           <v-img
             v-if="post.src"
             height="100%"
@@ -28,16 +16,16 @@
 </template>
 
 <script>
-  export default {
-    data: () => ({
-      posts: [
-        { src: 'adventurealtitude.jpg' },
-        { src: 'garden.jpg' },
-        { src: 'pigduck.jpg' },
-        { src: 'rain.jpg' },
-        { src: 'spices.jpg' },
-        { src: 'sunset.jpg' }
-      ]
-    })
-  }
+export default {
+  data: () => ({
+    posts: [
+      { src: "adventurealtitude.jpg" },
+      { src: "garden.jpg" },
+      { src: "pigduck.jpg" },
+      { src: "rain.jpg" },
+      { src: "spices.jpg" },
+      { src: "sunset.jpg" },
+    ],
+  }),
+};
 </script>

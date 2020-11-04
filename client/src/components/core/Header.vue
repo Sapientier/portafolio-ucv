@@ -89,9 +89,7 @@
           >Portafolio Digital UCV</span
         >
       </v-toolbar-title>
-
       <v-spacer />
-
       <v-menu
         v-model="shown"
         bottom
@@ -117,7 +115,11 @@
                 <v-badge
                   overlap
                   :value="$store.state.user.numNoti"
-                  :content="$store.state.user.numNoti"
+                  :content="
+                    $store.state.user.numNoti > 9
+                      ? '9+'
+                      : $store.state.user.numNoti
+                  "
                 >
                   <v-icon>mdi-bell</v-icon>
                 </v-badge>
@@ -126,7 +128,6 @@
             <span>Notificaciones</span>
           </v-tooltip>
         </template>
-
         <v-toolbar dark color="indigo lighten-1">
           <v-toolbar-title>Notificaciones</v-toolbar-title>
 
@@ -141,7 +142,6 @@
             <span>Limpiar</span>
           </v-tooltip>
         </v-toolbar>
-
         <v-card class="mx-auto showover" max-height="500" overflow="auto">
           <v-list three-line>
             <v-list-item-group multiple>
@@ -176,7 +176,6 @@
           </v-list>
         </v-card>
       </v-menu>
-
       <v-btn
         icon
         v-if="$store.state.isUserLoggedIn"
@@ -189,7 +188,6 @@
           <span>Perfil de Usuario</span>
         </v-tooltip>
       </v-btn>
-
       <v-btn icon @click="logout" v-if="$store.state.isUserLoggedIn">
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
@@ -198,7 +196,6 @@
           <span>Cerrar Sesión</span>
         </v-tooltip>
       </v-btn>
-
       <v-btn icon v-if="!$store.state.isUserLoggedIn" :to="{ name: 'Login' }">
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
@@ -272,11 +269,11 @@ export default {
 
 <style scoped>
 .hideover {
-  overflow: hidden
+  overflow: hidden;
 }
 
 .showover {
-  overflow: auto
+  overflow: auto;
 }
 
 .list-noti {
@@ -293,5 +290,5 @@ export default {
 
 .home {
   cursor: pointer;
-}
-</style>>
+}</style
+>>

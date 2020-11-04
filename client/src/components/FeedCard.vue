@@ -1,7 +1,12 @@
 <template>
   <v-flex xs12 :class="classes">
     <v-hover v-slot:default="{ hover }">
-      <base-card :height="350" color="grey lighten-1" dark :elevation="hover ? 16 : 2">
+      <base-card
+        :height="350"
+        color="grey lighten-1"
+        dark
+        :elevation="hover ? 16 : 2"
+      >
         <v-img
           :src="`${value.imageService}`"
           height="100%"
@@ -16,14 +21,19 @@
                 text-color="white"
                 small
                 @click.stop
-              >{{ value.category }}</v-chip>
+                >{{ value.category }}</v-chip
+              >
               <h3 class="title font-weight-bold mb-2">{{ value.name }}</h3>
               <div class="caption">
                 {{ value.autor }}
                 <br />
                 {{ formatDate(value.date) }}
               </div>
-              <v-checkbox v-model="value.approve" disabled v-if="$store.state.isUserLoggedIn"></v-checkbox>
+              <v-checkbox
+                v-model="value.approve"
+                disabled
+                v-if="$store.state.isUserLoggedIn"
+              ></v-checkbox>
             </v-flex>
             <v-flex d-flex justify-start align-self-end>
               <v-chip
@@ -32,13 +42,33 @@
                 label
                 small
                 @click="seeItem(value)"
-              >Leer Más</v-chip>
+                >Leer Más</v-chip
+              >
             </v-flex>
-            <v-flex align-self-end d-flex justify-end v-if="$store.state.isUserLoggedIn">
-              <v-btn color="green" class="ml-1" fab small dark @click="editItem(value)">
+            <v-flex
+              align-self-end
+              d-flex
+              justify-end
+              v-if="$store.state.isUserLoggedIn"
+            >
+              <v-btn
+                color="green"
+                class="ml-1"
+                fab
+                small
+                dark
+                @click="editItem(value)"
+              >
                 <v-icon>mdi-pencil</v-icon>
               </v-btn>
-              <v-btn color="red" class="ml-1" fab dark small @click="deleteItem(value)">
+              <v-btn
+                color="red"
+                class="ml-1"
+                fab
+                dark
+                small
+                @click="deleteItem(value)"
+              >
                 <v-icon>mdi-delete</v-icon>
               </v-btn>
             </v-flex>
@@ -49,11 +79,15 @@
             <v-card-title>
               <span class="headline">Atención</span>
             </v-card-title>
-            <v-card-text>¿Esta seguro que desea eliminar este servicio?</v-card-text>
+            <v-card-text
+              >¿Esta seguro que desea eliminar este servicio?</v-card-text
+            >
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" text @click="close">Cancelar</v-btn>
-              <v-btn color="blue darken-1" text @click="deleteval">Aceptar</v-btn>
+              <v-btn color="blue darken-1" text @click="deleteval"
+                >Aceptar</v-btn
+              >
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -126,10 +160,22 @@
                             v-on="on"
                           ></v-text-field>
                         </template>
-                        <v-date-picker v-model="editedItem.date" no-title scrollable locale="es-es">
+                        <v-date-picker
+                          v-model="editedItem.date"
+                          no-title
+                          scrollable
+                          locale="es-es"
+                        >
                           <v-spacer></v-spacer>
-                          <v-btn text color="primary" @click="menu = false">Cancelar</v-btn>
-                          <v-btn text color="primary" @click="$refs.menu.save(editedItem.date)">Aceptar</v-btn>
+                          <v-btn text color="primary" @click="menu = false"
+                            >Cancelar</v-btn
+                          >
+                          <v-btn
+                            text
+                            color="primary"
+                            @click="$refs.menu.save(editedItem.date)"
+                            >Aceptar</v-btn
+                          >
                         </v-date-picker>
                       </v-menu>
                     </v-col>
@@ -143,19 +189,35 @@
                       ></v-file-input>
                     </v-col>
                     <v-col cols="12">
-                      <v-text-field v-model="editedItem.userspp" label="Usuarios Involucrados"></v-text-field>
+                      <v-text-field
+                        v-model="editedItem.userspp"
+                        label="Usuarios Involucrados"
+                      ></v-text-field>
                     </v-col>
                     <v-col cols="12">
-                      <v-textarea v-model="editedItem.description" label="Descripción" />
+                      <v-textarea
+                        v-model="editedItem.description"
+                        label="Descripción"
+                      />
                     </v-col>
                     <v-col cols="12">
-                      <v-text-field v-model="editedItem.request" label="Solicitud del Servicio"></v-text-field>
+                      <v-text-field
+                        v-model="editedItem.request"
+                        label="Solicitud del Servicio"
+                      ></v-text-field>
                     </v-col>
                     <v-col cols="12">
-                      <v-text-field v-model="editedItem.paramserv" label="Parámetros del Servicio"></v-text-field>
+                      <v-text-field
+                        v-model="editedItem.paramserv"
+                        label="Parámetros del Servicio"
+                      ></v-text-field>
                     </v-col>
                     <v-col cols="12">
-                      <v-textarea v-model="editedItem.direction" label="Dirección" rows="3" />
+                      <v-textarea
+                        v-model="editedItem.direction"
+                        label="Dirección"
+                        rows="3"
+                      />
                     </v-col>
                   </v-row>
                 </v-container>
@@ -164,21 +226,42 @@
               <v-divider></v-divider>
               <v-card-actions v-if="$store.state.isUserLoggedIn">
                 <v-spacer></v-spacer>
-                <v-switch v-model="editedItem.approve" label="Aprobado" :disabled="$store.state.user.dependencies == 'Profesor/Investigador'"></v-switch>
+                <v-switch
+                  v-model="editedItem.approve"
+                  label="Aprobado"
+                  :disabled="
+                    $store.state.user.dependencies == 'Profesor/Investigador'
+                  "
+                ></v-switch>
                 <v-spacer></v-spacer>
                 <v-btn color="blue darken-1" text @click="close">Cerrar</v-btn>
-                <v-btn color="blue darken-1" text @click="updateService" :disabled="!valid">Guardar</v-btn>
+                <v-btn
+                  color="blue darken-1"
+                  text
+                  @click="updateService"
+                  :disabled="!valid"
+                  >Guardar</v-btn
+                >
               </v-card-actions>
             </v-form>
           </v-card>
         </v-dialog>
-        <v-dialog v-model="dialog3" fullscreen hide-overlay transition="dialog-bottom-transition">
+        <v-dialog
+          v-model="dialog3"
+          fullscreen
+          hide-overlay
+          transition="dialog-bottom-transition"
+        >
           <v-card>
             <v-toolbar dark color="primary">
               <v-btn icon dark @click="dialog3 = false">
                 <v-icon>mdi-close</v-icon>
               </v-btn>
-              <v-toolbar-title>{{ value.name }} ({{ value.school != 'N/A' ? value.school : value.institute}})</v-toolbar-title>
+              <v-toolbar-title
+                >{{ value.name }} ({{
+                  value.school != "N/A" ? value.school : value.institute
+                }})</v-toolbar-title
+              >
               <v-spacer></v-spacer>
               <v-toolbar-items>
                 <v-btn dark text @click="dialog3 = false">Suscribirse</v-btn>
@@ -187,7 +270,9 @@
             <v-container>
               <v-row>
                 <v-col cols="12" sm="6">
-                  <div class="title">Usuarios del Servicio, Producto o Proceso:</div>
+                  <div class="title">
+                    Usuarios del Servicio, Producto o Proceso:
+                  </div>
                   <p class="body-1">{{ value.userspp }}</p>
                   <br />
                   <div class="title">Descripción:</div>
@@ -406,4 +491,3 @@ export default {
   transition: 0.3s linear;
 }
 </style>
-

@@ -27,12 +27,19 @@
                 @keyup.enter="login"
               ></v-text-field>
             </v-card-text>
-            <v-alert type="error" v-model="alert" dismissible transition="scale-transition">
+            <v-alert
+              type="error"
+              v-model="alert"
+              dismissible
+              transition="scale-transition"
+            >
               <div v-html="error"></div>
             </v-alert>
             <v-card-actions>
               <v-spacer />
-              <v-btn :disabled="!valid" color="primary" @click="login">Ingresar</v-btn>
+              <v-btn :disabled="!valid" color="primary" @click="login"
+                >Ingresar</v-btn
+              >
             </v-card-actions>
           </v-form>
         </v-card>
@@ -71,7 +78,7 @@ export default {
         });
 
         const responsenoti = await NotificationService.getnotifications({
-          email: this.email
+          email: this.email,
         });
 
         this.$store.dispatch("setToken", response.data.token);

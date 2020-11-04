@@ -22,31 +22,31 @@
 </template>
 
 <script>
-  export default {
-     data: () => ({
-      items: [
-        {
-          icon: 'mdi-school',
-          text: 'Universidad Central de Venezuela ',
-          link: 'http://www.ucv.ve/'
-        },
-        {
-          icon: 'mdi-electron-framework',
-          text: 'Facultad de Ciencias',
-          link: 'http://www.ciens.ucv.ve/ciens/'
-        },
-        {
-          icon: 'mdi-at',
-          text: 'Webmail',
-          link: 'https://correo.ciens.ucv.ve/mail/'
-        }
-      ],
-      model: -1,
-    }),
-    methods: {
-      navigateTo (route) {
-        window.open(route, '_blank');
-      }
+export default {
+  data: () => ({
+    items: [
+      {
+        icon: "mdi-school",
+        text: "Universidad Central de Venezuela ",
+        link: "http://www.ucv.ve/",
+      },
+      {
+        icon: "mdi-electron-framework",
+        text: "Facultad de Ciencias",
+        link: "http://www.ciens.ucv.ve/ciens/",
+      },
+      {
+        icon: "mdi-at",
+        text: "Webmail",
+        link: "https://correo.ciens.ucv.ve/mail/",
+      },
+    ],
+    model: -1,
+  }),
+  methods: {
+    navigateTo(route) {
+      window.open(route, "_blank");
     },
-  }
+  },
+};
 </script>

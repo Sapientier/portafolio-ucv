@@ -6,7 +6,9 @@
 
         <h1
           class="subheading text-uppercase font-weight-medium text-center mt-10"
-        >Servicios Destacados</h1>
+        >
+          Servicios Destacados
+        </h1>
       </v-flex>
 
       <feed-card
@@ -19,7 +21,13 @@
 
     <v-layout align-center>
       <v-flex xs3>
-        <base-btn v-if="page !== 1" class="ml-0" title="Previous page" square @click="page--">
+        <base-btn
+          v-if="page !== 1"
+          class="ml-0"
+          title="Previous page"
+          square
+          @click="page--"
+        >
           <v-icon>mdi-chevron-left</v-icon>
         </base-btn>
       </v-flex>

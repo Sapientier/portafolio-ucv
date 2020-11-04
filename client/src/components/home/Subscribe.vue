@@ -6,8 +6,9 @@
           <v-flex xs12 md5>
             <base-subheading class="mb-3">Suscripción</base-subheading>
             <p>
-              Ingrese su dirección de correo electrónico para suscribirse a este portafolio
-              y recibir notificaciones de nuevas publicaciones de servicios por correo electrónico.
+              Ingrese su dirección de correo electrónico para suscribirse a este
+              portafolio y recibir notificaciones de nuevas publicaciones de
+              servicios por correo electrónico.
             </p>
             <v-form ref="form" lazy-validation v-model="valid">
               <v-layout wrap pa-2>
@@ -20,9 +21,7 @@
                   type="email"
                   :rules="emailRules"
                 />
-
                 <v-text-field v-show="false" />
-
                 <v-btn
                   :disabled="dialog || !valid"
                   :loading="dialog"
@@ -30,33 +29,37 @@
                   color="secondary"
                   style="height: 48px"
                   @click="suscribir"
-                >Suscribirse</v-btn>
-
+                  >Suscribirse</v-btn
+                >
                 <v-dialog v-model="dialog" hide-overlay persistent width="300">
                   <v-card color="primary" dark>
                     <v-card-text>
                       Por favor espere...
-                      <v-progress-linear indeterminate color="white" class="mb-0"></v-progress-linear>
+                      <v-progress-linear
+                        indeterminate
+                        color="white"
+                        class="mb-0"
+                      ></v-progress-linear>
                     </v-card-text>
                   </v-card>
                 </v-dialog>
                 <v-dialog v-model="dialog2" max-width="350">
                   <v-card>
-                    <v-card-title class="headline">{{ dialogTitle }}</v-card-title>
-
+                    <v-card-title class="headline">{{
+                      dialogTitle
+                    }}</v-card-title>
                     <v-card-text>{{ dialogText }}</v-card-text>
-
                     <v-card-actions>
                       <v-spacer></v-spacer>
-
-                      <v-btn :color="buttonColor" text @click="dialog2 = false">Aceptar</v-btn>
+                      <v-btn :color="buttonColor" text @click="dialog2 = false"
+                        >Aceptar</v-btn
+                      >
                     </v-card-actions>
                   </v-card>
                 </v-dialog>
               </v-layout>
             </v-form>
           </v-flex>
-
           <v-flex xs12 md6 offset-md1>
             <base-subheading>Contacto</base-subheading>
             <v-list class="transparent">
@@ -65,17 +68,20 @@
                   <v-icon class="elevation-4" dark>mdi-email-outline</v-icon>
                 </v-list-item-avatar>
                 <v-list-item-title>CORREO</v-list-item-title>
-                <v-list-item-subtitle>CIENCIAS@CIENCIAS.UCV.VE</v-list-item-subtitle>
+                <v-list-item-subtitle
+                  >CIENCIAS@CIENCIAS.UCV.VE</v-list-item-subtitle
+                >
               </v-list-item>
-
               <v-list-item>
                 <v-list-item-avatar color="primary">
                   <v-icon class="elevation-4" dark>mdi-map-marker</v-icon>
                 </v-list-item-avatar>
                 <v-list-item-title>DIRECCIÓN</v-list-item-title>
-                <v-list-item-subtitle>PASEO LOS ILUSTRES URB. VALLE ABAJO. CARACAS</v-list-item-subtitle>
+                <v-list-item-subtitle
+                  >PASEO LOS ILUSTRES URB. VALLE ABAJO.
+                  CARACAS</v-list-item-subtitle
+                >
               </v-list-item>
-
               <v-list-item>
                 <v-list-item-avatar color="primary">
                   <v-icon class="elevation-4" dark>mdi-phone</v-icon>
