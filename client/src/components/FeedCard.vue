@@ -312,6 +312,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import Services from "@/services/Services";
 
 export default {
   data: () => ({
@@ -414,45 +415,55 @@ export default {
       this.editedItem = Object.assign({}, item);
       this.dialog3 = true;
     },
-    deleteval() {
-      try {
-        this.delete();
-        const response = this.removeServicios({
-          _id: this.editedItem._id,
-          imageService: this.editedItem.imageService,
+    async deleteval() {
+      await Services.deleteservices({
+        _id: this.editedItem._id,
+        imageService: this.editedItem.imageService,
+      })
+        .then((response) => {
+          this.delete();
+          this.removeServicios(this.editedItem._id);
+        })
+        .catch((err) => {
+          this.snack = true;
+          this.snackColor = "error";
+          this.snackText = err.response.data.error;
         });
-        this.close();
-      } catch (error) {
-        this.error = error.response.data.error;
-      }
+
+      this.close();
     },
-    updateService() {
-      try {
-        const fd = new FormData();
-        if (this.selectedFile != null) {
-          fd.append("image", this.selectedFile, this.selectedFile.name);
-        }
-        fd.append("_id", this.editedItem._id);
-        fd.append("name", this.editedItem.name);
-        fd.append("autor", this.editedItem.autor);
-        fd.append("userspp", this.editedItem.userspp);
-        fd.append("school", this.editedItem.school);
-        fd.append("category", this.editedItem.category);
-        fd.append("institute", this.editedItem.institute);
-        fd.append("description", this.editedItem.description);
-        fd.append("request", this.editedItem.request);
-        fd.append("paramserv", this.editedItem.paramserv);
-        fd.append("direction", this.editedItem.direction);
-        fd.append("date", this.editedItem.date);
-        fd.append("imageService", this.editedItem.imageService);
-        fd.append("approve", this.editedItem.approve);
-        const response = this.updateServicios(fd).then((response) =>
-          this.update()
-        );
-        this.close();
-      } catch (error) {
-        this.error = error.response.data.error;
+    async updateService() {
+      const fd = new FormData();
+      if (this.selectedFile != null) {
+        fd.append("image", this.selectedFile, this.selectedFile.name);
       }
+      fd.append("_id", this.editedItem._id);
+      fd.append("name", this.editedItem.name);
+      fd.append("autor", this.editedItem.autor);
+      fd.append("userspp", this.editedItem.userspp);
+      fd.append("school", this.editedItem.school);
+      fd.append("category", this.editedItem.category);
+      fd.append("institute", this.editedItem.institute);
+      fd.append("description", this.editedItem.description);
+      fd.append("request", this.editedItem.request);
+      fd.append("paramserv", this.editedItem.paramserv);
+      fd.append("direction", this.editedItem.direction);
+      fd.append("date", this.editedItem.date);
+      fd.append("imageService", this.editedItem.imageService);
+      fd.append("approve", this.editedItem.approve);
+
+      await Services.updateservices(fd)
+        .then((response) => {
+          this.update();
+          this.updateServicios(response.data);
+        })
+        .catch((err) => {
+          this.snack = true;
+          this.snackColor = "error";
+          this.snackText = err.response.data.error;
+        });
+
+      this.close();
     },
     close() {
       this.dialog = false;

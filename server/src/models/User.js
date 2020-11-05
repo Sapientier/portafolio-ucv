@@ -38,7 +38,10 @@ const UserSchema = new Schema({
     },
     numNoti: {
         type: Number
-    }
+    },
+    imageUser: {
+        type: String
+    },
 });
 
 UserSchema.pre('save', function (next) {

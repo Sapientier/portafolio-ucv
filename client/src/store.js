@@ -35,7 +35,7 @@ export default new Vuex.Store({
         setServicios: (state, servicios) => state.servicios.unshift(servicios),
         removeServicios: (state, id) =>
             (state.servicios = state.servicios.filter(
-                (servicio) => servicio._id !== id
+                (servicio) => servicio._id != id
             )),
         updateServicios: (state, newserv) => {
             const index = state.servicios.findIndex(
@@ -62,37 +62,30 @@ export default new Vuex.Store({
         setUserNumNoti({ commit }, numnoti) {
             commit("setUserNumNoti", numnoti);
         },
-        async getServicios({ commit }) {
-            await Services.getservices()
+        getServicios({ commit }, values) {
+            commit("getServicios", values);
+        },
+        setServicios({ commit }, values) {
+            commit("setServicios", values);
+        },
+        removeServicios({ commit }, values) {
+            commit("removeServicios", values);
+        },
+        updateServicios({ commit }, values) {
+            commit("updateServicios", values);
+        },
+        async filterServiciosbyCat({ commit }, value) {
+            await Services.getuniservicebycat({
+                category: value,
+            })
                 .then((response) => {
                     commit("getServicios", response.data);
                 })
                 .catch((err) => console.log(err.response.data.error));
         },
-        async setServicios({ commit }, fd) {
-            await Services.insertservices(fd)
-                .then((response) => {
-                    commit("setServicios", response.data);
-                })
-                .catch((err) => console.log(err.response.data.error));
-        },
-        async removeServicios({ commit }, fd) {
-            await Services.deleteservices(fd)
-                .then((response) => {
-                    commit("removeServicios", fd._id);
-                })
-                .catch((err) => console.log(err.response.data.error));
-        },
-        async updateServicios({ commit }, fd) {
-            await Services.updateservices(fd)
-                .then((response) => {
-                    commit("updateServicios", response.data);
-                })
-                .catch((err) => console.log(err.response.data.error));
-        },
-        async filterServiciosbyCat({ commit }, value) {
-            await Services.getuniservicebycat({
-                category: value,
+        async filterServiciosbyApproved({ commit }, value) {
+            await Services.getuniservicebyapproved({
+                approve: value,
             })
                 .then((response) => {
                     commit("getServicios", response.data);

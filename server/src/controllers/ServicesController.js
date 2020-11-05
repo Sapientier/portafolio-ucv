@@ -68,7 +68,7 @@ module.exports = {
             res.json(user.toJSON());
         } catch (err) {
             res.status(400).send({
-                error: 'Error en la inserción de datos.'
+                error: 'Error en la actualización de datos.'
             })
         }
     },
@@ -97,7 +97,7 @@ module.exports = {
             res.json("Eliminado con exito");
         } catch (err) {
             res.status(500).send({
-                error: 'Ha ocurrido un error al eliminar los usuarios'
+                error: 'Ha ocurrido un error al eliminar los servicios'
             })
         }
     },
@@ -107,7 +107,7 @@ module.exports = {
             res.json(services);
         } catch (err) {
             res.status(500).send({
-                error: 'Ha ocurrido un error al buscar los servicios'
+                error: 'Ha ocurrido un error al buscar los servicios por categoría'
             })
         }
     },
@@ -117,7 +117,17 @@ module.exports = {
             res.json(services);
         } catch (err) {
             res.status(500).send({
-                error: 'Ha ocurrido un error al buscar los servicios'
+                error: 'Ha ocurrido un error al buscar los servicios por nombre'
+            })
+        }
+    },
+    async getuniservicebyapproved(req, res) {
+        try {
+            const services = await Service.find({ approve: req.body.approve });
+            res.json(services);
+        } catch (err) {
+            res.status(500).send({
+                error: 'Ha ocurrido un error al buscar los servicios por aprobación'
             })
         }
     },

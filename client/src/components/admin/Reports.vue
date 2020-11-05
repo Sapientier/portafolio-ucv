@@ -89,14 +89,29 @@ export default {
     loaded1: false,
     loaded2: false,
     loaded3: false,
+    months: [
+      "Enero",
+      "Febrero",
+      "Marzo",
+      "Abril",
+      "Mayo",
+      "Junio",
+      "Julio",
+      "Agosto",
+      "Septiembre",
+      "Octubre",
+      "Noviembre",
+      "Diciembre",
+    ],
+    contmonths: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   }),
   methods: {
     formatDate(date) {
       if (!date) return null;
       var aux = date.replace(/\T.+/, "");
       const [year, month, day] = aux.split("-");
-
-      return month - 0;
+      const fecha = [year, month, day];
+      return fecha;
     },
   },
   async mounted() {
@@ -180,64 +195,57 @@ export default {
     await SuscribeService.getsuscribers()
       .then((response) => {
         const data = response.data;
-        var month = new Array();
-        month[0] = "Enero";
-        month[1] = "Febrero";
-        month[2] = "Marzo";
-        month[3] = "Abril";
-        month[4] = "Mayo";
-        month[5] = "Junio";
-        month[6] = "Julio";
-        month[7] = "Agosto";
-        month[8] = "Septiembre";
-        month[9] = "Octubre";
-        month[10] = "Noviembre";
-        month[11] = "Diciembre";
 
         var d = new Date();
-        var mes3l = d.getMonth() + 1,
-          mes2l = d.getMonth(),
-          mes1l = d.getMonth() - 1;
-        if (mes2l === 0) {
-          mes2l = 12;
-        }
-        if (mes1l === -1) {
-          mes1l = 11;
-        } else if (mes1l === 0) {
-          mes1l = 12;
-        }
-        var mes1 = 0,
-          mes2 = 0,
-          mes3 = 0;
+        var ano = d.getFullYear().toString();
 
         data.forEach((d) => {
           var fecha = this.formatDate(d.dateSub);
-          switch (fecha) {
-            case mes1l:
-              mes1++;
-              break;
-            case mes2l:
-              mes2++;
-              break;
-            case mes3l:
-              mes3++;
-              break;
+
+          if (fecha[0] === ano) {
+            switch (fecha[1]) {
+              case "01":
+                this.contmonths[0]++;
+                break;
+              case "02":
+                this.contmonths[1]++;
+                break;
+              case "03":
+                this.contmonths[2]++;
+                break;
+              case "04":
+                this.contmonths[3]++;
+                break;
+              case "05":
+                this.contmonths[4]++;
+                break;
+              case "06":
+                this.contmonths[5]++;
+                break;
+              case "07":
+                this.contmonths[6]++;
+                break;
+              case "08":
+                this.contmonths[7]++;
+                break;
+              case "09":
+                this.contmonths[8]++;
+                break;
+              case "10":
+                this.contmonths[9]++;
+                break;
+              case "11":
+                this.contmonths[10]++;
+                break;
+              case "12":
+                this.contmonths[11]++;
+                break;
+            }
           }
         });
-
-        mes1l = d.getMonth() - 2;
-        if (mes1l === -2) {
-          mes1l = 10;
-        } else if (mes1l === -1) {
-          mes1l = 11;
-        }
-
-        this.suscribeChartData = [mes1, mes2, mes3];
-        this.suscribeLabels = [
-          month[mes1l],
-          month[d.getMonth() - 1 === -1 ? 11 : d.getMonth() - 1],
-          month[d.getMonth()],
-        ];
+        
+        this.suscribeChartData = this.contmonths;
+        this.suscribeLabels = this.months;
         this.loaded3 = true;
       })
       .catch((err) => console.log(err.response.data.error));

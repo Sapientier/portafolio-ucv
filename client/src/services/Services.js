@@ -19,4 +19,7 @@ export default {
     updateservices(values) {
         return Api().post('updateservices', values)
     },
+    getuniservicebyapproved(values) {
+        return Api().post('getuniservicebyapproved', values)
+    }
 }

@@ -4,6 +4,7 @@ const nodemailer = require('nodemailer');
 const config = require('../config');
 const Promise = require('bluebird');
 const bcrypt = Promise.promisifyAll(require('bcrypt'));
+const fs = require('fs')
 const SALT_WORK_FACTOR = 8;
 
 module.exports = {
@@ -110,11 +111,31 @@ module.exports = {
     },
     async updateuserper(req, res) {
         try {
+            var newpath = "";
+            const user = await User.findOne({
+                '_id': req.body._id
+            });
+            console.log(user.imageUser);
+            if (req.file == null) {
+                newpath = user.imageUser;
+            }
+            else {
+                const newpathdel = "public/" + user.imageUser;
+               
+                fs.unlink(newpathdel, (err) => {
+                    if (err) {
+                        console.error(err)
+                        return
+                    }
+                })
+                newpath = req.file.path.substring(7);
+            }
             const newTask = {
                 name: req.body.name,
                 lastname: req.body.lastname,
                 school: req.body.school,
-                institute: req.body.institute
+                institute: req.body.institute,
+                imageUser: newpath
             };
             await User.findByIdAndUpdate(req.body._id, newTask);
             res.json("Actualizado con exito");

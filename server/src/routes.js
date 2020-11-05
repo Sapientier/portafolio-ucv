@@ -5,7 +5,7 @@ const SuscribeController = require('./controllers/SuscribeController');
 const NotificationsController = require('./controllers/NotificationsController');
 const path = require('path');
 const multer = require('multer');
-const storage = multer.diskStorage({
+const storageA = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, 'public/uploads/');
     },
@@ -13,7 +13,16 @@ const storage = multer.diskStorage({
         cb(null, Date.now() + '-' + file.originalname.replace(" ", ""))
     }
 });
-const upload = multer({ storage: storage });
+const storageB = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'public/avatars/');
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + '-' + file.originalname.replace(" ", ""))
+    }
+});
+const upload1 = multer({ storage: storageA });
+const upload2 = multer({ storage: storageB });
 
 module.exports = (app) => {
     app.get('/', function (req, res) {
@@ -41,6 +50,7 @@ module.exports = (app) => {
             UsersController.updateusers
         ),
         app.post('/updateuserper',
+            upload2.single('image'),
             UsersController.updateuserper
         ),
         app.post('/updateusernoti',
@@ -53,7 +63,7 @@ module.exports = (app) => {
             UsersController.modpass
         ),
         app.post('/insertservices',
-            upload.single('image'),
+            upload1.single('image'),
             ServicesController.insertservices
         ),
         app.get('/getservices',
@@ -63,7 +73,7 @@ module.exports = (app) => {
             ServicesController.deleteservices
         ),
         app.post('/updateservices',
-            upload.single('image'),
+            upload1.single('image'),
             ServicesController.updateservices
         ),
         app.post('/getuniservicebycat',
@@ -71,6 +81,9 @@ module.exports = (app) => {
         ),
         app.post('/getuniservicebyname',
             ServicesController.getuniservicebyname
+        ),
+        app.post('/getuniservicebyapproved',
+            ServicesController.getuniservicebyapproved
         ),
         app.post('/getnotifications',
             NotificationsController.getnotifications

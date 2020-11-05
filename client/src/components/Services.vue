@@ -9,7 +9,7 @@
             :input-value="active0"
             filter
             @click="
-              getServicios();
+              getServices();
               activefilter(0);
             "
           >
@@ -18,7 +18,7 @@
 
           <v-chip
             class="ma-2"
-            color="success"
+            color="warning"
             :input-value="active1"
             filter
             outlined
@@ -84,6 +84,34 @@
             "
           >
             <v-icon left>mdi-book</v-icon>Educación
+          </v-chip>
+          <v-chip
+            v-if="$store.state.isUserLoggedIn"
+            class="ma-2"
+            color="success"
+            outlined
+            :input-value="active6"
+            filter
+            @click="
+              filterServiciosbyApproved(true);
+              activefilter(6);
+            "
+          >
+            <v-icon left>mdi-account-check</v-icon>Aprobados
+          </v-chip>
+          <v-chip
+            v-if="$store.state.isUserLoggedIn"
+            class="ma-2"
+            color="error"
+            outlined
+            :input-value="active7"
+            filter
+            @click="
+              filterServiciosbyApproved(false);
+              activefilter(7);
+            "
+          >
+            <v-icon left>mdi-account-cancel</v-icon>No Aprobados
           </v-chip>
         </div>
 
@@ -333,6 +361,8 @@ export default {
     active3: false,
     active4: false,
     active5: false,
+    active6: false,
+    active7: false,
     itemselCat: [
       "Medicina",
       "Tecnología",
@@ -362,8 +392,7 @@ export default {
     autorRules: [(v) => !!v || "El autor es requerido"],
   }),
   created() {
-    this.getServicios();
-    this.getServiciosNames();
+    this.getServices();
   },
   watch: {
     search(val) {
@@ -380,6 +409,7 @@ export default {
       "setServicios",
       "filterServiciosbyCat",
       "filterServiciosbyName",
+      "filterServiciosbyApproved",
     ]),
     querySelections(v) {
       this.loading = true;
@@ -391,51 +421,11 @@ export default {
         this.loading = false;
       }, 500);
     },
-    async insertService() {
-      try {
-        const fd = new FormData();
-
-        if (this.selectedFile != null) {
-          fd.append("image", this.selectedFile, this.selectedFile.name);
-        }
-        fd.append("name", this.name);
-        fd.append("autor", this.autor);
-        fd.append("userspp", this.usuariospp);
-        fd.append("school", this.schools);
-        fd.append("category", this.categories);
-        fd.append("institute", this.institutes);
-        fd.append("description", this.descripcion);
-        fd.append("request", this.solicitud);
-        fd.append("paramserv", this.params);
-        fd.append("direction", this.direccion);
-        fd.append("date", this.date);
-        fd.append("approve", this.approve);
-
-        const response = this.setServicios(fd).then((response) => {
-          this.insertInline();
-        });
-
-        const responsenoti = await NotificationService.insertnotifications({
-          id: this.$store.state.user._id,
-          name: this.name,
-          category: this.categories,
-          approve: this.approve,
-          email: this.$store.state.user.email,
-        });
-
-        this.close();
-      } catch (error) {
-        this.snack = true;
-        this.snackColor = "error";
-        this.snackText = error.response.data.error;
-      }
-    },
-    async getServiciosNames() {
+    async getServices() {
       await Services.getservices()
         .then((response) => {
-          const servicios = response.data;
 
-          for (const servicio of servicios) {
+          for (const servicio of response.data) {
             if (
               !servicio.name ||
               this.servicesnames.find((name) => name.text === servicio.name)
@@ -446,8 +436,53 @@ export default {
           }
 
           this.servicesnames.sort();
+          this.getServicios(response.data);
         })
-        .catch((error) => console.log(error));
+        .catch((err) => console.log(err.response.data.error));
+    },
+    async insertService() {
+      const fd = new FormData();
+
+      if (this.selectedFile != null) {
+        fd.append("image", this.selectedFile, this.selectedFile.name);
+      }
+      fd.append("name", this.name);
+      fd.append("autor", this.autor);
+      fd.append("userspp", this.usuariospp);
+      fd.append("school", this.schools);
+      fd.append("category", this.categories);
+      fd.append("institute", this.institutes);
+      fd.append("description", this.descripcion);
+      fd.append("request", this.solicitud);
+      fd.append("paramserv", this.params);
+      fd.append("direction", this.direccion);
+      fd.append("date", this.date);
+      fd.append("approve", this.approve);
+
+      await Services.insertservices(fd)
+        .then((response) => {
+          this.insertInline();
+          this.setServicios(response.data);
+        })
+        .catch((err) => {
+          this.snack = true;
+          this.snackColor = "error";
+          this.snackText = err.response.data.error;
+        });
+
+      await NotificationService.insertnotifications({
+        id: this.$store.state.user._id,
+        name: this.name,
+        category: this.categories,
+        approve: this.approve,
+        email: this.$store.state.user.email,
+      }).catch((err) => {
+        this.snack = true;
+        this.snackColor = "error";
+        this.snackText = err.response.data.error;
+      });
+
+      this.close();
     },
     resetValidation() {
       this.$refs.form.resetValidation();
@@ -476,6 +511,8 @@ export default {
       this.active3 = false;
       this.active4 = false;
       this.active5 = false;
+      this.active6 = false;
+      this.active7 = false;
       switch (num) {
         case 0:
           this.active0 = true;
@@ -494,6 +531,12 @@ export default {
           break;
         case 5:
           this.active5 = true;
+          break;
+        case 6:
+          this.active6 = true;
+          break;
+        case 7:
+          this.active7 = true;
           break;
       }
     },
