@@ -33,7 +33,7 @@
                   v-if="loaded3"
                   :chartdata="suscribeChartData"
                   :chartlabels="suscribeLabels"
-                  :chartcolors="servicesChartColors"
+                  :chartcolors="suscribeChartColors"
                 />
               </v-card>
             </v-col>
@@ -64,14 +64,14 @@ export default {
     usersLabels: [],
     servicesChartColors: {
       borderColor: [
-        "rgba(244, 67, 54, 1)",
+        "rgba(242, 5, 116, 1)",
         "rgba(33, 150, 243, 1)",
         "rgba(156, 39, 176, 1)",
         "rgba(121, 85, 72, 1)",
         "rgba(205, 220, 57, 1)",
       ],
       backgroundColor: [
-        "rgba(244, 67, 54, 0.2)",
+        "rgba(242, 5, 116, 0.2)",
         "rgba(33, 150, 243, 0.2)",
         "rgba(156, 39, 176, 0.2)",
         "rgba(121, 85, 72, 0.2)",
@@ -81,8 +81,8 @@ export default {
     servicesChartData: [],
     servicesLabels: [],
     suscribeChartColors: {
-      borderColor: "rgba(244, 67, 54, 1)",
-      backgroundColor: "rgba(244, 67, 54, 0.2)",
+      borderColor: "rgba(242, 90, 56, 1)",
+      backgroundColor: "rgba(242, 90, 56, 0.2)",
     },
     suscribeChartData: [],
     suscribeLabels: [],
