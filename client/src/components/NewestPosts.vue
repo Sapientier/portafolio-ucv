@@ -2,24 +2,21 @@
   <v-container pa-0>
     <base-subheading>Servicios recientes</base-subheading>
     <v-layout
-      v-for="(servicios, i) in servicios.slice(
-        servicios.length - 3,
-        servicios.length
-      )"
+      v-for="(services, i) in paginatedServices"
       :key="i"
       align-center
       mb-2
     >
       <v-flex xs12 d-flex>
         <v-img
-          :src="`${servicios.imageService}`"
+          :src="`${services.imageService}`"
           class="mr-3"
           height="36"
           max-width="36"
         />
         <div>
-          <div class="subheading" v-text="servicios.name"></div>
-          <div class="caption">{{ formatDate(servicios.date) }}</div>
+          <div class="subheading" v-text="services.name"></div>
+          <div class="caption">{{ formatDate(services.date) }}</div>
         </div>
       </v-flex>
     </v-layout>
@@ -28,7 +25,7 @@
 
 <script>
 // Utilities
-import { mapState } from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
   methods: {
@@ -38,9 +35,29 @@ export default {
       const [year, month, day] = newdate.split("-");
       return `${day}/${month}/${[year]}`;
     },
+    removeItemAll(arr) {
+      if (!this.$store.state.isUserLoggedIn) {
+        var i = 0;
+        while (i < arr.length) {
+          if (arr[i].approve === false) {
+            arr.splice(i, 1);
+          } else {
+            ++i;
+          }
+        }
+      }
+      return arr;
+    },
   },
   computed: {
-    ...mapState(["servicios"]),
+    ...mapGetters(["services"]),
+    paginatedServices() {
+      var newServices = []
+      newServices = this.services.slice();
+      newServices = this.removeItemAll(newServices);
+
+      return newServices.slice(newServices.length - 3, newServices.length);
+    },
   },
 };
 </script>
