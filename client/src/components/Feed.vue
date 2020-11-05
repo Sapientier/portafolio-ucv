@@ -37,28 +37,46 @@
 
 <script>
 // Utilities
-import { mapState } from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
   name: "Feed",
   components: {
     FeedCard: () => import("@/components/FeedCard"),
   },
-
   data: () => ({
     layout: [3, 3, 3],
     page: 1,
+    newServices: []
   }),
+  methods: {
+    removeItemAll(arr) {
+      if (!this.$store.state.isUserLoggedIn) {
+        var i = 0;
+        while (i < arr.length) {
+          if (arr[i].approve === false) {
+            arr.splice(i, 1);
+          } else {
+            ++i;
+          }
+        }
+      }
+      return arr;
+    },
+  },
   computed: {
-    ...mapState(["servicios"]),
+    ...mapGetters(["services"]),
     pages() {
-      return Math.ceil(this.servicios.length / 3);
+      return Math.ceil(this.services.length / 3);
     },
     paginatedArticles() {
       const start = (this.page - 1) * 3;
       const stop = this.page * 3;
 
-      return this.servicios.slice(start, stop);
+      this.newServices = this.services.slice();
+      this.newServices = this.removeItemAll(this.newServices);
+
+      return this.newServices.slice(start, stop);
     },
   },
 };
