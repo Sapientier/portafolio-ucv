@@ -30,9 +30,9 @@
               <v-card class="mt-4 mx-auto">
                 <h2 class="text-center">Suscripciones</h2>
                 <line-chart
-                  v-if="loaded2"
-                  :chartdata="servicesChartData"
-                  :chartlabels="servicesLabels"
+                  v-if="loaded3"
+                  :chartdata="suscribeChartData"
+                  :chartlabels="suscribeLabels"
                   :chartcolors="servicesChartColors"
                 />
               </v-card>
@@ -47,6 +47,7 @@
 <script>
 import Services from "@/services/Services";
 import UsersService from "@/services/UsersService";
+import SuscribeService from "@/services/SuscribeService";
 
 export default {
   data: () => ({
@@ -55,7 +56,7 @@ export default {
       backgroundColor: [
         "rgba(0, 188, 212, 1)",
         "rgba(255, 193, 7, 1)",
-        'rgba(96, 125, 139, 1)',
+        "rgba(96, 125, 139, 1)",
         "rgba(0, 150, 136, 1)",
       ],
     },
@@ -79,37 +80,54 @@ export default {
     },
     servicesChartData: [],
     servicesLabels: [],
+    suscribeChartColors: {
+      borderColor: "rgba(244, 67, 54, 1)",
+      backgroundColor: "rgba(244, 67, 54, 0.2)",
+    },
+    suscribeChartData: [],
+    suscribeLabels: [],
     loaded1: false,
     loaded2: false,
+    loaded3: false,
   }),
+  methods: {
+    formatDate(date) {
+      if (!date) return null;
+      var aux = date.replace(/\T.+/, "");
+      const [year, month, day] = aux.split("-");
+
+      return month - 0;
+    },
+  },
   async mounted() {
     this.loaded1 = false;
     this.loaded2 = false;
+    this.loaded3 = false;
 
     await UsersService.getusers()
       .then((response) => {
         const data = response.data;
-        var invnum = 0,
-          tecnum = 0,
-          mernum = 0,
-          mednum = 0;
+        var gennum = 0,
+          extnum = 0,
+          invnum = 0,
+          pronum = 0;
         data.forEach((d) => {
           switch (d.dependencies) {
             case "Coordinador General":
-              invnum++;
+              gennum++;
               break;
             case "Coordinador de Extensión":
-              tecnum++;
+              extnum++;
               break;
             case "Coordinador de Investigación":
-              mernum++;
+              invnum++;
               break;
             case "Profesor/Investigador":
-              mednum++;
+              pronum++;
               break;
           }
         });
-        this.usersChartData = [invnum, tecnum, mernum, mednum];
+        this.usersChartData = [gennum, extnum, invnum, pronum];
         this.usersLabels = [
           "Coordinador General",
           "Coordinador de Extensión",
@@ -156,6 +174,56 @@ export default {
           "Educación",
         ];
         this.loaded2 = true;
+      })
+      .catch((err) => console.log(err.response.data.error));
+
+    await SuscribeService.getsuscribers()
+      .then((response) => {
+        const data = response.data;
+        var month = new Array();
+        month[0] = "Enero";
+        month[1] = "Febrero";
+        month[2] = "Marzo";
+        month[3] = "Abril";
+        month[4] = "Mayo";
+        month[5] = "Junio";
+        month[6] = "Julio";
+        month[7] = "Agosto";
+        month[8] = "Septiembre";
+        month[9] = "Octubre";
+        month[10] = "Noviembre";
+        month[11] = "Diciembre";
+
+        var d = new Date();
+        const mes3l = d.getMonth() + 1,
+          mes2l = d.getMonth(),
+          mes1l = d.getMonth() - 1;
+
+        var mes1 = 0,
+          mes2 = 0,
+          mes3 = 0;
+
+        data.forEach((d) => {
+          var fecha = this.formatDate(d.dateSub);
+          switch (fecha) {
+            case mes1l:
+              mes1++;
+              break;
+            case mes2l:
+              mes2++;
+              break;
+            case mes3l:
+              mes3++;
+              break;
+          }
+        });
+        this.suscribeChartData = [mes1, mes2, mes3];
+        this.suscribeLabels = [
+          month[d.getMonth() - 2],
+          month[d.getMonth() - 1],
+          month[d.getMonth()],
+        ];
+        this.loaded3 = true;
       })
       .catch((err) => console.log(err.response.data.error));
   },

@@ -104,7 +104,7 @@
 </template>
 
 <script>
-import Services from "@/services/Services";
+import SuscribeService from "@/services/SuscribeService";
 
 export default {
   data: () => ({
@@ -127,7 +127,7 @@ export default {
       if (this.email != "") {
         try {
           this.dialog = true;
-          const response = await Services.suscribeservices({
+          const response = await SuscribeService.suscribe({
             email: this.email,
             typeSub: "Todo",
           }).then((response) => {

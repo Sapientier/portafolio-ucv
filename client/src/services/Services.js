@@ -19,7 +19,4 @@ export default {
     updateservices(values) {
         return Api().post('updateservices', values)
     },
-    suscribeservices(values) {
-        return Api().post('suscribeservices', values)
-    },
 }

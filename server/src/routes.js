@@ -1,6 +1,7 @@
 const AuthenticationController = require('./controllers/AuthenticationController');
 const UsersController = require('./controllers/UsersController');
 const ServicesController = require('./controllers/ServicesController');
+const SuscribeController = require('./controllers/SuscribeController');
 const NotificationsController = require('./controllers/NotificationsController');
 const path = require('path');
 const multer = require('multer');
@@ -9,7 +10,7 @@ const storage = multer.diskStorage({
         cb(null, 'public/uploads/');
     },
     filename: function (req, file, cb) {
-        cb(null, Date.now() + '-' + file.originalname)
+        cb(null, Date.now() + '-' + file.originalname.replace(" ", ""))
     }
 });
 const upload = multer({ storage: storage });
@@ -71,9 +72,6 @@ module.exports = (app) => {
         app.post('/getuniservicebyname',
             ServicesController.getuniservicebyname
         ),
-        app.post('/suscribeservices',
-            ServicesController.suscribeservices
-        ),
         app.post('/getnotifications',
             NotificationsController.getnotifications
         ),
@@ -82,5 +80,11 @@ module.exports = (app) => {
         ),
         app.post('/deletenotifications',
             NotificationsController.deletenotifications
+        ),
+        app.post('/suscribeservices',
+            SuscribeController.suscribeservices
+        ),
+        app.get('/getsuscribers',
+            SuscribeController.getsuscribers
         )
 }   

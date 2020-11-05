@@ -9,7 +9,11 @@ const SubscriberSchema = new Schema({
     typeSub: {
         type: String,
         required: true
-    }
+    },
+    dateSub: {
+        type: Date,
+        required: true
+    },
 });
 
 module.exports = mongoose.model('Subscriber', SubscriberSchema);
