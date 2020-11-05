@@ -195,10 +195,18 @@ export default {
         month[11] = "Diciembre";
 
         var d = new Date();
-        const mes3l = d.getMonth() + 1,
+        var mes3l = d.getMonth() + 1,
           mes2l = d.getMonth(),
           mes1l = d.getMonth() - 1;
-
+        if (mes3l == 13) {
+          mes3l = 12;
+        }
+        if (mes2l == 0) {
+          mes3l = 1;
+        }
+        if (mes1l == -1) {
+          mes3l = 12;
+        }
         var mes1 = 0,
           mes2 = 0,
           mes3 = 0;
@@ -217,10 +225,18 @@ export default {
               break;
           }
         });
+
+        mes1l = d.getMonth() - 2;
+        if(mes1l === -2){
+            mes1l = 10
+        } else if(mes1l === -1) {
+            mes1l = 11
+        }
+        
         this.suscribeChartData = [mes1, mes2, mes3];
         this.suscribeLabels = [
-          month[d.getMonth() - 2],
-          month[d.getMonth() - 1],
+          month[mes1l],
+          month[d.getMonth() - 1 === -1 ? 11 : d.getMonth() - 1],
           month[d.getMonth()],
         ];
         this.loaded3 = true;
