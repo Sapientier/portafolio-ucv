@@ -511,6 +511,7 @@ export default {
       this.resetValidation();
     },
     activefilter(num) {
+      this.page = 1;
       this.active0 = false;
       this.active1 = false;
       this.active2 = false;
