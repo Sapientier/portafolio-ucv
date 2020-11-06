@@ -20,7 +20,7 @@ module.exports = {
         });
 
         var mailOptions = {
-            from: '"Portafolio Digital UCV" <portafolioucv@gmail.com>',
+            from: '"Portafolio Ciencias" <portafolioucv@gmail.com>',
             to: req.body.email,
             subject: 'Creación de usuario',
             html: '<html><body>Su usuario es: <b>' + req.body.email + '</b><br>Su contraseña es: <b>' + password + '</b><br><br> Correo automático. Por favor no responder.</body></html>'
@@ -196,7 +196,7 @@ module.exports = {
         });
 
         var mailOptions = {
-            from: '"Portafolio Digital UCV" <portafolioucv@gmail.com>',
+            from: '"Portafolio Ciencias" <portafolioucv@gmail.com>',
             to: req.body.email,
             subject: 'Reinicio de contraseña',
             html: '<html><body>Su nueva contraseña es: <b>' + password + '</b><br><br> Correo automático. Por favor no responder.</body></html>'

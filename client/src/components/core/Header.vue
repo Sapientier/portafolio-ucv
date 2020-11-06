@@ -86,7 +86,7 @@
         <span
           class="hidden-sm-and-down home"
           @click="navigateTo({ name: 'Home' })"
-          >Portafolio Digital UCV</span
+          >Portafolio Digital Ciencias UCV</span
         >
       </v-toolbar-title>
       <v-spacer />

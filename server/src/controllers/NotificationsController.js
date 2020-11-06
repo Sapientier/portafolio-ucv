@@ -66,7 +66,7 @@ module.exports = {
                 }
 
                 var mailOptions = {
-                    from: '"Portafolio Digital UCV" <portafolioucv@gmail.com>',
+                    from: '"Portafolio Ciencias" <portafolioucv@gmail.com>',
                     to: emailsSubs,
                     subject: 'Nuevo servicio disponible',
                     html: '<html><body>Servicio <b>' + req.body.name + '</b> en la categoría <b>' + req.body.category + '</b>.<br><br> Correo automático. Por favor no responder.</body></html>'

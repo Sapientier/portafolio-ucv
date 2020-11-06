@@ -15,7 +15,7 @@ module.exports = {
         });
 
         var mailOptions = {
-            from: '"Portafolio Digital UCV" <portafolioucv@gmail.com>',
+            from: '"Portafolio Ciencias" <portafolioucv@gmail.com>',
             to: req.body.email,
             subject: 'Suscripción realizada',
             html: '<html><body>Usted se encuentra suscrito a todos los servicios de la Facultad de Ciencias.<br><br> Correo automático. Por favor no responder.</body></html>'
