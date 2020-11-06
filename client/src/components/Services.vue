@@ -405,7 +405,7 @@ export default {
   },
   methods: {
     ...mapActions([
-      "getServicios",
+      "setServiciosAll",
       "setServicios",
       "filterServiciosbyCat",
       "filterServiciosbyName",
@@ -424,7 +424,6 @@ export default {
     async getServices() {
       await Services.getservices()
         .then((response) => {
-
           for (const servicio of response.data) {
             if (
               !servicio.name ||
@@ -432,11 +431,18 @@ export default {
             )
               continue;
 
-            this.servicesnames.push(servicio.name);
+            if (!this.$store.state.isUserLoggedIn) {
+              if (servicio.approve != false) {
+                this.servicesnames.push(servicio.name);
+              }
+            }
+            else {
+                this.servicesnames.push(servicio.name);
+            }
           }
 
           this.servicesnames.sort();
-          this.getServicios(response.data);
+          this.setServiciosAll(response.data);
         })
         .catch((err) => console.log(err.response.data.error));
     },

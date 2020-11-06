@@ -62,7 +62,14 @@ export default new Vuex.Store({
         setUserNumNoti({ commit }, numnoti) {
             commit("setUserNumNoti", numnoti);
         },
-        getServicios({ commit }, values) {
+        async getServicios({ commit }) {
+            await Services.getservices()
+                .then((response) => {
+                    commit("getServicios", response.data);
+                })
+                .catch((err) => console.log(err.response.data.error));
+        },
+        setServiciosAll({ commit }, values) {
             commit("getServicios", values);
         },
         setServicios({ commit }, values) {
