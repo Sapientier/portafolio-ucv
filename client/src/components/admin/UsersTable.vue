@@ -13,6 +13,7 @@
             ></v-text-field>
           </v-card-title>
           <v-data-table
+            :header-props="headerProps"
             :headers="headers"
             :items="UserList"
             :search="search"
@@ -212,6 +213,9 @@ export default {
       "Profesor/Investigador",
     ],
     search: "",
+    headerProps: {
+      sortByText: "Ordenar por",
+    },
     headers: [
       { text: "Correo", value: "email" },
       { text: "Administrador", value: "isAdmin" },
