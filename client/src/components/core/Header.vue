@@ -47,7 +47,7 @@
             <v-icon>mdi-table-edit</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>Tabla de Usuarios</v-list-item-title>
+            <v-list-item-title>Administración de Usuarios</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
