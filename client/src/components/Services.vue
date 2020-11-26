@@ -289,7 +289,7 @@
               v-model="approve"
               label="Aprobado"
               :disabled="
-                $store.state.user.dependencies == 'Profesor/Investigador'
+                $store.state.user.dependencies === 'Profesor/Investigador'
               "
             ></v-switch>
             <v-spacer></v-spacer>
@@ -397,7 +397,7 @@ export default {
   watch: {
     search(val) {
       val && val !== this.select && this.querySelections(val);
-      if (val != null) {
+      if (val !== null) {
         this.activefilter(-1);
         this.filterServiciosbyName(this.search);
       }
@@ -432,12 +432,11 @@ export default {
               continue;
 
             if (!this.$store.state.isUserLoggedIn) {
-              if (servicio.approve != false) {
+              if (servicio.approve !== false) {
                 this.servicesnames.push(servicio.name);
               }
-            }
-            else {
-                this.servicesnames.push(servicio.name);
+            } else {
+              this.servicesnames.push(servicio.name);
             }
           }
 
@@ -449,7 +448,7 @@ export default {
     async insertService() {
       const fd = new FormData();
 
-      if (this.selectedFile != null) {
+      if (this.selectedFile !== null && this.selectedFile !== undefined) {
         fd.append("image", this.selectedFile, this.selectedFile.name);
       }
       fd.append("name", this.name);
@@ -465,29 +464,25 @@ export default {
       fd.append("date", this.date);
       fd.append("approve", this.approve);
 
-      await Services.insertservices(fd)
-        .then((response) => {
+      try {
+        await Services.insertservices(fd).then((response) => {
           this.insertInline();
           this.setServicios(response.data);
-        })
-        .catch((err) => {
-          this.snack = true;
-          this.snackColor = "error";
-          this.snackText = err.response.data.error;
         });
 
-      await NotificationService.insertnotifications({
-        id: this.$store.state.user._id,
-        name: this.name,
-        category: this.categories,
-        approve: this.approve,
-        email: this.$store.state.user.email,
-      }).catch((err) => {
+        await NotificationService.insertnotifications({
+          id: this.$store.state.user._id,
+          name: this.name,
+          category: this.categories,
+          approve: this.approve,
+          email: this.$store.state.user.email,
+          isUpdate: false,
+        });
+      } catch (err) {
         this.snack = true;
         this.snackColor = "error";
         this.snackText = err.response.data.error;
-      });
-
+      }
       this.close();
     },
     resetValidation() {

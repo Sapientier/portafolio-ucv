@@ -4,7 +4,7 @@
       <v-flex xs12 md4>
         <v-card>
           <v-avatar class="mx-auto d-block" size="130">
-            <v-img :src="imageUser != '' ? `${imageUser}` : require(`@/assets/profile-avatar-icon.png`)"></v-img>
+            <v-img :src="imageUser !== '' ? `${imageUser}` : require('@/assets/profile-avatar-icon.png')"></v-img>
           </v-avatar>
           <v-card-text class="text-xs-center">
             <h3 class="card-title">{{ name }} {{ lastname }}</h3>
@@ -273,7 +273,7 @@ export default {
     },
     async checkPassword() {
       if (this.$refs.form.validate()) {
-        if (this.newPass != this.newPass2) {
+        if (this.newPass !== this.newPass2) {
           this.alert = true;
           this.error = "Las nuevas contraseñas no coinciden";
         } else {
@@ -307,7 +307,7 @@ export default {
     async updateUser() {
       const fd = new FormData();
 
-      if (this.selectedFile != null) {
+      if (this.selectedFile !== null && this.selectedFile !== undefined) {
         fd.append("image", this.selectedFile, this.selectedFile.name);
       }
       fd.append("_id", this.$store.state.user._id);

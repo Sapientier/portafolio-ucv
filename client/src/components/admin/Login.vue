@@ -85,7 +85,7 @@ export default {
         this.$store.dispatch("setUser", response.data.user);
         this.$store.dispatch("setNoti", responsenoti.data);
         this.$router.push({
-          name: "Home",
+          name: "UserProfile",
         });
       } catch (error) {
         this.alert = true;

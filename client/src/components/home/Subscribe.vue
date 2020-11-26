@@ -124,7 +124,7 @@ export default {
   }),
   methods: {
     async suscribir() {
-      if (this.email != "") {
+      if (this.email !== "") {
         try {
           this.dialog = true;
           const response = await SuscribeService.suscribe({

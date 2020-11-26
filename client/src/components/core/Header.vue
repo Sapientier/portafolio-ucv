@@ -52,15 +52,15 @@
         </v-list-item>
       </v-list>
       <v-bottom-navigation absolute color="indigo">
-        <v-btn>
+        <v-btn @click="navigateToExt('https://www.twitter.com/')">
           <v-icon>mdi-twitter</v-icon>
         </v-btn>
 
-        <v-btn>
+        <v-btn @click="navigateToExt('https://www.youtube.com/')">
           <v-icon>mdi-youtube</v-icon>
         </v-btn>
 
-        <v-btn>
+        <v-btn @click="navigateToExt('https://www.facebook.com/')">
           <v-icon>mdi-facebook</v-icon>
         </v-btn>
       </v-bottom-navigation>
@@ -110,7 +110,7 @@
                 v-on="{ ...tooltip, ...menu }"
                 v-bind="attrs"
                 @click="updateNumNoti"
-                :disabled="$store.state.notificaciones == ''"
+                :disabled="$store.state.notificaciones.length === 0"
               >
                 <v-badge
                   overlap
@@ -245,6 +245,9 @@ export default {
     },
     navigateTo(route) {
       this.$router.push(route);
+    },
+    navigateToExt(route) {
+      window.open(route, "_blank");
     },
     logout() {
       this.$store.dispatch("setToken", null);

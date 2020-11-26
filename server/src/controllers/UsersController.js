@@ -115,8 +115,8 @@ module.exports = {
             const user = await User.findOne({
                 '_id': req.body._id
             });
-            console.log(user.imageUser);
-            if (req.file == null) {
+        
+            if (req.file === undefined) {
                 newpath = user.imageUser;
             }
             else {

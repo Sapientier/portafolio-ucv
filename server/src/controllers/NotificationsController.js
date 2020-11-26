@@ -10,14 +10,19 @@ module.exports = {
             // Inserción de las notificaciones
             const emails = [];
             var descripcion = "";
+            var titulo = "";
             const date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
-            
-            if(req.body.approve === true){
+
+            if (req.body.approve === true)
                 descripcion = "Aprobado: " + req.body.name;
-            }
-            else{
+            else
                 descripcion = "No aprobado: " + req.body.name;
-            }
+
+            if (req.body.isUpdate === true)
+                titulo = "Actualización de Servicio";
+            else
+                titulo = "Nuevo Servicio";
+
             const usersNoti = await User.find({
                 '_id': { $ne: req.body.id }
             });
@@ -33,7 +38,7 @@ module.exports = {
             const task = new Notification({
                 emailsToNoti: emails,
                 typeNoti: "Service",
-                title: "Nuevo Servicio",
+                title: titulo,
                 description: descripcion,
                 dateNoti: date,
                 owner: req.body.email
@@ -42,7 +47,7 @@ module.exports = {
             const notificacion = await task.save();
 
             // Se notifica a los suscriptores
-            if(req.body.approve === true) {
+            if (req.body.approve === true) {
                 var transporter = nodemailer.createTransport({
                     service: 'gmail',
                     auth: {
@@ -51,12 +56,18 @@ module.exports = {
                     }
                 });
 
+                if (req.body.isUpdate === true) 
+                    descripcion = "Servicio actualizado";
+                else
+                    descripcion = "Nuevo servicio disponible";
+
                 var emailsSubs = "";
                 var aux = 0;
+
                 const correosSubs = await Subscriber.find();
 
                 for (const element of correosSubs) {
-                    if(aux === 0){
+                    if (aux === 0) {
                         emailsSubs = element.email;
                         aux++;
                     }
@@ -68,15 +79,14 @@ module.exports = {
                 var mailOptions = {
                     from: '"Portafolio Ciencias" <portafolioucv@gmail.com>',
                     to: emailsSubs,
-                    subject: 'Nuevo servicio disponible',
+                    subject: descripcion,
                     html: '<html><body>Servicio <b>' + req.body.name + '</b> en la categoría <b>' + req.body.category + '</b>.<br><br> Correo automático. Por favor no responder.</body></html>'
                 };
                 transporter.sendMail(mailOptions, function (error, info) {
-                    if (error) {
+                    if (error)
                         console.log(error);
-                    } else {
+                    else
                         console.log('Correo enviado: ' + info.response);
-                    }
                 });
             }
 

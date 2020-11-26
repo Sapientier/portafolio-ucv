@@ -5,7 +5,7 @@ module.exports = {
     async insertservices(req, res) {
         try {
             var newpath = "";
-            if (req.file != null) {
+            if (req.file !== undefined) {
                 newpath = req.file.path.substring(7);
             }
             const task = new Service({
@@ -36,7 +36,7 @@ module.exports = {
     async updateservices(req, res) {
         try {
             var newpath = "";
-            if (req.file == null) {
+            if (req.file === undefined) {
                 newpath = req.body.imageService;
             }
             else {
@@ -85,7 +85,8 @@ module.exports = {
     async deleteservices(req, res) {
         try {
             await Service.findByIdAndDelete(req.body._id);
-            if (req.body.imageService != "") {
+
+            if (req.body.imageService !== "") {
                 const newpath = "public/" + req.body.imageService;
                 fs.unlink(newpath, (err) => {
                     if (err) {

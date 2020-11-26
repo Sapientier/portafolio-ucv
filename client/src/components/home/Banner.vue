@@ -72,7 +72,7 @@ export default {
       const month = date.getMonth();
       const day = date.getDate();
       let facultyAge = year - 1958;
-      if (month < 2 || (month == 2 && day < 13)) {
+      if (month < 2 || (month === 2 && day < 13)) {
         facultyAge--;
       }
       return facultyAge;

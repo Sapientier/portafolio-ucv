@@ -230,7 +230,7 @@
                   v-model="editedItem.approve"
                   label="Aprobado"
                   :disabled="
-                    $store.state.user.dependencies == 'Profesor/Investigador'
+                    $store.state.user.dependencies === 'Profesor/Investigador'
                   "
                 ></v-switch>
                 <v-spacer></v-spacer>
@@ -259,7 +259,7 @@
               </v-btn>
               <v-toolbar-title
                 >{{ value.name }} ({{
-                  value.school != "N/A" ? value.school : value.institute
+                  value.school !== "N/A" ? value.school : value.institute
                 }})</v-toolbar-title
               >
               <v-spacer></v-spacer>
@@ -313,6 +313,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import Services from "@/services/Services";
+import NotificationService from "@/services/NotificationService";
 
 export default {
   data: () => ({
@@ -434,7 +435,8 @@ export default {
     },
     async updateService() {
       const fd = new FormData();
-      if (this.selectedFile != null) {
+
+      if (this.selectedFile !== null && this.selectedFile !== undefined) {
         fd.append("image", this.selectedFile, this.selectedFile.name);
       }
       fd.append("_id", this.editedItem._id);
@@ -452,16 +454,25 @@ export default {
       fd.append("imageService", this.editedItem.imageService);
       fd.append("approve", this.editedItem.approve);
 
-      await Services.updateservices(fd)
-        .then((response) => {
+      try {
+        await Services.updateservices(fd).then((response) => {
           this.update();
           this.updateServicios(response.data);
-        })
-        .catch((err) => {
-          this.snack = true;
-          this.snackColor = "error";
-          this.snackText = err.response.data.error;
         });
+
+        await NotificationService.insertnotifications({
+          id: this.$store.state.user._id,
+          name: this.editedItem.name,
+          category: this.editedItem.category,
+          approve: this.editedItem.approve,
+          email: this.$store.state.user.email,
+          isUpdate: true,
+        });
+      } catch (err) {
+        this.snack = true;
+        this.snackColor = "error";
+        this.snackText = err.response.data.error;
+      }
 
       this.close();
     },

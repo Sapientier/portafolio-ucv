@@ -33,13 +33,17 @@ export default new Vuex.Store({
         setUserNumNoti: (state, numnoti) => (state.user.numNoti = numnoti),
         getServicios: (state, servicios) => (state.servicios = servicios),
         setServicios: (state, servicios) => state.servicios.unshift(servicios),
-        removeServicios: (state, id) =>
-            (state.servicios = state.servicios.filter(
-                (servicio) => servicio._id != id
-            )),
+        removeServicios: (state, id) => {
+            const index = state.servicios.findIndex(
+                servicio => servicio._id === id
+            );
+            if (index !== -1) {
+                state.servicios.splice(index, 1)
+            }
+        },
         updateServicios: (state, newserv) => {
             const index = state.servicios.findIndex(
-                (servicio) => servicio._id === newserv._id
+                servicio => servicio._id === newserv._id
             );
             if (index !== -1) {
                 state.servicios.splice(index, 1, newserv);

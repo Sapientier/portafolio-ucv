@@ -23,16 +23,16 @@ export default {
   created() {
     if (
       !this.$store.state.isUserLoggedIn &&
-      (this.$router.currentRoute.fullPath == "/reports" ||
-        this.$router.currentRoute.fullPath == "/userprofile" ||
-        this.$router.currentRoute.fullPath == "/userstable")
+      (this.$router.currentRoute.fullPath === "/reports" ||
+        this.$router.currentRoute.fullPath === "/userprofile" ||
+        this.$router.currentRoute.fullPath === "/userstable")
     ) {
       this.$router.push({
         name: "Login",
       });
     } else if (
       this.$store.state.isUserLoggedIn &&
-      this.$router.currentRoute.fullPath == "/login"
+      this.$router.currentRoute.fullPath === "/login"
     ) {
       this.$router.push({
         name: "Home",
