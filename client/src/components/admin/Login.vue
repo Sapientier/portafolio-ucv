@@ -36,6 +36,14 @@
               <div v-html="error"></div>
             </v-alert>
             <v-card-actions>
+              <v-btn icon>
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on }">
+                    <v-icon v-on="on">mdi-frequently-asked-questions</v-icon>
+                  </template>
+                  <span>Las credenciales les serán enviadas por correo, por favor contacte con el administrador.</span>
+                </v-tooltip>
+              </v-btn>
               <v-spacer />
               <v-btn :disabled="!valid" color="primary" @click="login"
                 >Ingresar</v-btn
