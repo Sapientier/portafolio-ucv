@@ -17,8 +17,8 @@
       </v-overlay>
     </v-parallax>
 
-    <v-layout class="grey lighten-5">
-      <v-flex xs12>
+    <v-row class="grey lighten-5">
+      <v-col xs="12">
         <v-carousel
           cycle
           height="400"
@@ -28,13 +28,13 @@
           <v-carousel-item v-for="(item, i) in items" :key="i" :src="item.src">
             <v-overlay :absolute="absolute" :opacity="opacity">
               <v-row class="fill-height" align="center" justify="center">
-                <div class="display-1"><v-flex xs12>{{ item.slide }}</v-flex></div>
+                <div class="display-1 text-center"><v-col xs="12">{{ item.slide }}</v-col></div>
               </v-row>
             </v-overlay>
           </v-carousel-item>
         </v-carousel>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </base-card>
 </template>
 

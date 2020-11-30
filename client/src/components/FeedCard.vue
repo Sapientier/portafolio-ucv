@@ -1,5 +1,5 @@
 <template>
-  <v-flex xs12 :class="classes">
+  <v-col xs="12" :class="classes" cols="12">
     <v-hover v-slot:default="{ hover }">
       <base-card
         :height="350"
@@ -12,8 +12,8 @@
           height="100%"
           gradient="rgba(0, 0, 0, .42), rgba(0, 0, 0, .42)"
         >
-          <v-layout fill-height wrap text-xs-right ma-0>
-            <v-flex xs12>
+          <v-row class="ma-0 fill-height">
+            <v-col xs="12" cols="12">
               <v-chip
                 label
                 class="mx-0 mb-2 text-uppercase"
@@ -34,8 +34,8 @@
                 disabled
                 v-if="$store.state.isUserLoggedIn"
               ></v-checkbox>
-            </v-flex>
-            <v-flex d-flex justify-start align-self-end>
+            </v-col>
+            <v-col class="d-flex justify-start" align-self="end">
               <v-chip
                 class="text-uppercase ma-0"
                 color="primary"
@@ -44,11 +44,10 @@
                 @click="seeItem(value)"
                 >Leer Más</v-chip
               >
-            </v-flex>
-            <v-flex
-              align-self-end
-              d-flex
-              justify-end
+            </v-col>
+            <v-col
+              align-self="end"
+              class="d-flex justify-end"
               v-if="$store.state.isUserLoggedIn"
             >
               <v-btn
@@ -71,8 +70,8 @@
               >
                 <v-icon>mdi-delete</v-icon>
               </v-btn>
-            </v-flex>
-          </v-layout>
+            </v-col>
+          </v-row>
         </v-img>
         <v-dialog v-model="dialog" persistent max-width="350px">
           <v-card>
@@ -84,7 +83,7 @@
             >
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="close">Cancelar</v-btn>
+              <v-btn text @click="close">Cancelar</v-btn>
               <v-btn color="blue darken-1" text @click="deleteval"
                 >Aceptar</v-btn
               >
@@ -234,7 +233,7 @@
                   "
                 ></v-switch>
                 <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="close">Cerrar</v-btn>
+                <v-btn text @click="close">Cerrar</v-btn>
                 <v-btn
                   color="blue darken-1"
                   text
@@ -307,7 +306,7 @@
         </v-snackbar>
       </base-card>
     </v-hover>
-  </v-flex>
+  </v-col>
 </template>
 
 <script>
@@ -379,8 +378,8 @@ export default {
     rulesImg: [
       (value) =>
         !value ||
-        value.size < 2000000 ||
-        "¡El tamaño de la imagen debe ser inferior a 2 MB!",
+        value.size < 1000000 ||
+        "¡El tamaño de la imagen debe ser inferior a 1 MB!",
     ],
     nameRules: [(v) => !!v || "Nombre de servicio es requerida"],
     categoriaRules: [(v) => !!v || "La categoría es requerida"],
@@ -497,8 +496,8 @@ export default {
   computed: {
     classes() {
       return {
-        md6: this.size === 2,
-        md4: this.size === 3,
+        "col-md-6": this.size === 2,
+        "col-md-4": this.size === 3,
       };
     },
     computedDateFormatted() {

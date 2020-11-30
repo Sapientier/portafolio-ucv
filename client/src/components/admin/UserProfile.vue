@@ -1,10 +1,16 @@
 <template>
-  <v-container fill-height fluid grid-list-xl>
-    <v-layout justify-center wrap>
-      <v-flex xs12 md4>
+  <v-container fluid grid-list-xl>
+    <v-row justify="center">
+      <v-col xs="12" md="4" cols="12">
         <v-card>
           <v-avatar class="mx-auto d-block" size="130">
-            <v-img :src="imageUser !== '' ? `${imageUser}` : require('@/assets/profile-avatar-icon.png')"></v-img>
+            <v-img
+              :src="
+                imageUser !== ''
+                  ? `${imageUser}`
+                  : require('@/assets/profile-avatar-icon.png')
+              "
+            ></v-img>
           </v-avatar>
           <v-card-text class="text-xs-center">
             <h3 class="card-title">{{ name }} {{ lastname }}</h3>
@@ -31,47 +37,51 @@
             ></v-file-input>
           </v-card-text>
         </v-card>
-      </v-flex>
-      <v-flex xs12 md8>
+      </v-col>
+      <v-col xs="12" md="8" cols="12">
         <v-card>
-          <v-form>
             <v-container>
-              <v-layout wrap>
-                <v-flex xs12 md6>
+              <v-row>
+                <v-col xs="12" md="6" cols="12">
                   <v-text-field
                     label="Dependencia"
                     disabled
                     :value="$store.state.user.dependencies"
                   />
-                </v-flex>
-                <v-flex xs12 md6>
+                </v-col>
+                <v-col xs="12" md="6" cols="12">
                   <v-text-field
                     :value="$store.state.user.email"
                     label="Correo Electrónico"
                     disabled
                   />
-                </v-flex>
-                <v-flex xs12 md6>
+                </v-col>
+                <v-col xs="12" md="6" cols="12">
                   <v-text-field v-model="name" label="Nombres" />
-                </v-flex>
-                <v-flex xs12 md6>
+                </v-col>
+                <v-col xs="12" md="6" cols="12">
                   <v-text-field v-model="lastname" label="Apellidos" />
-                </v-flex>
-                <v-flex xs12 md6>
+                </v-col>
+                <v-col xs="12" md="6" cols="12">
                   <v-combobox
                     v-model="escuelas"
                     :items="itemsel"
                     label="Escuelas"
                   ></v-combobox>
-                </v-flex>
-                <v-flex xs12 md6>
+                </v-col>
+                <v-col xs="12" md="6" cols="12">
                   <v-combobox
                     v-model="institutos"
                     :items="itemsel2"
                     label="Institutos"
                   ></v-combobox>
-                </v-flex>
-                <v-flex md8>
+                </v-col>
+                <v-col xs="12" md="6">
+                  <v-btn color="primary" @click="updateUser"
+                    >Actualizar Perfil</v-btn
+                  >
+                </v-col>
+                <v-col xs="12" md="6">
                   <v-dialog v-model="dialog" persistent max-width="400px">
                     <template v-slot:activator="{ on }">
                       <v-btn color="primary" dark v-on="on"
@@ -142,9 +152,7 @@
                         </v-alert>
                         <v-card-actions>
                           <v-spacer></v-spacer>
-                          <v-btn color="blue darken-1" text @click="close"
-                            >Cerrar</v-btn
-                          >
+                          <v-btn text @click="close">Cerrar</v-btn>
                           <v-btn
                             color="blue darken-1"
                             text
@@ -156,15 +164,9 @@
                       </v-form>
                     </v-card>
                   </v-dialog>
-                </v-flex>
-                <v-flex md4>
-                  <v-btn color="primary" @click="updateUser"
-                    >Actualizar Perfil</v-btn
-                  >
-                </v-flex>
-              </v-layout>
+                </v-col>
+              </v-row>
             </v-container>
-          </v-form>
           <v-snackbar v-model="snack" :timeout="3000" :color="snackColor">
             {{ snackText }}
             <template v-slot:action="{ attrs }">
@@ -172,8 +174,8 @@
             </template>
           </v-snackbar>
         </v-card>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -204,8 +206,8 @@ export default {
     rulesImg: [
       (value) =>
         !value ||
-        value.size < 2000000 ||
-        "¡El tamaño de la imagen debe ser inferior a 2 MB!",
+        value.size < 1000000 ||
+        "¡El tamaño de la imagen debe ser inferior a 1 MB!",
     ],
     passwordActRules: [
       (v) => !!v || "Contraseña actual es requerida",
@@ -282,8 +284,6 @@ export default {
               _id: this.$store.state.user._id,
               password: this.actPass,
             }).then((response) => this.modPassword(response.data._id));
-
-            this.close();
           } catch (error) {
             this.alert = true;
             this.error = error.response.data.error;

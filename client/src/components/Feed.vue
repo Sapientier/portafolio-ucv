@@ -1,7 +1,7 @@
 <template>
   <v-container grid-list-xl>
-    <v-layout wrap>
-      <v-flex xs12>
+    <v-row>
+      <v-col xs="12" cols="12">
         <slot />
 
         <h1
@@ -9,7 +9,7 @@
         >
           Servicios Destacados
         </h1>
-      </v-flex>
+      </v-col>
 
       <feed-card
         v-for="(servicios, i) in paginatedArticles"
@@ -17,21 +17,7 @@
         :size="layout[i]"
         :value="servicios"
       />
-    </v-layout>
-
-    <v-layout align-center>
-      <v-flex xs3>
-        <base-btn
-          v-if="page !== 1"
-          class="ml-0"
-          title="Previous page"
-          square
-          @click="page--"
-        >
-          <v-icon>mdi-chevron-left</v-icon>
-        </base-btn>
-      </v-flex>
-    </v-layout>
+    </v-row>
   </v-container>
 </template>
 

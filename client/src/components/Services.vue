@@ -1,7 +1,7 @@
 <template>
   <v-container grid-list-xl>
-    <v-layout wrap>
-      <v-flex xs12>
+    <v-row>
+      <v-col xs="12" cols="12">
         <div class="text-center">
           <v-chip
             class="ma-2"
@@ -129,7 +129,7 @@
           solo-inverted
           prepend-inner-icon="mdi-magnify"
         ></v-autocomplete>
-      </v-flex>
+      </v-col>
 
       <feed-card
         v-for="(services, i) in paginatedServices"
@@ -137,7 +137,7 @@
         :size="layout[i]"
         :value="services"
       />
-    </v-layout>
+    </v-row>
 
     <div class="text-center">
       <v-pagination
@@ -236,7 +236,7 @@
                       locale="es-es"
                     >
                       <v-spacer></v-spacer>
-                      <v-btn text color="primary" @click="menu = false"
+                      <v-btn text @click="menu = false"
                         >Cancelar</v-btn
                       >
                       <v-btn text color="primary" @click="$refs.menu.save(date)"
@@ -293,7 +293,7 @@
               "
             ></v-switch>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="close">Cerrar</v-btn>
+            <v-btn text @click="close">Cerrar</v-btn>
             <v-btn
               color="blue darken-1"
               text
@@ -384,8 +384,8 @@ export default {
     rulesImg: [
       (value) =>
         !value ||
-        value.size < 2000000 ||
-        "¡El tamaño de la imagen debe ser inferior a 2 MB!",
+        value.size < 1000000 ||
+        "¡El tamaño de la imagen debe ser inferior a 1 MB!",
     ],
     nameRules: [(v) => !!v || "Nombre de servicio es requerida"],
     categoriaRules: [(v) => !!v || "La categoría es requerida"],

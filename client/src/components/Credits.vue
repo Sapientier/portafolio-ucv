@@ -1,7 +1,7 @@
 <template>
   <v-container grid-list-xl mt-15>
-    <v-layout wrap>
-      <v-flex xs12 md6>
+    <v-row wrap>
+      <v-col xs12 md6>
         <v-card class="mx-auto elevation-6" max-width="600" outlined>
           <v-list-item>
             <v-list-item-content>
@@ -19,8 +19,8 @@
             </v-list-item-content>
           </v-list-item>
         </v-card>
-      </v-flex>
-      <v-flex xs12 md6>
+      </v-col>
+      <v-col xs12 md6>
         <v-card class="mx-auto elevation-6" max-width="600" outlined>
           <v-list-item>
             <v-list-item-content>
@@ -50,8 +50,8 @@
             </v-list-item-content>
           </v-list-item>
         </v-card>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 

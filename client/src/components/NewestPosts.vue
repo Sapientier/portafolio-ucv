@@ -1,13 +1,13 @@
 <template>
   <v-container pa-0>
     <base-subheading>Servicios recientes</base-subheading>
-    <v-layout
+    <v-row
       v-for="(services, i) in paginatedServices"
       :key="i"
-      align-center
-      mb-2
+      align="center"
+      class="mb-2"
     >
-      <v-flex xs12 d-flex>
+      <v-col xs="12" class="d-flex">
         <v-img
           :src="`${services.imageService}`"
           class="mr-3"
@@ -18,8 +18,8 @@
           <div class="subheading" v-text="services.name"></div>
           <div class="caption">{{ formatDate(services.date) }}</div>
         </div>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 

@@ -1,7 +1,7 @@
 <template>
-  <v-container fill-height fluid>
-    <v-layout justify-center wrap>
-      <v-flex xs12 md12>
+  <v-container fluid>
+    <v-row justify="center">
+      <v-col xs="12">
         <v-card>
           <v-card-title>
             <v-text-field
@@ -39,9 +39,7 @@
                     >
                     <v-card-actions>
                       <v-spacer></v-spacer>
-                      <v-btn color="blue darken-1" text @click="close"
-                        >Cancelar</v-btn
-                      >
+                      <v-btn text @click="close">Cancelar</v-btn>
                       <v-btn color="blue darken-1" text @click="deleteval"
                         >Aceptar</v-btn
                       >
@@ -98,7 +96,7 @@
                               v-if="editedIndex > -1"
                             >
                               <v-btn
-                                color="warning"
+                                color="primary"
                                 @click="reset"
                                 :loading="dialog3"
                                 >Reiniciar Contraseña</v-btn
@@ -134,9 +132,7 @@
                       </v-alert>
                       <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn color="blue darken-1" text @click="close"
-                          >Cancelar</v-btn
-                        >
+                        <v-btn text @click="close">Cerrar</v-btn>
                         <v-btn
                           color="blue darken-1"
                           text
@@ -177,8 +173,8 @@
             </template>
           </v-snackbar>
         </v-card>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -290,10 +286,10 @@ export default {
           _id: this.editedItem._id,
         }).then((response) => this.delete());
         this.UserList.splice(this.editedIndex, 1);
-        this.close();
       } catch (error) {
-        this.error = error.response.data.error;
+        this.errordelete(error.response.data.error);
       }
+      this.close();
     },
     resetValidation() {
       this.$refs.form.resetValidation();
@@ -371,6 +367,11 @@ export default {
       this.snack = true;
       this.snackColor = "success";
       this.snackText = "Datos eliminados";
+    },
+    errordelete(error) {
+      this.snack = true;
+      this.snackColor = "error";
+      this.snackText = error;
     },
   },
 };

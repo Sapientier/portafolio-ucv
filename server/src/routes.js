@@ -31,6 +31,9 @@ module.exports = (app) => {
         app.post('/login',
             AuthenticationController.login
         ),
+        app.post('/resetpassLogin',
+            AuthenticationController.resetpassLogin
+        ),
         app.post('/insertusers',
             UsersController.insertusers
         ),

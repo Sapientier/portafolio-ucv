@@ -1,46 +1,40 @@
 <template>
-  <v-container fill-height fluid>
-    <v-layout justify-center wrap>
-      <v-flex xs12 md12>
-        <v-container>
-          <v-row>
-            <v-col cols="12" md="4" sm="12">
-              <v-card class="mt-4 mx-auto">
-                <h2 class="text-center">Usuarios</h2>
-                <doughnut-chart
-                  v-if="loaded1"
-                  :chartdata="usersChartData"
-                  :chartlabels="usersLabels"
-                  :chartcolors="usersChartColors"
-                />
-              </v-card>
-            </v-col>
-            <v-col cols="12" md="4" sm="12">
-              <v-card class="mt-4 mx-auto">
-                <h2 class="text-center">Servicios</h2>
-                <bar-chart
-                  v-if="loaded2"
-                  :chartdata="servicesChartData"
-                  :chartlabels="servicesLabels"
-                  :chartcolors="servicesChartColors"
-                />
-              </v-card>
-            </v-col>
-            <v-col cols="12" md="4" sm="12">
-              <v-card class="mt-4 mx-auto">
-                <h2 class="text-center">Suscripciones</h2>
-                <line-chart
-                  v-if="loaded3"
-                  :chartdata="suscribeChartData"
-                  :chartlabels="suscribeLabels"
-                  :chartcolors="suscribeChartColors"
-                />
-              </v-card>
-            </v-col>
-          </v-row>
-        </v-container>
-      </v-flex>
-    </v-layout>
+  <v-container fluid>
+    <v-row>
+      <v-col cols="12" md="4" sm="12">
+        <v-card class="mt-4 mx-auto">
+          <h2 class="text-center">Usuarios</h2>
+          <doughnut-chart
+            v-if="loaded1"
+            :chartdata="usersChartData"
+            :chartlabels="usersLabels"
+            :chartcolors="usersChartColors"
+          />
+        </v-card>
+      </v-col>
+      <v-col cols="12" md="4" sm="12">
+        <v-card class="mt-4 mx-auto">
+          <h2 class="text-center">Servicios</h2>
+          <bar-chart
+            v-if="loaded2"
+            :chartdata="servicesChartData"
+            :chartlabels="servicesLabels"
+            :chartcolors="servicesChartColors"
+          />
+        </v-card>
+      </v-col>
+      <v-col cols="12" md="4" sm="12">
+        <v-card class="mt-4 mx-auto">
+          <h2 class="text-center">Suscripciones</h2>
+          <line-chart
+            v-if="loaded3"
+            :chartdata="suscribeChartData"
+            :chartlabels="suscribeLabels"
+            :chartcolors="suscribeChartColors"
+          />
+        </v-card>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -243,7 +237,7 @@ export default {
             }
           }
         });
-        
+
         this.suscribeChartData = this.contmonths;
         this.suscribeLabels = this.months;
         this.loaded3 = true;

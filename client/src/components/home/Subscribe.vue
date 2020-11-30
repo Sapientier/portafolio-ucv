@@ -2,8 +2,8 @@
   <v-container id="subscribe" tag="section">
     <base-card color="rgba(203, 170, 92, 0.51)" class="pa-6">
       <v-container grid-list-xl pa-0>
-        <v-layout wrap>
-          <v-flex xs12 md5>
+        <v-row>
+          <v-col xs="12" md="5">
             <base-subheading class="mb-3">Suscripción</base-subheading>
             <p>
               Ingrese su dirección de correo electrónico para suscribirse a este
@@ -11,7 +11,7 @@
               servicios por correo electrónico.
             </p>
             <v-form ref="form" lazy-validation v-model="valid">
-              <v-layout wrap pa-2>
+              <v-row class="pa-2">
                 <v-text-field
                   v-model="email"
                   solo
@@ -57,41 +57,47 @@
                     </v-card-actions>
                   </v-card>
                 </v-dialog>
-              </v-layout>
+              </v-row>
             </v-form>
-          </v-flex>
-          <v-flex xs12 md6 offset-md1>
+          </v-col>
+          <v-col xs="12" md="6" offset-md="1">
             <base-subheading>Contacto</base-subheading>
             <v-list class="transparent">
               <v-list-item>
                 <v-list-item-avatar color="primary">
                   <v-icon class="elevation-4" dark>mdi-email-outline</v-icon>
                 </v-list-item-avatar>
-                <v-list-item-title>CORREO</v-list-item-title>
-                <v-list-item-subtitle
-                  >CIENCIAS@CIENCIAS.UCV.VE</v-list-item-subtitle
-                >
+                <v-list-item-content>
+                  <v-list-item-title>CORREO</v-list-item-title>
+                  <v-list-item-subtitle
+                    >CIENCIAS@CIENCIAS.UCV.VE</v-list-item-subtitle
+                  >
+                </v-list-item-content>
               </v-list-item>
               <v-list-item>
                 <v-list-item-avatar color="primary">
                   <v-icon class="elevation-4" dark>mdi-map-marker</v-icon>
                 </v-list-item-avatar>
-                <v-list-item-title>DIRECCIÓN</v-list-item-title>
-                <v-list-item-subtitle
-                  >PASEO LOS ILUSTRES URB. VALLE ABAJO.
-                  CARACAS</v-list-item-subtitle
-                >
+                <v-list-item-content>
+                  <v-list-item-title>DIRECCIÓN</v-list-item-title>
+                  <v-list-item-subtitle
+                    >PASEO LOS ILUSTRES URB. VALLE ABAJO.
+                    CARACAS</v-list-item-subtitle
+                  >
+                </v-list-item-content>
               </v-list-item>
               <v-list-item>
                 <v-list-item-avatar color="primary">
                   <v-icon class="elevation-4" dark>mdi-phone</v-icon>
                 </v-list-item-avatar>
-                <v-list-item-title>TELÉFONO</v-list-item-title>
-                <v-list-item-subtitle>212-789-1234</v-list-item-subtitle>
+                <v-list-item-content>
+                  <v-list-item-title>TELÉFONO</v-list-item-title>
+                  <v-list-item-subtitle>212-789-1234</v-list-item-subtitle>
+                </v-list-item-content>
               </v-list-item>
             </v-list>
-          </v-flex>
-        </v-layout>
+          </v-col>
+        </v-row>
       </v-container>
     </base-card>
     <v-snackbar v-model="snack" :color="snackColor">

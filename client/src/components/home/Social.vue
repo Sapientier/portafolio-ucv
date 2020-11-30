@@ -1,16 +1,16 @@
 <template>
   <v-container id="social" tag="section" grid-list-xl>
-    <v-layout wrap>
-      <v-flex xs12 md4>
+    <v-row>
+      <v-col xs="12" md="4">
         <instagram />
-      </v-flex>
-      <v-flex xs12 md4>
+      </v-col>
+      <v-col xs="12" md="4">
         <newest-posts />
-      </v-flex>
-      <v-flex xs12 md4>
+      </v-col>
+      <v-col xs="12" md="4">
         <tags />
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
