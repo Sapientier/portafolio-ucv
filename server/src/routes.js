@@ -3,10 +3,15 @@ const UsersController = require('./controllers/UsersController');
 const ServicesController = require('./controllers/ServicesController');
 const SuscribeController = require('./controllers/SuscribeController');
 const NotificationsController = require('./controllers/NotificationsController');
+const fs = require('fs')
 const path = require('path');
 const multer = require('multer');
 const storageA = multer.diskStorage({
     destination: function (req, file, cb) {
+        if (!fs.existsSync('public/'))
+            fs.mkdirSync('public/');
+        if (!fs.existsSync('public/uploads/'))
+            fs.mkdirSync('public/uploads/');
         cb(null, 'public/uploads/');
     },
     filename: function (req, file, cb) {
@@ -15,6 +20,10 @@ const storageA = multer.diskStorage({
 });
 const storageB = multer.diskStorage({
     destination: function (req, file, cb) {
+        if (!fs.existsSync('public/'))
+            fs.mkdirSync('public/');
+        if (!fs.existsSync('public/avatars/'))
+            fs.mkdirSync('public/avatars/');
         cb(null, 'public/avatars/');
     },
     filename: function (req, file, cb) {
