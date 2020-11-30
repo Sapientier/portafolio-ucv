@@ -5,7 +5,7 @@
         <slot />
 
         <h1
-          class="subheading text-uppercase font-weight-medium text-center mt-10"
+          class="subheading text-uppercase font-weight-medium text-center mt-5"
         >
           Servicios Destacados
         </h1>

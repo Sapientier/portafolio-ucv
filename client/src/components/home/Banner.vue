@@ -17,7 +17,7 @@
       </v-overlay>
     </v-parallax>
 
-    <v-row class="grey lighten-5">
+    <v-row class="white">
       <v-col xs="12">
         <v-carousel
           cycle
