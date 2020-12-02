@@ -1,7 +1,7 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const config = require('../config');
-const nodemailer = require('nodemailer');
+const Mailer = require('../controllers/MailController');
 const Promise = require('bluebird');
 const bcrypt = Promise.promisifyAll(require('bcrypt'));
 const generatePassword = require('password-generator');
@@ -54,14 +54,6 @@ module.exports = {
     async resetpassLogin(req, res) {
         var password = generatePassword(12, false);
 
-        var transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: config.authentication.email,
-                pass: config.authentication.password
-            }
-        });
-
         var mailOptions = {
             from: '"Portafolio Ciencias" <portafolioucv@gmail.com>',
             to: req.body.email,
@@ -88,13 +80,7 @@ module.exports = {
 
             await User.findByIdAndUpdate(user._id, newTask);
 
-            transporter.sendMail(mailOptions, function (error, info) {
-                if (error) {
-                    console.log(error);
-                } else {
-                    console.log('Correo enviado: ' + info.response);
-                }
-            });
+            Mailer.sendMails(mailOptions);
 
             res.json("Actualizado con exito");
         } catch (err) {

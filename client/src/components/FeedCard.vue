@@ -262,9 +262,46 @@
                 }})</v-toolbar-title
               >
               <v-spacer></v-spacer>
-              <v-toolbar-items>
-                <v-btn dark text @click="dialog3 = false">Suscribirse</v-btn>
-              </v-toolbar-items>
+
+              <v-dialog v-model="dialog4" persistent max-width="450px">
+                <template v-slot:activator="{ on, attrs }">
+                  <v-toolbar-items>
+                    <v-btn
+                      v-if="value.approve === true"
+                      dark
+                      text
+                      v-bind="attrs"
+                      v-on="on"
+                      >Suscribirse</v-btn
+                    >
+                  </v-toolbar-items>
+                </template>
+                <v-card>
+                  <v-card-title class="headline">Suscripción</v-card-title>
+                  <v-card-text>
+                    <v-form ref="form"
+                      ><v-text-field
+                        label="Correo"
+                        prepend-icon="mdi-email"
+                        v-model="emailSub"
+                        type="email"
+                        :rules="emailRules"
+                      ></v-text-field></v-form
+                  ></v-card-text>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn text @click="close">
+                      Cerrar
+                    </v-btn>
+                    <v-btn
+                      color="primary darken-1"
+                      text
+                      @click="suscribeService"
+                      >Aceptar</v-btn
+                    >
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
             </v-toolbar>
             <v-container>
               <v-row>
@@ -313,6 +350,7 @@
 import { mapGetters, mapActions } from "vuex";
 import Services from "@/services/Services";
 import NotificationService from "@/services/NotificationService";
+import SuscribeService from "@/services/SuscribeService";
 
 export default {
   data: () => ({
@@ -348,15 +386,21 @@ export default {
       direction: "",
       approve: false,
     },
+    emailRules: [
+      (v) => !!v || "El correo es requerido",
+      (v) => /.+@.+\..+/.test(v) || "El correo debe ser valido",
+    ],
     error: null,
     selectedFile: null,
     menu: false,
     snack: false,
     snackColor: "",
     snackText: "",
+    emailSub: "",
     dialog: false,
     dialog2: false,
     dialog3: false,
+    dialog4: false,
     valid: true,
     itemselCat: [
       "Medicina",
@@ -466,6 +510,7 @@ export default {
           approve: this.editedItem.approve,
           email: this.$store.state.user.email,
           isUpdate: true,
+          serviceId: this.editedItem._id,
         });
       } catch (err) {
         this.snack = true;
@@ -475,9 +520,31 @@ export default {
 
       this.close();
     },
+    async suscribeService() {
+      if (this.emailSub !== "") {
+        await SuscribeService.suscribe({
+          email: this.emailSub,
+          typeSub: "Unique",
+          serviceName: this.value.name,
+          serviceId: this.value._id,
+        })
+          .then((response) => this.subInline())
+          .catch((err) => this.errorEmail(err.response.data.error));
+
+        this.close();
+      } else {
+        this.errorEmail("Debe ingresar un correo electrónico");
+      }
+    },
+    resetValidation() {
+      this.$refs.form.resetValidation();
+    },
     close() {
       this.dialog = false;
       this.dialog2 = false;
+      this.dialog4 = false;
+      this.emailSub = "";
+      this.resetValidation();
       setTimeout(() => {
         this.editedItem = Object.assign({}, this.defaultItem);
       }, 300);
@@ -491,6 +558,16 @@ export default {
       this.snack = true;
       this.snackColor = "success";
       this.snackText = "Servicio actualizado";
+    },
+    errorEmail(error) {
+      this.snack = true;
+      this.snackColor = "error";
+      this.snackText = error;
+    },
+    subInline() {
+      this.snack = true;
+      this.snackColor = "success";
+      this.snackText = "Suscripción realizada con éxito";
     },
   },
   computed: {

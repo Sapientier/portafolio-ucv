@@ -162,7 +162,7 @@ export default {
     dialogTitle() {
       return this.errorIndex === -1
         ? "Suscripción exitosa"
-        : "Usted ya esta suscrito";
+        : "Error: usted ya esta suscrito";
     },
     dialogText() {
       return this.errorIndex === -1

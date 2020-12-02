@@ -1,8 +1,7 @@
 const Notification = require('../models/Notification');
 const Subscriber = require('../models/Subscriber');
 const User = require('../models/User');
-const nodemailer = require('nodemailer');
-const config = require('../config');
+const Mailer = require('../controllers/MailController');
 
 module.exports = {
     async insertnotifications(req, res) {
@@ -48,23 +47,22 @@ module.exports = {
 
             // Se notifica a los suscriptores
             if (req.body.approve === true) {
-                var transporter = nodemailer.createTransport({
-                    service: 'gmail',
-                    auth: {
-                        user: config.authentication.email,
-                        pass: config.authentication.password
-                    }
-                });
-
-                if (req.body.isUpdate === true) 
-                    descripcion = "Servicio actualizado";
-                else
-                    descripcion = "Nuevo servicio disponible";
-
                 var emailsSubs = "";
                 var aux = 0;
+                var correosSubs = "";
 
-                const correosSubs = await Subscriber.find();
+                if (req.body.isUpdate === true) {
+                    descripcion = "Servicio actualizado";
+                    correosSubs = await Subscriber.find({
+                        $or:[{typeSub: "Todo"}, {typeSub: req.body.serviceId}]
+                    });
+                }
+                else {
+                    descripcion = "Nuevo servicio disponible";
+                    correosSubs = await Subscriber.find({
+                        typeSub: "Todo"
+                    });
+                }
 
                 for (const element of correosSubs) {
                     if (aux === 0) {
@@ -82,12 +80,8 @@ module.exports = {
                     subject: descripcion,
                     html: '<html><body>Servicio <b>' + req.body.name + '</b> en la categoría <b>' + req.body.category + '</b>.<br><br> Correo automático. Por favor no responder.</body></html>'
                 };
-                transporter.sendMail(mailOptions, function (error, info) {
-                    if (error)
-                        console.log(error);
-                    else
-                        console.log('Correo enviado: ' + info.response);
-                });
+
+                Mailer.sendMails(mailOptions);
             }
 
             res.json(notificacion.toJSON());

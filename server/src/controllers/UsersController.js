@@ -1,7 +1,6 @@
 const User = require('../models/User');
 const generatePassword = require('password-generator');
-const nodemailer = require('nodemailer');
-const config = require('../config');
+const Mailer = require('../controllers/MailController');
 const Promise = require('bluebird');
 const bcrypt = Promise.promisifyAll(require('bcrypt'));
 const fs = require('fs')
@@ -10,14 +9,6 @@ const SALT_WORK_FACTOR = 8;
 module.exports = {
     async insertusers(req, res) {
         var password = generatePassword(12, false);
-
-        var transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: config.authentication.email,
-                pass: config.authentication.password
-            }
-        });
 
         var mailOptions = {
             from: '"Portafolio Ciencias" <portafolioucv@gmail.com>',
@@ -37,13 +28,9 @@ module.exports = {
             });
 
             const user = await task.save();
-            transporter.sendMail(mailOptions, function (error, info) {
-                if (error) {
-                    console.log(error);
-                } else {
-                    console.log('Correo enviado: ' + info.response);
-                }
-            });
+
+            Mailer.sendMails(mailOptions);
+
             res.json(user.toJSON());
         } catch (err) {
             res.status(400).send({
@@ -187,14 +174,6 @@ module.exports = {
     async resetpass(req, res) {
         var password = generatePassword(12, false);
 
-        var transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: config.authentication.email,
-                pass: config.authentication.password
-            }
-        });
-
         var mailOptions = {
             from: '"Portafolio Ciencias" <portafolioucv@gmail.com>',
             to: req.body.email,
@@ -210,13 +189,9 @@ module.exports = {
                 password: hash
             };
             await User.findByIdAndUpdate(req.body._id, newTask);
-            transporter.sendMail(mailOptions, function (error, info) {
-                if (error) {
-                    console.log(error);
-                } else {
-                    console.log('Correo enviado: ' + info.response);
-                }
-            });
+
+            Mailer.sendMails(mailOptions);
+            
             res.json("Actualizado con exito");
         } catch (err) {
             res.status(500).send({
