@@ -40,133 +40,133 @@
       </v-col>
       <v-col xs="12" md="8" cols="12">
         <v-card>
-            <v-container fluid>
-              <v-row>
-                <v-col xs="12" md="6" cols="12">
-                  <v-text-field
-                    label="Dependencia"
-                    disabled
-                    :value="$store.state.user.dependencies"
-                  />
-                </v-col>
-                <v-col xs="12" md="6" cols="12">
-                  <v-text-field
-                    :value="$store.state.user.email"
-                    label="Correo Electrónico"
-                    disabled
-                  />
-                </v-col>
-                <v-col xs="12" md="6" cols="12">
-                  <v-text-field v-model="name" label="Nombres" />
-                </v-col>
-                <v-col xs="12" md="6" cols="12">
-                  <v-text-field v-model="lastname" label="Apellidos" />
-                </v-col>
-                <v-col xs="12" md="6" cols="12">
-                  <v-select
-                    v-model="escuelas"
-                    :items="itemsel"
-                    label="Escuelas"
-                  ></v-select>
-                </v-col>
-                <v-col xs="12" md="6" cols="12">
-                  <v-select
-                    v-model="institutos"
-                    :items="itemsel2"
-                    label="Institutos"
-                  ></v-select>
-                </v-col>
-                <v-col xs="12" md="6">
-                  <v-btn color="primary" @click="updateUser"
-                    >Actualizar Perfil</v-btn
-                  >
-                </v-col>
-                <v-col xs="12" md="6">
-                  <v-dialog v-model="dialog" persistent max-width="400px">
-                    <template v-slot:activator="{ on }">
-                      <v-btn color="primary" dark v-on="on"
-                        >Cambiar contraseña</v-btn
+          <v-container fluid>
+            <v-row>
+              <v-col xs="12" md="6" cols="12">
+                <v-text-field
+                  label="Dependencia"
+                  disabled
+                  :value="$store.state.user.dependencies"
+                />
+              </v-col>
+              <v-col xs="12" md="6" cols="12">
+                <v-text-field
+                  :value="$store.state.user.email"
+                  label="Correo Electrónico"
+                  disabled
+                />
+              </v-col>
+              <v-col xs="12" md="6" cols="12">
+                <v-text-field v-model="name" label="Nombres" />
+              </v-col>
+              <v-col xs="12" md="6" cols="12">
+                <v-text-field v-model="lastname" label="Apellidos" />
+              </v-col>
+              <v-col xs="12" md="6" cols="12">
+                <v-select
+                  v-model="escuelas"
+                  :items="itemsel"
+                  label="Escuelas"
+                ></v-select>
+              </v-col>
+              <v-col xs="12" md="6" cols="12">
+                <v-select
+                  v-model="institutos"
+                  :items="itemsel2"
+                  label="Institutos"
+                ></v-select>
+              </v-col>
+              <v-col xs="12" md="6">
+                <v-btn color="primary" @click="updateUser"
+                  >Actualizar Perfil</v-btn
+                >
+              </v-col>
+              <v-col xs="12" md="6">
+                <v-dialog v-model="dialog" persistent max-width="400px">
+                  <template v-slot:activator="{ on }">
+                    <v-btn color="primary" dark v-on="on"
+                      >Cambiar contraseña</v-btn
+                    >
+                  </template>
+                  <v-card>
+                    <v-form ref="form" v-model="valid" lazy-validation>
+                      <v-card-title>
+                        <span class="headline">Modificar Contraseña</span>
+                      </v-card-title>
+                      <v-card-text>
+                        <v-container fluid>
+                          <v-row>
+                            <v-col cols="12">
+                              <v-text-field
+                                label="Contraseña actual*"
+                                v-model="actPass"
+                                :counter="20"
+                                :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                                :type="show1 ? 'text' : 'password'"
+                                @click:append="show1 = !show1"
+                                :rules="passwordActRules"
+                                required
+                              ></v-text-field>
+                            </v-col>
+                            <v-col cols="12">
+                              <v-text-field
+                                label="Contraseña nueva*"
+                                v-model="newPass"
+                                :counter="20"
+                                :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+                                :type="show2 ? 'text' : 'password'"
+                                @click:append="show2 = !show2"
+                                :rules="passwordNewRules"
+                                required
+                              ></v-text-field>
+                            </v-col>
+                            <v-col cols="12">
+                              <v-text-field
+                                v-model="newPass2"
+                                label="Confirmar contraseña nueva*"
+                                :counter="20"
+                                :append-icon="show3 ? 'mdi-eye' : 'mdi-eye-off'"
+                                :type="show3 ? 'text' : 'password'"
+                                @click:append="show3 = !show3"
+                                :rules="passwordNew2Rules"
+                                required
+                              ></v-text-field>
+                            </v-col>
+                          </v-row>
+                        </v-container>
+                        <small>*Indica los campos requeridos</small>
+                      </v-card-text>
+                      <v-alert
+                        type="error"
+                        v-model="alert"
+                        dismissible
+                        transition="scale-transition"
                       >
-                    </template>
-                    <v-card>
-                      <v-form ref="form" v-model="valid" lazy-validation>
-                        <v-card-title>
-                          <span class="headline">Modificar Contraseña</span>
-                        </v-card-title>
-                        <v-card-text>
-                          <v-container fluid>
-                            <v-row>
-                              <v-col cols="12">
-                                <v-text-field
-                                  label="Contraseña actual*"
-                                  v-model="actPass"
-                                  :counter="20"
-                                  :append-icon="
-                                    show1 ? 'mdi-eye' : 'mdi-eye-off'
-                                  "
-                                  :type="show1 ? 'text' : 'password'"
-                                  @click:append="show1 = !show1"
-                                  :rules="passwordActRules"
-                                  required
-                                ></v-text-field>
-                              </v-col>
-                              <v-col cols="12">
-                                <v-text-field
-                                  label="Contraseña nueva*"
-                                  v-model="newPass"
-                                  :counter="20"
-                                  :append-icon="
-                                    show2 ? 'mdi-eye' : 'mdi-eye-off'
-                                  "
-                                  :type="show2 ? 'text' : 'password'"
-                                  @click:append="show2 = !show2"
-                                  :rules="passwordNewRules"
-                                  required
-                                ></v-text-field>
-                              </v-col>
-                              <v-col cols="12">
-                                <v-text-field
-                                  v-model="newPass2"
-                                  label="Confirmar contraseña nueva*"
-                                  :counter="20"
-                                  :append-icon="
-                                    show3 ? 'mdi-eye' : 'mdi-eye-off'
-                                  "
-                                  :type="show3 ? 'text' : 'password'"
-                                  @click:append="show3 = !show3"
-                                  :rules="passwordNew2Rules"
-                                  required
-                                ></v-text-field>
-                              </v-col>
-                            </v-row>
-                          </v-container>
-                          <small>*Indica los campos requeridos</small>
-                        </v-card-text>
-                        <v-alert
-                          type="error"
-                          v-model="alert"
-                          dismissible
-                          transition="scale-transition"
+                        <div v-html="error"></div>
+                      </v-alert>
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn text @click="close">Cerrar</v-btn>
+                        <v-btn
+                          color="blue darken-1"
+                          text
+                          @click="checkPassword"
+                          :disabled="!valid"
+                          >Aceptar</v-btn
                         >
-                          <div v-html="error"></div>
-                        </v-alert>
-                        <v-card-actions>
-                          <v-spacer></v-spacer>
-                          <v-btn text @click="close">Cerrar</v-btn>
-                          <v-btn
-                            color="blue darken-1"
-                            text
-                            @click="checkPassword"
-                            :disabled="!valid"
-                            >Aceptar</v-btn
-                          >
-                        </v-card-actions>
-                      </v-form>
-                    </v-card>
-                  </v-dialog>
-                </v-col>
-              </v-row>
-            </v-container>
+                      </v-card-actions>
+                    </v-form>
+                  </v-card>
+                </v-dialog>
+              </v-col>
+              <v-overlay :value="overlay">
+                <v-progress-circular
+                  indeterminate
+                  size="64"
+                ></v-progress-circular>
+              </v-overlay>
+            </v-row>
+          </v-container>
           <v-snackbar v-model="snack" :timeout="3000" :color="snackColor">
             {{ snackText }}
             <template v-slot:action="{ attrs }">
@@ -203,6 +203,7 @@ export default {
     show1: false,
     show2: false,
     show3: false,
+    overlay: false,
     rulesImg: [
       (value) =>
         !value ||
@@ -271,6 +272,7 @@ export default {
       this.show3 = false;
       this.dialog = false;
       this.alert = false;
+      this.overlay = false;
       this.resetValidation();
     },
     async checkPassword() {
@@ -292,6 +294,7 @@ export default {
       }
     },
     async modPassword(id) {
+      this.overlay = true;
       try {
         const response = await UsersService.modpass({
           _id: id,
@@ -305,6 +308,7 @@ export default {
       }
     },
     async updateUser() {
+      this.overlay = true;
       const fd = new FormData();
 
       if (this.selectedFile !== null && this.selectedFile !== undefined) {
@@ -327,6 +331,7 @@ export default {
     },
     //toasts/snackbar messages for actions
     updateInline() {
+      this.overlay = false;
       this.snack = true;
       this.snackColor = "success";
       this.snackText = "Datos actualizados";

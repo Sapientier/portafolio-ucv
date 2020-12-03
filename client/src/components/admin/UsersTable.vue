@@ -95,29 +95,9 @@
                               class="ml-auto mr-auto"
                               v-if="editedIndex > -1"
                             >
-                              <v-btn
-                                color="primary"
-                                @click="reset"
-                                :loading="dialog3"
+                              <v-btn color="primary" @click="reset"
                                 >Reiniciar Contraseña</v-btn
                               >
-                              <v-dialog
-                                v-model="dialog3"
-                                hide-overlay
-                                persistent
-                                width="300"
-                              >
-                                <v-card color="primary" dark>
-                                  <v-card-text>
-                                    Por favor espere...
-                                    <v-progress-linear
-                                      indeterminate
-                                      color="white"
-                                      class="mb-0"
-                                    ></v-progress-linear>
-                                  </v-card-text>
-                                </v-card>
-                              </v-dialog>
                             </v-col>
                           </v-row>
                         </v-container>
@@ -141,6 +121,12 @@
                           >Aceptar</v-btn
                         >
                       </v-card-actions>
+                      <v-overlay :value="overlay">
+                        <v-progress-circular
+                          indeterminate
+                          size="64"
+                        ></v-progress-circular>
+                      </v-overlay>
                     </v-form>
                   </v-card>
                 </v-dialog>
@@ -201,7 +187,7 @@ export default {
     UserList: [],
     dialog: false,
     dialog2: false,
-    dialog3: false,
+    overlay: false,
     itemsel: [
       "Coordinador General",
       "Coordinador de Extensión",
@@ -249,13 +235,6 @@ export default {
     dialog2(val) {
       val || this.close();
     },
-    dialog3(val) {
-      if (!val) return;
-
-      setTimeout(() => {
-        this.dialog3 = false;
-      }, 2000);
-    },
   },
   // called when page is created before dom
   created() {
@@ -298,6 +277,7 @@ export default {
       this.dialog = false;
       this.dialog2 = false;
       this.alert = false;
+      this.overlay = false;
       this.resetValidation();
       setTimeout(() => {
         this.editedItem = Object.assign({}, this.defaultItem);
@@ -305,6 +285,7 @@ export default {
       }, 300);
     },
     async save() {
+      this.overlay = true;
       if (this.editedIndex > -1) {
         try {
           const response = await UsersService.updateusers({
@@ -337,8 +318,8 @@ export default {
       }
     },
     async reset() {
+      this.overlay = true;
       try {
-        this.dialog3 = true;
         const response = await UsersService.resetpass({
           _id: this.editedItem._id,
           email: this.editedItem.email,
@@ -349,6 +330,7 @@ export default {
     },
     //toasts/snackbar messages for actions
     emailInline() {
+      this.overlay = false;
       this.snack = true;
       this.snackColor = "success";
       this.snackText = "Contraseña reiniciada";

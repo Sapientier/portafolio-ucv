@@ -23,27 +23,20 @@
                 />
                 <v-text-field v-show="false" />
                 <v-btn
-                  :disabled="dialog || !valid"
-                  :loading="dialog"
+                  :disabled="!valid"
                   class="ma-0"
                   color="secondary"
                   style="height: 48px"
                   @click="suscribir"
                   >Suscribirse</v-btn
                 >
-                <v-dialog v-model="dialog" hide-overlay persistent width="300">
-                  <v-card color="primary" dark>
-                    <v-card-text>
-                      Por favor espere...
-                      <v-progress-linear
-                        indeterminate
-                        color="white"
-                        class="mb-0"
-                      ></v-progress-linear>
-                    </v-card-text>
-                  </v-card>
-                </v-dialog>
-                <v-dialog v-model="dialog2" max-width="350">
+                <v-overlay :value="overlay">
+                  <v-progress-circular
+                    indeterminate
+                    size="64"
+                  ></v-progress-circular>
+                </v-overlay>
+                <v-dialog v-model="dialog" max-width="350">
                   <v-card>
                     <v-card-title class="headline">{{
                       dialogTitle
@@ -51,7 +44,7 @@
                     <v-card-text>{{ dialogText }}</v-card-text>
                     <v-card-actions>
                       <v-spacer></v-spacer>
-                      <v-btn :color="buttonColor" text @click="dialog2 = false"
+                      <v-btn :color="buttonColor" text @click="dialog = false"
                         >Aceptar</v-btn
                       >
                     </v-card-actions>
@@ -117,7 +110,7 @@ export default {
     email: "",
     valid: true,
     dialog: false,
-    dialog2: false,
+    overlay: false,
     snack: false,
     snackColor: "",
     snackText: "",
@@ -132,7 +125,7 @@ export default {
     async suscribir() {
       if (this.email !== "") {
         try {
-          this.dialog = true;
+          this.overlay = true;
           const response = await SuscribeService.suscribe({
             email: this.email,
             typeSub: "Todo",
@@ -144,10 +137,17 @@ export default {
           this.buttonColor = "red darken-1";
           this.errorIndex = 0;
         }
+        this.close();
       } else {
         this.errorEmail();
         this.valid = false;
       }
+    },
+    close() {
+      this.overlay = false;
+      this.dialog = true;
+      this.email = "";
+      this.resetValidation();
     },
     resetValidation() {
       this.$refs.form.resetValidation();
@@ -162,24 +162,12 @@ export default {
     dialogTitle() {
       return this.errorIndex === -1
         ? "Suscripción exitosa"
-        : "Error: usted ya esta suscrito";
+        : "Ha ocurrido un error";
     },
     dialogText() {
       return this.errorIndex === -1
-        ? "Se le envio un correo electrónico de verificación"
+        ? "Se le envió un correo electrónico de verificación"
         : "Por favor ingrese otro correo electrónico";
-    },
-  },
-  watch: {
-    dialog(val) {
-      if (!val) return;
-
-      setTimeout(() => {
-        this.resetValidation();
-        this.email = "";
-        this.dialog = false;
-        this.dialog2 = true;
-      }, 5000);
     },
   },
 };

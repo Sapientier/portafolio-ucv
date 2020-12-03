@@ -241,6 +241,12 @@
                   :disabled="!valid"
                   >Guardar</v-btn
                 >
+                <v-overlay :value="overlay">
+                  <v-progress-circular
+                    indeterminate
+                    size="64"
+                  ></v-progress-circular>
+                </v-overlay>
               </v-card-actions>
             </v-form>
           </v-card>
@@ -401,6 +407,7 @@ export default {
     dialog2: false,
     dialog3: false,
     dialog4: false,
+    overlay: false,
     valid: true,
     itemselCat: [
       "Medicina",
@@ -477,6 +484,7 @@ export default {
       this.close();
     },
     async updateService() {
+      this.overlay = true;
       const fd = new FormData();
 
       if (this.selectedFile !== null && this.selectedFile !== undefined) {
@@ -540,6 +548,7 @@ export default {
       this.$refs.form.resetValidation();
     },
     close() {
+      this.overlay = false;
       this.dialog = false;
       this.dialog2 = false;
       this.dialog4 = false;

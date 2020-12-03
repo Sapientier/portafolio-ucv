@@ -75,7 +75,7 @@ module.exports = {
             res.json(user.toJSON());
         } catch (err) {
             res.status(500).send({
-                error: 'Ha ocurrido un error al buscar las suscripciones'
+                error: 'Ha ocurrido un error al suscribirse'
             })
         }
     },

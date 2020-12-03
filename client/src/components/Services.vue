@@ -236,9 +236,7 @@
                       locale="es-es"
                     >
                       <v-spacer></v-spacer>
-                      <v-btn text @click="menu = false"
-                        >Cancelar</v-btn
-                      >
+                      <v-btn text @click="menu = false">Cancelar</v-btn>
                       <v-btn text color="primary" @click="$refs.menu.save(date)"
                         >Aceptar</v-btn
                       >
@@ -301,6 +299,12 @@
               :disabled="!valid"
               >Guardar</v-btn
             >
+            <v-overlay :value="overlay">
+              <v-progress-circular
+                indeterminate
+                size="64"
+              ></v-progress-circular>
+            </v-overlay>
           </v-card-actions>
         </v-form>
       </v-card>
@@ -381,6 +385,7 @@ export default {
     ],
     itemselInst: ["N/A", "IBE", "ICTA", "ICT"],
     dialog: false,
+    overlay: false,
     rulesImg: [
       (value) =>
         !value ||
@@ -446,6 +451,7 @@ export default {
         .catch((err) => console.log(err.response.data.error));
     },
     async insertService() {
+      this.overlay = true;
       const fd = new FormData();
 
       if (this.selectedFile !== null && this.selectedFile !== undefined) {
@@ -500,6 +506,7 @@ export default {
       this.params = "";
       this.name = "";
       this.direccion = "";
+      this.overlay = false;
       this.selectedFile = null;
       this.dialog = false;
       this.approve = false;
