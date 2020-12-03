@@ -1,6 +1,6 @@
 <template>
   <v-footer dark padless>
-    <v-container>
+    <v-container grid-list-xl>
       <v-row>
         <v-row justify="center" no-gutters>
           <v-col class="lighten-2 py-4 text-center white--text" cols="12">

@@ -411,13 +411,13 @@
           { parentText: "Servicios", value: "services.date", text: 'Fecha', type: 'Date' },
           { parentText: "Servicios", value: "services.description", text: 'Descripción', type: 'String' },
           { parentText: "Servicios", value: "services.direction", text: 'Dirección', type: 'String' },
-          { parentText: "Servicios", value: "services.imageService", text: '_imageService', type: 'String' },
+          { parentText: "Servicios", value: "services.imageService", text: 'Imagen', type: 'String' },
           { parentText: "Servicios", value: "services.institute", text: 'Instituto', type: 'String' },
           { parentText: "Servicios", value: "services.name", text: 'Nombre', type: 'String' },
-          { parentText: "Servicios", value: "services.paramserv", text: '_paramserv', type: 'String' },
+          { parentText: "Servicios", value: "services.paramserv", text: 'Parametros', type: 'String' },
           { parentText: "Servicios", value: "services.request", text: 'Petición', type: 'String' },
           { parentText: "Servicios", value: "services.school", text: 'Escuela', type: 'String' },
-          { parentText: "Servicios", value: "services.userspp", text: '_userspp', type: 'String' },
+          { parentText: "Servicios", value: "services.userspp", text: 'Usuarios', type: 'String' },
         ]},
         { value: "subscribers", text: "Suscriptores", selectedFields: [], fields: [
           { parentText: "Suscriptores", value: "subscribers.dateSub", text: 'Fecha', type: 'Date' },
@@ -520,6 +520,7 @@
         } else {
           this.constraints.push(this.tempConstraint)
         }
+        console.log(this.constraints);
         this.tempConstraint = {
           operation: null,
           firstOperand: null,

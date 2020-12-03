@@ -1,5 +1,5 @@
 <template>
-  <v-container grid-list-xl mt-16>
+  <v-container fluid mt-15>
     <v-row>
       <v-col xs="12">
         <v-card class="mx-auto elevation-6" max-width="200" outlined>

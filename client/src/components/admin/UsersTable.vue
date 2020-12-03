@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-container grid-list-xl>
     <v-row justify="center">
       <v-col xs="12">
         <v-card>
@@ -58,7 +58,7 @@
                         <span class="headline">{{ formTitle }}</span>
                       </v-card-title>
                       <v-card-text>
-                        <v-container>
+                        <v-container fluid>
                           <v-row>
                             <v-col cols="12" sm="6" md="6">
                               <v-text-field
@@ -70,11 +70,11 @@
                               ></v-text-field>
                             </v-col>
                             <v-col col="12" sm="6" md="6">
-                              <v-combobox
+                              <v-select
                                 v-model="editedItem.dependencies"
                                 :items="itemsel"
                                 label="Dependencias"
-                              ></v-combobox>
+                              ></v-select>
                             </v-col>
                             <v-col cols="12" sm="6" md="6">
                               <v-switch

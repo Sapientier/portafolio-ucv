@@ -1,5 +1,5 @@
 <template>
-  <v-container grid-list-xl mt-5>
+  <v-container fluid mt-5>
     <v-row justify="center">
       <v-icon x-large>mdi-account-box-multiple</v-icon>
     </v-row>
@@ -27,7 +27,7 @@
         <v-card class="mx-auto elevation-6" max-width="600" outlined>
           <v-list-item>
             <v-list-item-content>
-              <v-list-item-title>Tutor:</v-list-item-title>
+              <v-list-item-title>Tutora:</v-list-item-title>
               <v-list-item-subtitle
                 >Profa. Yosly Hernández</v-list-item-subtitle
               >

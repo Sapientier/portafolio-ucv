@@ -1,5 +1,5 @@
 <template>
-  <v-container pa-0>
+  <v-container pa-0 fluid>
     <base-subheading>Servicios recientes</base-subheading>
     <v-row
       v-for="(services, i) in paginatedServices"

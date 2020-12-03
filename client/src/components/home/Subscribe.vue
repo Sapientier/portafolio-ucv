@@ -1,7 +1,7 @@
 <template>
-  <v-container id="subscribe" tag="section">
+  <v-container id="subscribe" tag="section" grid-list-xl>
     <base-card color="rgba(203, 170, 92, 0.51)" class="pa-6">
-      <v-container grid-list-xl pa-0>
+      <v-container fluid pa-0>
         <v-row>
           <v-col xs="12" md="5">
             <base-subheading class="mb-3">Suscripción</base-subheading>

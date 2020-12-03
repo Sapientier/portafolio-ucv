@@ -1,5 +1,5 @@
 <template>
-  <v-container id="about" tag="section">
+  <v-container id="about" tag="section" grid-list-xl>
     <h2
       class="subheading text-uppercase font-weight-medium mb-3 text-center"
       v-bind="$attrs"

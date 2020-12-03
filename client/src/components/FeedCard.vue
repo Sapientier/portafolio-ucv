@@ -98,7 +98,7 @@
               </v-card-title>
               <v-divider></v-divider>
               <v-card-text>
-                <v-container>
+                <v-container fluid>
                   <v-row>
                     <v-col cols="12" sm="12">
                       <v-text-field
@@ -109,13 +109,13 @@
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6">
-                      <v-combobox
+                      <v-select
                         v-model="editedItem.category"
                         :items="itemselCat"
                         label="Categoría*"
                         :rules="categoriaRules"
                         required
-                      ></v-combobox>
+                      ></v-select>
                     </v-col>
                     <v-col cols="12" sm="6">
                       <v-text-field
@@ -126,18 +126,18 @@
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6">
-                      <v-combobox
+                      <v-select
                         v-model="editedItem.school"
                         :items="itemselSchool"
                         label="Escuela"
-                      ></v-combobox>
+                      ></v-select>
                     </v-col>
                     <v-col cols="12" sm="6">
-                      <v-combobox
+                      <v-select
                         v-model="editedItem.institute"
                         :items="itemselInst"
                         label="Instituto"
-                      ></v-combobox>
+                      ></v-select>
                     </v-col>
                     <v-col cols="12" sm="6">
                       <v-menu
@@ -303,7 +303,7 @@
                 </v-card>
               </v-dialog>
             </v-toolbar>
-            <v-container>
+            <v-container grid-list-xl>
               <v-row>
                 <v-col cols="12" sm="6">
                   <div class="title">

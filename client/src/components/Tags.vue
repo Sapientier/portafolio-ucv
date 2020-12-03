@@ -1,5 +1,5 @@
 <template>
-  <v-container pa-0>
+  <v-container pa-0 fluid>
     <base-subheading>Sitios Web Asociados</base-subheading>
     <v-list>
       <v-list-item-group v-model="model" color="indigo">

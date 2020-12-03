@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-container grid-list-xl>
     <v-row>
       <v-col cols="12" md="4" sm="12">
         <v-card class="mt-4 mx-auto">
@@ -9,6 +9,7 @@
             :chartdata="usersChartData"
             :chartlabels="usersLabels"
             :chartcolors="usersChartColors"
+            class="chartsReports"
           />
         </v-card>
       </v-col>
@@ -20,6 +21,7 @@
             :chartdata="servicesChartData"
             :chartlabels="servicesLabels"
             :chartcolors="servicesChartColors"
+            class="chartsReports"
           />
         </v-card>
       </v-col>
@@ -31,8 +33,120 @@
             :chartdata="suscribeChartData"
             :chartlabels="suscribeLabels"
             :chartcolors="suscribeChartColors"
+            class="chartsReports"
           />
         </v-card>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col xs="12">
+        <v-card>
+          <v-container fluid>
+            <v-row justify="center">
+              <v-col xs="12" md="6">
+                <v-select
+                  v-model="selectedCollections"
+                  :items="collections"
+                  label="Entidades"
+                  multiple
+                  chips
+                  return-object
+                >
+                  <template v-slot:prepend-item>
+                    <v-list-item
+                      ripple
+                      @click="toggleSelection(collections, selectedCollections)"
+                    >
+                      <v-list-item-action>
+                        <v-icon
+                          :color="selectAllIconColor(selectedCollections)"
+                        >
+                          {{ selectAllIcon(collections, selectedCollections) }}
+                        </v-icon>
+                      </v-list-item-action>
+                      <v-list-item-content>
+                        <v-list-item-title>
+                          Seleccionar todo
+                        </v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+                    <v-divider class="mt-2"></v-divider>
+                  </template>
+                </v-select>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col
+                v-for="(collection, index) in selectedCollections"
+                :key="index"
+                cols="12"
+                xs="12"
+                md="3"
+              >
+                <v-select
+                  v-model="collection.selectedFields"
+                  :items="collection.fields"
+                  :label="collection.text"
+                  multiple
+                  chips
+                  return-object
+                >
+                  <template v-slot:prepend-item>
+                    <v-list-item
+                      ripple
+                      @click="
+                        toggleSelection(
+                          collection.fields,
+                          collection.selectedFields
+                        )
+                      "
+                    >
+                      <v-list-item-action>
+                        <v-icon
+                          :color="selectAllIconColor(collection.selectedFields)"
+                        >
+                          {{
+                            selectAllIcon(
+                              collection.fields,
+                              collection.selectedFields
+                            )
+                          }}
+                        </v-icon>
+                      </v-list-item-action>
+                      <v-list-item-content>
+                        <v-list-item-title>
+                          Seleccionar todo
+                        </v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+                    <v-divider class="mt-2" />
+                  </template>
+                </v-select>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-card>
+      </v-col>
+    </v-row>
+    <v-row justify="center">
+      <v-col xs="12">
+        <v-data-table
+          :header-props="headerProps"
+          :headers="headers"
+          :items="ReportList"
+          :page.sync="page"
+          :items-per-page="itemsPerPage"
+          hide-default-footer
+          @page-count="pageCount = $event"
+          class="elevation-1"
+        >
+          <template v-slot:no-data>
+            Datos no disponibles
+          </template>
+        </v-data-table>
+        <div class="text-center pt-2">
+          <v-pagination v-model="page" :length="pageCount"></v-pagination>
+        </div>
       </v-col>
     </v-row>
   </v-container>
@@ -42,9 +156,181 @@
 import Services from "@/services/Services";
 import UsersService from "@/services/UsersService";
 import SuscribeService from "@/services/SuscribeService";
+import NotificationService from "@/services/NotificationService";
 
 export default {
   data: () => ({
+    page: 1,
+    pageCount: 0,
+    itemsPerPage: 10,
+    headerProps: {
+      sortByText: "Ordenar por",
+    },
+    headers: [],
+    ReportList: [],
+    selectedCollections: [],
+    collections: [
+      {
+        value: "notifications",
+        text: "Notificaciones",
+        selectedFields: [],
+        fields: [
+          {
+            parentText: "Notificaciones",
+            value: "notifications.dateNoti",
+            text: "Fecha",
+            type: "Date",
+          },
+          {
+            parentText: "Notificaciones",
+            value: "notifications.description",
+            text: "Descripción",
+            type: "String",
+          },
+          {
+            parentText: "Notificaciones",
+            value: "notifications.owner",
+            text: "Dueño",
+            type: "String",
+          },
+          {
+            parentText: "Notificaciones",
+            value: "notifications.title",
+            text: "Título",
+            type: "String",
+          },
+        ],
+      },
+      {
+        value: "services",
+        text: "Servicios",
+        selectedFields: [],
+        fields: [
+          {
+            parentText: "Servicios",
+            value: "services.approve",
+            text: "Aprobado",
+            type: "Boolean",
+          },
+          {
+            parentText: "Servicios",
+            value: "services.autor",
+            text: "Autor",
+            type: "String",
+          },
+          {
+            parentText: "Servicios",
+            value: "services.category",
+            text: "Categoría",
+            type: "String",
+          },
+          {
+            parentText: "Servicios",
+            value: "services.date",
+            text: "Fecha",
+            type: "Date",
+          },
+          {
+            parentText: "Servicios",
+            value: "services.description",
+            text: "Descripción",
+            type: "String",
+          },
+          {
+            parentText: "Servicios",
+            value: "services.institute",
+            text: "Instituto",
+            type: "String",
+          },
+          {
+            parentText: "Servicios",
+            value: "services.name",
+            text: "Nombre",
+            type: "String",
+          },
+          {
+            parentText: "Servicios",
+            value: "services.school",
+            text: "Escuela",
+            type: "String",
+          },
+        ],
+      },
+      {
+        value: "subscribers",
+        text: "Suscriptores",
+        selectedFields: [],
+        fields: [
+          {
+            parentText: "Suscriptores",
+            value: "subscribers.dateSub",
+            text: "Fecha",
+            type: "Date",
+          },
+          {
+            parentText: "Suscriptores",
+            value: "subscribers.email",
+            text: "Email",
+            type: "String",
+          },
+        ],
+      },
+      {
+        value: "users",
+        text: "Usuarios",
+        selectedFields: [],
+        fields: [
+          {
+            parentText: "Usuarios",
+            value: "users.dependencies",
+            text: "Dependencias",
+            type: "String",
+          },
+          {
+            parentText: "Usuarios",
+            value: "users.email",
+            text: "Email",
+            type: "String",
+          },
+          {
+            parentText: "Usuarios",
+            value: "users.institute",
+            text: "Instituto",
+            type: "String",
+          },
+          {
+            parentText: "Usuarios",
+            value: "users.isActive",
+            text: "Activo",
+            type: "Boolean",
+          },
+          {
+            parentText: "Usuarios",
+            value: "users.isAdmin",
+            text: "Usuario administrador",
+            type: "Boolean",
+          },
+          {
+            parentText: "Usuarios",
+            value: "users.lastname",
+            text: "Apellido",
+            type: "String",
+          },
+          {
+            parentText: "Usuarios",
+            value: "users.name",
+            text: "Nombre",
+            type: "String",
+          },
+          {
+            parentText: "Usuarios",
+            value: "users.school",
+            text: "Escuela",
+            type: "String",
+          },
+        ],
+      },
+    ],
     usersChartColors: {
       borderColor: "white",
       backgroundColor: [
@@ -100,6 +386,25 @@ export default {
     contmonths: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   }),
   methods: {
+    toggleSelection(items, selected) {
+      selected.length === items.length
+        ? selected.splice(0)
+        : selected.splice(0, selected.length, ...items);
+    },
+    selectAllIcon(items, selected) {
+      let icon = "mdi-checkbox-blank-outline";
+      if (selected.length === items.length) {
+        icon = "mdi-close-box";
+      } else if (selected.length) {
+        icon = "mdi-minus-box";
+      }
+      return icon;
+    },
+    selectAllIconColor(selected) {
+      if (selected.length > 0) {
+        return "indigo darken-4";
+      }
+    },
     formatDate(date) {
       if (!date) return null;
       var aux = date.replace(/\T.+/, "");
@@ -246,3 +551,9 @@ export default {
   },
 };
 </script>
+
+<style>
+.chartsReports {
+  height: 300px;
+}
+</style>

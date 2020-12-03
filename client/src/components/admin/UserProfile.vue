@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid grid-list-xl>
+  <v-container grid-list-xl>
     <v-row justify="center">
       <v-col xs="12" md="4" cols="12">
         <v-card>
@@ -40,7 +40,7 @@
       </v-col>
       <v-col xs="12" md="8" cols="12">
         <v-card>
-            <v-container>
+            <v-container fluid>
               <v-row>
                 <v-col xs="12" md="6" cols="12">
                   <v-text-field
@@ -63,18 +63,18 @@
                   <v-text-field v-model="lastname" label="Apellidos" />
                 </v-col>
                 <v-col xs="12" md="6" cols="12">
-                  <v-combobox
+                  <v-select
                     v-model="escuelas"
                     :items="itemsel"
                     label="Escuelas"
-                  ></v-combobox>
+                  ></v-select>
                 </v-col>
                 <v-col xs="12" md="6" cols="12">
-                  <v-combobox
+                  <v-select
                     v-model="institutos"
                     :items="itemsel2"
                     label="Institutos"
-                  ></v-combobox>
+                  ></v-select>
                 </v-col>
                 <v-col xs="12" md="6">
                   <v-btn color="primary" @click="updateUser"
@@ -94,7 +94,7 @@
                           <span class="headline">Modificar Contraseña</span>
                         </v-card-title>
                         <v-card-text>
-                          <v-container>
+                          <v-container fluid>
                             <v-row>
                               <v-col cols="12">
                                 <v-text-field
