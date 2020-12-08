@@ -21,5 +21,8 @@ export default {
     },
     getuniservicebyapproved(values) {
         return Api().post('getuniservicebyapproved', values)
+    },
+    getreportserv(values) {
+        return Api().post('getreportserv', values)
     }
 }

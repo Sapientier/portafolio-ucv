@@ -156,7 +156,7 @@
                     ></v-list-item-subtitle>
 
                     <v-list-item-subtitle
-                      v-text="item.description"
+                      v-text="item.descriptionNoti"
                     ></v-list-item-subtitle>
                   </v-list-item-content>
 

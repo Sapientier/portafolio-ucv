@@ -111,5 +111,11 @@ module.exports = (app) => {
         ),
         app.get('/getsuscribers',
             SuscribeController.getsuscribers
+        ),
+        app.post('/getreportsnoti',
+            NotificationsController.getreportsnoti
+        ),
+        app.post('/getreportserv',
+            ServicesController.getreportserv
         )
 }   

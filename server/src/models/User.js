@@ -24,16 +24,10 @@ const UserSchema = new Schema({
     dependencies: {
         type: String
     },
-    name: {
+    schoolUser: {
         type: String
     },
-    lastname: {
-        type: String
-    },
-    school: {
-        type: String
-    },
-    institute: {
+    instituteUser: {
         type: String
     },
     numNoti: {

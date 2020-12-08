@@ -13,7 +13,7 @@ const NotificationSchema = new Schema({
     title: {
         type: String
     },
-    description: {
+    descriptionNoti: {
         type: String
     },
     dateNoti: {

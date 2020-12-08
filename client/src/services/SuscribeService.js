@@ -6,5 +6,8 @@ export default {
     },
     getsuscribers() {
         return Api().get('getsuscribers')
+    },
+    getreportsusc(values){
+        return Api().get('getreportsusc', values)
     }
 }

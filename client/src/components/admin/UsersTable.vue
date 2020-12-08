@@ -17,14 +17,13 @@
             :headers="headers"
             :items="UserList"
             :search="search"
-            class="elevation-1"
             :page.sync="page"
             :items-per-page="itemsPerPage"
             hide-default-footer
             @page-count="pageCount = $event"
           >
             <template v-slot:top>
-              <v-toolbar flat color="white">
+              <v-toolbar flat>
                 <v-toolbar-title>Administración de Usuarios</v-toolbar-title>
                 <v-divider class="mx-4" inset vertical></v-divider>
                 <v-spacer></v-spacer>
@@ -149,16 +148,16 @@
               <v-btn color="primary" @click="initialize">Reiniciar</v-btn>
             </template>
           </v-data-table>
-          <div class="text-center pt-2">
-            <v-pagination v-model="page" :length="pageCount"></v-pagination>
-          </div>
-          <v-snackbar v-model="snack" :timeout="3000" :color="snackColor">
-            {{ snackText }}
-            <template v-slot:action="{ attrs }">
-              <v-btn text v-bind="attrs" @click="snack = false">Cerrar</v-btn>
-            </template>
-          </v-snackbar>
         </v-card>
+        <div class="text-center pt-2">
+          <v-pagination v-model="page" :length="pageCount"></v-pagination>
+        </div>
+        <v-snackbar v-model="snack" :timeout="3000" :color="snackColor">
+          {{ snackText }}
+          <template v-slot:action="{ attrs }">
+            <v-btn text v-bind="attrs" @click="snack = false">Cerrar</v-btn>
+          </template>
+        </v-snackbar>
       </v-col>
     </v-row>
   </v-container>

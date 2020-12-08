@@ -13,7 +13,7 @@
             ></v-img>
           </v-avatar>
           <v-card-text class="text-xs-center">
-            <h3 class="card-title">{{ name }} {{ lastname }}</h3>
+            <h3 class="card-title">{{ names }} {{ lastnames }}</h3>
             <p
               class="card-description font-weight-light"
               v-if="$store.state.user.isAdmin"
@@ -57,23 +57,17 @@
                 />
               </v-col>
               <v-col xs="12" md="6" cols="12">
-                <v-text-field v-model="name" label="Nombres" />
-              </v-col>
-              <v-col xs="12" md="6" cols="12">
-                <v-text-field v-model="lastname" label="Apellidos" />
-              </v-col>
-              <v-col xs="12" md="6" cols="12">
                 <v-select
                   v-model="escuelas"
                   :items="itemsel"
-                  label="Escuelas"
+                  label="Escuela"
                 ></v-select>
               </v-col>
               <v-col xs="12" md="6" cols="12">
                 <v-select
                   v-model="institutos"
                   :items="itemsel2"
-                  label="Institutos"
+                  label="Instituto"
                 ></v-select>
               </v-col>
               <v-col xs="12" md="6">
@@ -189,8 +183,6 @@ export default {
     actPass: "",
     newPass: "",
     newPass2: "",
-    name: "",
-    lastname: "",
     escuelas: "",
     institutos: "",
     imageUser: "",
@@ -252,8 +244,6 @@ export default {
         _id: this.$store.state.user._id,
       })
         .then((response) => {
-          this.name = response.data.name;
-          this.lastname = response.data.lastname;
           this.escuelas = response.data.school;
           this.institutos = response.data.institute;
           this.imageUser = response.data.imageUser;
@@ -315,8 +305,6 @@ export default {
         fd.append("image", this.selectedFile, this.selectedFile.name);
       }
       fd.append("_id", this.$store.state.user._id);
-      fd.append("name", this.name);
-      fd.append("lastname", this.lastname);
       fd.append("school", this.escuelas);
       fd.append("institute", this.institutos);
       fd.append("imageUser", this.imageUser);

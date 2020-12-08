@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const SubscriberSchema = new Schema({
-    email: {
+    emailSub: {
         type: String,
         required: true
     },

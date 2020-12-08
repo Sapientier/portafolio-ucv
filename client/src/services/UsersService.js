@@ -30,5 +30,8 @@ export default {
     },
     modpass(values) {
         return Api().post('modpass', values)
+    },
+    getreportsuser(values) {
+        return Api().post('getreportsuser', values)
     }
 }

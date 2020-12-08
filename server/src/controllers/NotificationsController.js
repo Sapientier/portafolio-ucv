@@ -2,6 +2,7 @@ const Notification = require('../models/Notification');
 const Subscriber = require('../models/Subscriber');
 const User = require('../models/User');
 const Mailer = require('../controllers/MailController');
+var moment = require('moment');
 
 module.exports = {
     async insertnotifications(req, res) {
@@ -10,7 +11,7 @@ module.exports = {
             const emails = [];
             var descripcion = "";
             var titulo = "";
-            const date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
+            const date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '').substring(0, 10);
 
             if (req.body.approve === true)
                 descripcion = "Aprobado: " + req.body.name;
@@ -54,7 +55,7 @@ module.exports = {
                 if (req.body.isUpdate === true) {
                     descripcion = "Servicio actualizado";
                     correosSubs = await Subscriber.find({
-                        $or:[{typeSub: "Todo"}, {typeSub: req.body.serviceId}]
+                        $or: [{ typeSub: "Todo" }, { typeSub: req.body.serviceId }]
                     });
                 }
                 else {
@@ -112,6 +113,38 @@ module.exports = {
         } catch (err) {
             res.status(500).send({
                 error: 'Ha ocurrido un error al limpiar notificaciones'
+            })
+        }
+    },
+    async getreportsnoti(req, res) {
+        try {
+            var query = {};
+            var notifications;
+
+            if (req.body.dateNoti !== '' && req.body.dateNoti !== undefined) {
+                query['dateNoti'] = moment(req.body.dateNoti, "DD/MM/YYYY").format("YYYY-MM-DDT00:00:00.000+00:00");
+            }
+            if (req.body.descriptionNoti !== '' && req.body.descriptionNoti !== undefined) {
+                query['descriptionNoti'] = { $regex: '.*' + req.body.descriptionNoti + '.*' };
+            }
+            if (req.body.owner !== '' && req.body.owner !== undefined) {
+                query['owner'] = { $regex: '.*' + req.body.owner + '.*' };
+            }
+            if (req.body.title !== '' && req.body.title !== undefined) {
+                query['title'] = { $regex: '.*' + req.body.title + '.*' };
+            }
+            
+            if(Object.keys(query).length === 0){
+                notifications = await Notification.find();
+            }
+            else {
+                notifications = await Notification.find(query);
+            }
+
+            res.json(notifications);
+        } catch (err) {
+            res.status(500).send({
+                error: 'Ha ocurrido un error al buscar las notificaciones'
             })
         }
     }

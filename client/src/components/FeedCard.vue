@@ -141,10 +141,8 @@
                     </v-col>
                     <v-col cols="12" sm="6">
                       <v-menu
-                        ref="menu"
                         v-model="menu"
                         :close-on-content-click="false"
-                        :return-value.sync="editedItem.date"
                         transition="scale-transition"
                         offset-y
                         min-width="290px"
@@ -164,17 +162,8 @@
                           no-title
                           scrollable
                           locale="es-es"
+                          @input="menu = false"
                         >
-                          <v-spacer></v-spacer>
-                          <v-btn text color="primary" @click="menu = false"
-                            >Cancelar</v-btn
-                          >
-                          <v-btn
-                            text
-                            color="primary"
-                            @click="$refs.menu.save(editedItem.date)"
-                            >Aceptar</v-btn
-                          >
                         </v-date-picker>
                       </v-menu>
                     </v-col>

@@ -212,21 +212,20 @@
                 </v-col>
                 <v-col cols="12" sm="6">
                   <v-menu
-                    ref="menu"
                     v-model="menu"
                     :close-on-content-click="false"
-                    :return-value.sync="date"
                     transition="scale-transition"
                     offset-y
                     min-width="290px"
                   >
-                    <template v-slot:activator="{ on }">
+                    <template v-slot:activator="{ on, attrs }">
                       <v-text-field
                         v-model="computedDateFormatted"
                         label="Fecha de Creación*"
                         prepend-icon="mdi-calendar"
                         readonly
                         v-on="on"
+                        v-bind="attrs"
                       ></v-text-field>
                     </template>
                     <v-date-picker
@@ -234,12 +233,8 @@
                       no-title
                       scrollable
                       locale="es-es"
+                      @input="menu = false"
                     >
-                      <v-spacer></v-spacer>
-                      <v-btn text @click="menu = false">Cancelar</v-btn>
-                      <v-btn text color="primary" @click="$refs.menu.save(date)"
-                        >Aceptar</v-btn
-                      >
                     </v-date-picker>
                   </v-menu>
                 </v-col>

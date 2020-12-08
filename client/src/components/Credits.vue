@@ -9,13 +9,14 @@
           <v-list-item>
             <v-list-item-content>
               <div class="overline mb-4">CRÉDITOS</div>
-              Esta Aplicación Web fue desarrollada por los estudiantes de
+              Esta aplicación web fue desarrollada por los estudiantes de
               computación Brian Torres y Jorge Ramirez como Trabajo Especial de
-              Grado para optar el título de Licenciado en Computacion de la UCV,
-              bajo la tutoría de la Profa. Yosly Hernández.
+              Grado para optar el título de Licenciado en Computacion de la
+              Universidad Central de Venezuela, bajo la tutoría de la profesora
+              Yosly Hernández.
               <div class="mb-4"></div>
               Este proyecto de “Portafolio Digital Ciencias UCV” tiene como
-              propósito el refrescamiento y relanzamiento de la Imagen
+              propósito el refrescamiento y relanzamiento de la imagen
               corporativa y la visualización de los diferentes servicios que
               ofrece la Facultad de Ciencias en sus distintas áreas de
               funcionamiento.

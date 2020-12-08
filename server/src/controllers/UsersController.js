@@ -118,8 +118,6 @@ module.exports = {
                 newpath = req.file.path.substring(7);
             }
             const newTask = {
-                name: req.body.name,
-                lastname: req.body.lastname,
                 school: req.body.school,
                 institute: req.body.institute,
                 imageUser: newpath

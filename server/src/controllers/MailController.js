@@ -1,12 +1,12 @@
 const nodemailer = require("nodemailer");
-const config = require('../config');
+const config = require("../config");
 
 module.exports = {
     // async..await
     async sendMails(mailOptions) {
         // creamos objeto transporter reusable usando el SMTP de gmail
         let transporter = nodemailer.createTransport({
-            service: 'gmail',
+            host: "smtp.gmail.com",
             port: 587,
             secure: false, // true para 465, false para otros puertos
             auth: {
@@ -20,7 +20,7 @@ module.exports = {
             if (error) {
                 console.log(error);
             } else {
-                console.log('Correo enviado: ' + info.response);
+                console.log("Correo enviado: " + info.response);
             }
         });
     }

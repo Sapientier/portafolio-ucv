@@ -9,5 +9,8 @@ export default {
     },
     deletenotifications(values) {
         return Api().post('deletenotifications', values)
+    },
+    getreportsnoti(values) {
+        return Api().post('getreportsnoti', values)
     }
 }

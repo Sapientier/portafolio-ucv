@@ -43,7 +43,7 @@
         <v-card>
           <v-container fluid>
             <v-row justify="center">
-              <v-col xs="12" md="6">
+              <v-col xs="12" md="4">
                 <v-select
                   v-model="selectedCollections"
                   :items="collections"
@@ -72,10 +72,19 @@
                     </v-list-item>
                     <v-divider class="mt-2"></v-divider>
                   </template>
+                  <template v-slot:selection="{ item, index }">
+                    <v-chip v-if="index < 2">
+                      <span>{{ item.text }}</span>
+                    </v-chip>
+                    <span v-if="index === 2" class="grey--text caption">
+                      (y {{ selectedCollections.length - 2 }} más)
+                    </span>
+                  </template>
                 </v-select>
               </v-col>
             </v-row>
-            <v-row>
+            <v-divider></v-divider>
+            <v-row justify="center">
               <v-col
                 v-for="(collection, index) in selectedCollections"
                 :key="index"
@@ -121,7 +130,73 @@
                     </v-list-item>
                     <v-divider class="mt-2" />
                   </template>
+                  <template v-slot:selection="{ item, index }">
+                    <v-chip v-if="index < 2">
+                      <span>{{ item.text }}</span>
+                    </v-chip>
+                    <span v-if="index === 2" class="grey--text caption">
+                      (y {{ collection.selectedFields.length - 2 }} más)
+                    </span>
+                  </template>
                 </v-select>
+              </v-col>
+            </v-row>
+            <v-divider></v-divider>
+            <v-row justify="center">
+              <v-col
+                cols="12"
+                xs="12"
+                md="3"
+                :key="index"
+                v-for="(item, index) in selectedFields()"
+              >
+                <v-text-field
+                  v-if="item.type !== 'Date' && item.type !== 'Boolean'"
+                  v-model="selectedFieldVals[index]"
+                  :label="item.text + ' (' + item.parentText + ')'"
+                  placeholder="(Todos)"
+                ></v-text-field>
+                <v-switch
+                  v-if="item.type === 'Boolean'"
+                  v-model="selectedFieldVals[index]"
+                  :label="item.text + ' (' + item.parentText + ')'"
+                ></v-switch>
+                <v-menu
+                  v-model="menu[index]"
+                  :close-on-content-click="false"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="290px"
+                  v-if="item.type === 'Date'"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      :value="selectedFieldVals[index]"
+                      :label="item.text + ' (' + item.parentText + ')'"
+                      readonly
+                      placeholder="(Todos)"
+                      v-on="on"
+                      v-bind="attrs"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                    v-model="date"
+                    no-title
+                    scrollable
+                    locale="es-es"
+                    @change="computedDateFormatted(index)"
+                    @input="menu[index] = false"
+                  >
+                  </v-date-picker>
+                </v-menu>
+              </v-col>
+              <v-col cols="12" xs="12" class="text-center">
+                <v-btn
+                  v-if="selectedFields().length > 0"
+                  color="primary"
+                  @click="queryreports()"
+                  >Consultar</v-btn
+                >
               </v-col>
             </v-row>
           </v-container>
@@ -130,20 +205,42 @@
     </v-row>
     <v-row justify="center">
       <v-col xs="12">
-        <v-data-table
-          :header-props="headerProps"
-          :headers="headers"
-          :items="ReportList"
-          :page.sync="page"
-          :items-per-page="itemsPerPage"
-          hide-default-footer
-          @page-count="pageCount = $event"
-          class="elevation-1"
-        >
-          <template v-slot:no-data>
-            Datos no disponibles
-          </template>
-        </v-data-table>
+        <v-card>
+          <v-card-title style="justify-content: center">
+            <v-divider class="mx-4" inset vertical></v-divider>
+            <div
+              v-for="(item, index) in selectedCollections"
+              :key="index"
+              style="display: flex"
+            >
+              {{ item.text }}
+              <v-divider class="mx-4" inset vertical></v-divider></div
+          ></v-card-title>
+          <v-data-table
+            :header-props="headerProps"
+            :headers="headers"
+            :items="ReportList"
+            :page.sync="page"
+            :items-per-page="itemsPerPage"
+            hide-default-footer
+            @page-count="pageCount = $event"
+            :loading="loading"
+            loading-text="Cargando... Por favor espere"
+          >
+            <template v-slot:[`item.dateNoti`]="{ item }">
+              {{ formatDate2(item.dateNoti) }}
+            </template>
+            <template v-slot:[`item.date`]="{ item }">
+              {{ formatDate2(item.date) }}
+            </template>
+            <template v-slot:[`item.approve`]="{ item }">
+              <v-checkbox v-model="item.approve" disabled></v-checkbox>
+            </template>
+            <template v-slot:no-data>
+              Datos no disponibles
+            </template>
+          </v-data-table>
+        </v-card>
         <div class="text-center pt-2">
           <v-pagination v-model="page" :length="pageCount"></v-pagination>
         </div>
@@ -163,11 +260,36 @@ export default {
     page: 1,
     pageCount: 0,
     itemsPerPage: 10,
+    menu: [false, false, false],
+    loading: false,
+    date: new Date().toISOString().substr(0, 10),
     headerProps: {
       sortByText: "Ordenar por",
     },
     headers: [],
     ReportList: [],
+    ReportListAux: [],
+    selectedFieldVals: [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+    ],
     selectedCollections: [],
     collections: [
       {
@@ -177,25 +299,25 @@ export default {
         fields: [
           {
             parentText: "Notificaciones",
-            value: "notifications.dateNoti",
+            value: "dateNoti",
             text: "Fecha",
             type: "Date",
           },
           {
             parentText: "Notificaciones",
-            value: "notifications.description",
+            value: "descriptionNoti",
             text: "Descripción",
             type: "String",
           },
           {
             parentText: "Notificaciones",
-            value: "notifications.owner",
+            value: "owner",
             text: "Dueño",
             type: "String",
           },
           {
             parentText: "Notificaciones",
-            value: "notifications.title",
+            value: "title",
             text: "Título",
             type: "String",
           },
@@ -208,49 +330,43 @@ export default {
         fields: [
           {
             parentText: "Servicios",
-            value: "services.approve",
+            value: "approve",
             text: "Aprobado",
             type: "Boolean",
           },
           {
             parentText: "Servicios",
-            value: "services.autor",
+            value: "autor",
             text: "Autor",
             type: "String",
           },
           {
             parentText: "Servicios",
-            value: "services.category",
+            value: "category",
             text: "Categoría",
             type: "String",
           },
           {
             parentText: "Servicios",
-            value: "services.date",
+            value: "date",
             text: "Fecha",
             type: "Date",
           },
           {
             parentText: "Servicios",
-            value: "services.description",
-            text: "Descripción",
-            type: "String",
-          },
-          {
-            parentText: "Servicios",
-            value: "services.institute",
+            value: "institute",
             text: "Instituto",
             type: "String",
           },
           {
             parentText: "Servicios",
-            value: "services.name",
+            value: "name",
             text: "Nombre",
             type: "String",
           },
           {
             parentText: "Servicios",
-            value: "services.school",
+            value: "school",
             text: "Escuela",
             type: "String",
           },
@@ -263,13 +379,13 @@ export default {
         fields: [
           {
             parentText: "Suscriptores",
-            value: "subscribers.dateSub",
+            value: "dateSub",
             text: "Fecha",
             type: "Date",
           },
           {
             parentText: "Suscriptores",
-            value: "subscribers.email",
+            value: "emailSub",
             text: "Email",
             type: "String",
           },
@@ -282,49 +398,37 @@ export default {
         fields: [
           {
             parentText: "Usuarios",
-            value: "users.dependencies",
+            value: "dependencies",
             text: "Dependencias",
             type: "String",
           },
           {
             parentText: "Usuarios",
-            value: "users.email",
+            value: "email",
             text: "Email",
             type: "String",
           },
           {
             parentText: "Usuarios",
-            value: "users.institute",
+            value: "instituteUser",
             text: "Instituto",
             type: "String",
           },
           {
             parentText: "Usuarios",
-            value: "users.isActive",
+            value: "isActive",
             text: "Activo",
             type: "Boolean",
           },
           {
             parentText: "Usuarios",
-            value: "users.isAdmin",
-            text: "Usuario administrador",
+            value: "isAdmin",
+            text: "Administrador",
             type: "Boolean",
           },
           {
             parentText: "Usuarios",
-            value: "users.lastname",
-            text: "Apellido",
-            type: "String",
-          },
-          {
-            parentText: "Usuarios",
-            value: "users.name",
-            text: "Nombre",
-            type: "String",
-          },
-          {
-            parentText: "Usuarios",
-            value: "users.school",
+            value: "schoolUser",
             text: "Escuela",
             type: "String",
           },
@@ -386,7 +490,111 @@ export default {
     contmonths: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   }),
   methods: {
+    async queryreports() {
+      this.loading = true;
+      this.headers = [];
+      this.ReportList = [];
+      this.ReportListAux = [];
+      const params = this.selectedFields();
+      const values = this.selectedFieldVals;
+      const notificaciones = {};
+      const servicios = {};
+      const suscriptores = {};
+      const usuarios = {};
+      var index = 0;
+
+      params.forEach((d) => {
+        switch (d.parentText) {
+          case "Notificaciones":
+            this.headers.push({ text: d.text + ' (' + d.parentText + ')', value: d.value });
+            notificaciones[d.value] = values[index];
+            index++;
+            break;
+          case "Servicios":
+            this.headers.push({ text: d.text + ' (' + d.parentText + ')', value: d.value });
+            servicios[d.value] = values[index];
+            index++;
+            break;
+          case "Suscriptores":
+            this.headers.push({ text: d.text + ' (' + d.parentText + ')', value: d.value });
+            suscriptores[d.value] = values[index];
+            index++;
+            break;
+          case "Usuarios":
+            this.headers.push({ text: d.text + ' (' + d.parentText + ')', value: d.value });
+            usuarios[d.value] = values[index];
+            index++;
+            break;
+        }
+      });
+
+      if (Object.keys(notificaciones).length !== 0) {
+        await NotificationService.getreportsnoti(notificaciones)
+          .then((response) => {
+            response.data.forEach((d) => {
+              this.ReportListAux.push(d);
+            });
+          })
+          .catch((err) => console.log(err.response.data.error));
+      }
+      if (Object.keys(servicios).length !== 0) {
+        await Services.getreportserv(servicios)
+          .then((response) => {
+            response.data.forEach((d) => {
+              this.ReportListAux.push(d);
+            });
+          })
+          .catch((err) => console.log(err.response.data.error));
+      }
+      if (Object.keys(suscriptores).length !== 0) {
+        await SuscribeService.getreportsusc(suscriptores)
+          .then((response) => {
+            response.data.forEach((d) => {
+              this.ReportListAux.push(d);
+            });
+          })
+          .catch((err) => console.log(err.response.data.error));
+      }
+      if (Object.keys(usuarios).length !== 0) {
+        await UsersService.getreportsuser(usuarios)
+          .then((response) => {
+            response.data.forEach((d) => {
+              this.ReportListAux.push(d);
+            });
+          })
+          .catch((err) => console.log(err.response.data.error));
+      }
+      this.ReportList = this.ReportListAux;
+      this.loading = false;
+    },
+    selectedFields() {
+      return this.selectedCollections.reduce(
+        (fields, { selectedFields }) => fields.concat(selectedFields),
+        []
+      );
+    },
     toggleSelection(items, selected) {
+      this.selectedFieldVals = [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+      ];
       selected.length === items.length
         ? selected.splice(0)
         : selected.splice(0, selected.length, ...items);
@@ -411,6 +619,15 @@ export default {
       const [year, month, day] = aux.split("-");
       const fecha = [year, month, day];
       return fecha;
+    },
+    formatDate2(date) {
+      if (!date) return null;
+      const [newdate, x] = date.split("T");
+      const [year, month, day] = newdate.split("-");
+      return `${day}/${month}/${year}`;
+    },
+    computedDateFormatted(index) {
+      this.selectedFieldVals[index] = this.formatDate2(this.date);
     },
   },
   async mounted() {
