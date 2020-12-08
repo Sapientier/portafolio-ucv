@@ -8,6 +8,6 @@ export default {
         return Api().get('getsuscribers')
     },
     getreportsusc(values){
-        return Api().get('getreportsusc', values)
+        return Api().post('getreportsusc', values)
     }
 }

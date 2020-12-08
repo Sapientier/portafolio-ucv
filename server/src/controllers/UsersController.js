@@ -196,5 +196,43 @@ module.exports = {
                 error: 'Ha ocurrido un error al actualizar los usuarios'
             })
         }
+    },
+    async getreportsuser(req, res) {
+        try {
+            var query = {};
+            var notifications;
+
+            if (req.body.dependencies !== '' && req.body.dependencies !== undefined) {
+                query['dependencies'] = req.body.dependencies;
+            }
+            if (req.body.email !== '' && req.body.email !== undefined) {
+                query['email'] = { $regex: '.*' + req.body.email + '.*' };
+            }
+            if (req.body.instituteUser !== '' && req.body.instituteUser !== undefined) {
+                query['instituteUser'] = req.body.instituteUser;
+            }
+            if (req.body.isActive !== '' && req.body.isActive !== undefined) {
+                query['isActive'] = req.body.isActive;
+            }
+            if (req.body.isAdmin !== '' && req.body.isAdmin !== undefined) {
+                query['isAdmin'] = req.body.isAdmin;
+            }
+            if (req.body.schoolUser !== '' && req.body.schoolUser !== undefined) {
+                query['schoolUser'] = req.body.schoolUser;
+            }
+            
+            if(Object.keys(query).length === 0){
+                notifications = await User.find();
+            }
+            else {
+                notifications = await User.find(query);
+            }
+
+            res.json(notifications);
+        } catch (err) {
+            res.status(500).send({
+                error: 'Ha ocurrido un error al buscar los usuarios'
+            })
+        }
     }
 }

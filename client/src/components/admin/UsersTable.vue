@@ -21,6 +21,8 @@
             :items-per-page="itemsPerPage"
             hide-default-footer
             @page-count="pageCount = $event"
+            :loading="loading"
+            loading-text="Cargando... Por favor espere"
           >
             <template v-slot:top>
               <v-toolbar flat>
@@ -187,6 +189,7 @@ export default {
     dialog: false,
     dialog2: false,
     overlay: false,
+    loading: false,
     itemsel: [
       "Coordinador General",
       "Coordinador de Extensión",
@@ -241,11 +244,13 @@ export default {
   },
   methods: {
     async initialize() {
+      this.loading = true;
       const response = await UsersService.getusers()
         .then((response) => {
           this.UserList = response.data;
         })
         .catch((error) => console.log(error));
+      this.loading = false;
     },
     // object.assign fills in the empty object with the properties of item
     editItem(item) {

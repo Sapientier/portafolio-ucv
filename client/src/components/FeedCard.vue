@@ -520,7 +520,7 @@ export default {
     async suscribeService() {
       if (this.emailSub !== "") {
         await SuscribeService.suscribe({
-          email: this.emailSub,
+          emailSub: this.emailSub,
           typeSub: "Unique",
           serviceName: this.value.name,
           serviceId: this.value._id,

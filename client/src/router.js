@@ -7,7 +7,6 @@ import UserProfile from '@/components/admin/UserProfile'
 import UsersTable from '@/components/admin/UsersTable'
 import Reports from '@/components/admin/Reports'
 import Credits from '@/components/Credits'
-import CustomReport from '@/components/admin/CustomReport'
 import NotFound from '@/components/core/NotFound'
 
 Vue.use(VueRouter)
@@ -49,11 +48,6 @@ export default new VueRouter({
             path: '/credits',
             name: 'Credits',
             component: Credits
-        },
-        {
-            path: '/customreport',
-            name: 'CustomReport',
-            component: CustomReport
         },
         {
             path: '*',

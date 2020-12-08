@@ -13,7 +13,7 @@
             <v-form ref="form" lazy-validation v-model="valid">
               <v-row class="pa-2">
                 <v-text-field
-                  v-model="email"
+                  v-model="emailSub"
                   solo
                   class="mr-2"
                   style="max-width: 400px"
@@ -107,7 +107,7 @@ import SuscribeService from "@/services/SuscribeService";
 
 export default {
   data: () => ({
-    email: "",
+    emailSub: "",
     valid: true,
     dialog: false,
     overlay: false,
@@ -123,11 +123,11 @@ export default {
   }),
   methods: {
     async suscribir() {
-      if (this.email !== "") {
+      if (this.emailSub !== "") {
         try {
           this.overlay = true;
           const response = await SuscribeService.suscribe({
-            email: this.email,
+            emailSub: this.emailSub,
             typeSub: "Todo",
           }).then((response) => {
             this.buttonColor = "green darken-1";

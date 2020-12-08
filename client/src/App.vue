@@ -35,12 +35,9 @@ export default {
       this.$router.currentRoute.fullPath === "/login"
     ) {
       this.$router.push({
-        name: "Home",
+        name: "UserProfile",
       });
     }
   },
-  data: () => ({
-    //
-  }),
 };
 </script>

@@ -13,7 +13,6 @@
             ></v-img>
           </v-avatar>
           <v-card-text class="text-xs-center">
-            <h3 class="card-title">{{ names }} {{ lastnames }}</h3>
             <p
               class="card-description font-weight-light"
               v-if="$store.state.user.isAdmin"
@@ -189,7 +188,6 @@ export default {
     snack: false,
     snackColor: "",
     snackText: "",
-    UserList: [],
     error: null,
     alert: false,
     show1: false,

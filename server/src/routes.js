@@ -117,5 +117,11 @@ module.exports = (app) => {
         ),
         app.post('/getreportserv',
             ServicesController.getreportserv
+        ),
+        app.post('/getreportsusc',
+            SuscribeController.getreportsusc
+        ),
+        app.post('/getreportsuser',
+            UsersController.getreportsuser
         )
 }   

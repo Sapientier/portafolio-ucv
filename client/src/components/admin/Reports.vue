@@ -19,7 +19,7 @@
           <bar-chart
             v-if="loaded2"
             :chartdata="servicesChartData"
-            :chartlabels="servicesLabels"
+            :chartlabels="itemselCat"
             :chartcolors="servicesChartColors"
             class="chartsReports"
           />
@@ -151,11 +151,46 @@
                 v-for="(item, index) in selectedFields()"
               >
                 <v-text-field
-                  v-if="item.type !== 'Date' && item.type !== 'Boolean'"
+                  v-if="
+                    item.type !== 'Date' &&
+                      item.type !== 'Boolean' &&
+                      item.text !== 'Categoría' &&
+                      item.text !== 'Escuela' &&
+                      item.text !== 'Instituto' &&
+                      item.text !== 'Dependencias'
+                  "
                   v-model="selectedFieldVals[index]"
                   :label="item.text + ' (' + item.parentText + ')'"
                   placeholder="(Todos)"
                 ></v-text-field>
+                <v-select
+                  v-if="item.text === 'Dependencias'"
+                  v-model="selectedFieldVals[index]"
+                  :label="item.text + ' (' + item.parentText + ')'"
+                  :items="usersLabels"
+                  placeholder="(Todos)"
+                ></v-select>
+                <v-select
+                  v-if="item.text === 'Categoría'"
+                  v-model="selectedFieldVals[index]"
+                  :label="item.text + ' (' + item.parentText + ')'"
+                  :items="itemselCat"
+                  placeholder="(Todos)"
+                ></v-select>
+                <v-select
+                  v-if="item.text === 'Instituto'"
+                  v-model="selectedFieldVals[index]"
+                  :label="item.text + ' (' + item.parentText + ')'"
+                  :items="itemselInst"
+                  placeholder="(Todos)"
+                ></v-select>
+                <v-select
+                  v-if="item.text === 'Escuela'"
+                  v-model="selectedFieldVals[index]"
+                  :label="item.text + ' (' + item.parentText + ')'"
+                  :items="itemselSchool"
+                  placeholder="(Todos)"
+                ></v-select>
                 <v-switch
                   v-if="item.type === 'Boolean'"
                   v-model="selectedFieldVals[index]"
@@ -206,16 +241,11 @@
     <v-row justify="center">
       <v-col xs="12">
         <v-card>
-          <v-card-title style="justify-content: center">
+          <v-card-title v-if="isQuery" style="justify-content: center">
             <v-divider class="mx-4" inset vertical></v-divider>
-            <div
-              v-for="(item, index) in selectedCollections"
-              :key="index"
-              style="display: flex"
-            >
-              {{ item.text }}
-              <v-divider class="mx-4" inset vertical></v-divider></div
-          ></v-card-title>
+            Resultados
+            <v-divider class="mx-4" inset vertical></v-divider>
+          </v-card-title>
           <v-data-table
             :header-props="headerProps"
             :headers="headers"
@@ -233,8 +263,17 @@
             <template v-slot:[`item.date`]="{ item }">
               {{ formatDate2(item.date) }}
             </template>
+            <template v-slot:[`item.dateSub`]="{ item }">
+              {{ formatDate2(item.dateSub) }}
+            </template>
             <template v-slot:[`item.approve`]="{ item }">
               <v-checkbox v-model="item.approve" disabled></v-checkbox>
+            </template>
+            <template v-slot:[`item.isActive`]="{ item }">
+              <v-checkbox v-model="item.isActive" disabled></v-checkbox>
+            </template>
+            <template v-slot:[`item.isAdmin`]="{ item }">
+              <v-checkbox v-model="item.isAdmin" disabled></v-checkbox>
             </template>
             <template v-slot:no-data>
               Datos no disponibles
@@ -262,6 +301,7 @@ export default {
     itemsPerPage: 10,
     menu: [false, false, false],
     loading: false,
+    isQuery: false,
     date: new Date().toISOString().substr(0, 10),
     headerProps: {
       sortByText: "Ordenar por",
@@ -269,6 +309,23 @@ export default {
     headers: [],
     ReportList: [],
     ReportListAux: [],
+    itemselCat: [
+      "Investigación",
+      "Tecnología",
+      "Mercadeo",
+      "Medicina",
+      "Educación",
+    ],
+    itemselSchool: [
+      "N/A",
+      "Biología",
+      "Computación",
+      "Física",
+      "Geoquímica",
+      "Matemática",
+      "Química",
+    ],
+    itemselInst: ["N/A", "IBE", "ICTA", "ICT"],
     selectedFieldVals: [
       "",
       "",
@@ -299,15 +356,15 @@ export default {
         fields: [
           {
             parentText: "Notificaciones",
-            value: "dateNoti",
-            text: "Fecha",
-            type: "Date",
+            value: "title",
+            text: "Título",
+            type: "String",
           },
           {
             parentText: "Notificaciones",
-            value: "descriptionNoti",
-            text: "Descripción",
-            type: "String",
+            value: "dateNoti",
+            text: "Fecha",
+            type: "Date",
           },
           {
             parentText: "Notificaciones",
@@ -317,8 +374,8 @@ export default {
           },
           {
             parentText: "Notificaciones",
-            value: "title",
-            text: "Título",
+            value: "descriptionNoti",
+            text: "Descripción",
             type: "String",
           },
         ],
@@ -330,9 +387,15 @@ export default {
         fields: [
           {
             parentText: "Servicios",
-            value: "approve",
-            text: "Aprobado",
-            type: "Boolean",
+            value: "name",
+            text: "Nombre",
+            type: "String",
+          },
+          {
+            parentText: "Servicios",
+            value: "date",
+            text: "Fecha",
+            type: "Date",
           },
           {
             parentText: "Servicios",
@@ -348,20 +411,8 @@ export default {
           },
           {
             parentText: "Servicios",
-            value: "date",
-            text: "Fecha",
-            type: "Date",
-          },
-          {
-            parentText: "Servicios",
             value: "institute",
             text: "Instituto",
-            type: "String",
-          },
-          {
-            parentText: "Servicios",
-            value: "name",
-            text: "Nombre",
             type: "String",
           },
           {
@@ -369,6 +420,12 @@ export default {
             value: "school",
             text: "Escuela",
             type: "String",
+          },
+          {
+            parentText: "Servicios",
+            value: "approve",
+            text: "Aprobado",
+            type: "Boolean",
           },
         ],
       },
@@ -379,15 +436,15 @@ export default {
         fields: [
           {
             parentText: "Suscriptores",
-            value: "dateSub",
-            text: "Fecha",
-            type: "Date",
-          },
-          {
-            parentText: "Suscriptores",
             value: "emailSub",
             text: "Email",
             type: "String",
+          },
+          {
+            parentText: "Suscriptores",
+            value: "dateSub",
+            text: "Fecha",
+            type: "Date",
           },
         ],
       },
@@ -416,6 +473,12 @@ export default {
           },
           {
             parentText: "Usuarios",
+            value: "schoolUser",
+            text: "Escuela",
+            type: "String",
+          },
+          {
+            parentText: "Usuarios",
             value: "isActive",
             text: "Activo",
             type: "Boolean",
@@ -425,12 +488,6 @@ export default {
             value: "isAdmin",
             text: "Administrador",
             type: "Boolean",
-          },
-          {
-            parentText: "Usuarios",
-            value: "schoolUser",
-            text: "Escuela",
-            type: "String",
           },
         ],
       },
@@ -445,7 +502,12 @@ export default {
       ],
     },
     usersChartData: [],
-    usersLabels: [],
+    usersLabels: [
+      "Coordinador General",
+      "Coordinador de Extensión",
+      "Coordinador de Investigación",
+      "Profesor/Investigador",
+    ],
     servicesChartColors: {
       borderColor: [
         "rgba(242, 5, 116, 1)",
@@ -463,7 +525,6 @@ export default {
       ],
     },
     servicesChartData: [],
-    servicesLabels: [],
     suscribeChartColors: {
       borderColor: "rgba(242, 90, 56, 1)",
       backgroundColor: "rgba(242, 90, 56, 0.2)",
@@ -491,6 +552,7 @@ export default {
   }),
   methods: {
     async queryreports() {
+      this.isQuery = true;
       this.loading = true;
       this.headers = [];
       this.ReportList = [];
@@ -506,22 +568,34 @@ export default {
       params.forEach((d) => {
         switch (d.parentText) {
           case "Notificaciones":
-            this.headers.push({ text: d.text + ' (' + d.parentText + ')', value: d.value });
+            this.headers.push({
+              text: d.text + " (" + d.parentText + ")",
+              value: d.value,
+            });
             notificaciones[d.value] = values[index];
             index++;
             break;
           case "Servicios":
-            this.headers.push({ text: d.text + ' (' + d.parentText + ')', value: d.value });
+            this.headers.push({
+              text: d.text + " (" + d.parentText + ")",
+              value: d.value,
+            });
             servicios[d.value] = values[index];
             index++;
             break;
           case "Suscriptores":
-            this.headers.push({ text: d.text + ' (' + d.parentText + ')', value: d.value });
+            this.headers.push({
+              text: d.text + " (" + d.parentText + ")",
+              value: d.value,
+            });
             suscriptores[d.value] = values[index];
             index++;
             break;
           case "Usuarios":
-            this.headers.push({ text: d.text + ' (' + d.parentText + ')', value: d.value });
+            this.headers.push({
+              text: d.text + " (" + d.parentText + ")",
+              value: d.value,
+            });
             usuarios[d.value] = values[index];
             index++;
             break;
@@ -659,12 +733,6 @@ export default {
           }
         });
         this.usersChartData = [gennum, extnum, invnum, pronum];
-        this.usersLabels = [
-          "Coordinador General",
-          "Coordinador de Extensión",
-          "Coordinador de Investigación",
-          "Profesor/Investigador",
-        ];
         this.loaded1 = true;
       })
       .catch((err) => console.log(err.response.data.error));
@@ -697,13 +765,6 @@ export default {
           }
         });
         this.servicesChartData = [invnum, tecnum, mernum, mednum, deunum];
-        this.servicesLabels = [
-          "Investigación",
-          "Tecnología",
-          "Mercadeo",
-          "Medicina",
-          "Educación",
-        ];
         this.loaded2 = true;
       })
       .catch((err) => console.log(err.response.data.error));
