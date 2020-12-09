@@ -242,9 +242,23 @@
       <v-col xs="12">
         <v-card>
           <v-card-title v-if="isQuery" style="justify-content: center">
-            <v-divider class="mx-4" inset vertical></v-divider>
             Resultados
             <v-divider class="mx-4" inset vertical></v-divider>
+            <v-spacer></v-spacer>
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on }">
+                <v-btn
+                  color="primary"
+                  dark
+                  class="mb-2"
+                  @click="convertPDF()"
+                  v-on="on"
+                >
+                  <v-icon>mdi-download</v-icon>
+                </v-btn>
+              </template>
+              <span>Descargar PDF</span>
+            </v-tooltip>
           </v-card-title>
           <v-data-table
             :header-props="headerProps"
@@ -293,6 +307,9 @@ import Services from "@/services/Services";
 import UsersService from "@/services/UsersService";
 import SuscribeService from "@/services/SuscribeService";
 import NotificationService from "@/services/NotificationService";
+import pdfMake from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts";
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 export default {
   data: () => ({
@@ -551,6 +568,76 @@ export default {
     contmonths: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   }),
   methods: {
+    buildTableBody(data, columns, headers) {
+      var body = [];
+      body.push(headers);
+
+      data.forEach((row) => {
+        var dataRow = [];
+
+        columns.forEach((column) => {
+          if (row[column] === undefined) {
+            dataRow.push("");
+          } else {
+            if (
+              column === "date" ||
+              column === "dateSub" ||
+              column === "dateNoti"
+            ) {
+              dataRow.push(this.formatDate2(row[column]).toString());
+            } else if (
+              column === "approve" ||
+              column === "isActive" ||
+              column === "isAdmin"
+            ) {
+              if (row[column] === true) {
+                dataRow.push("Si");
+              } else {
+                dataRow.push("No");
+              }
+            } else {
+              dataRow.push(row[column].toString());
+            }
+          }
+        });
+
+        body.push(dataRow);
+      });
+
+      return body;
+    },
+    table(data, columns, headers) {
+      return {
+        table: {
+          headerRows: 1,
+          body: this.buildTableBody(data, columns, headers),
+        },
+      };
+    },
+    convertPDF() {
+      var headervaluesPDF = [];
+      var headertextPDF = [];
+      this.headers.forEach((d) => {
+        headervaluesPDF.push(d.value);
+        headertextPDF.push({
+          text: d.text,
+          fillColor: "blue",
+          color: "white",
+          alignment: "center",
+          alignmentChild: "left",
+        });
+      });
+      var dd = {
+        pageOrientation: "landscape",
+        pageMargins: [20, 20, 20, 20],
+        pageSize: 'A4',
+        defaultStyle: {
+          fontSize: 10,
+        },
+        content: [this.table(this.ReportList, headervaluesPDF, headertextPDF)],
+      };
+      pdfMake.createPdf(dd).download("Reporte-" + Date.now());
+    },
     async queryreports() {
       this.isQuery = true;
       this.loading = true;

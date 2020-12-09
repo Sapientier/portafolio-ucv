@@ -24,7 +24,10 @@ module.exports = {
                 isAdmin: req.body.isAdmin,
                 isActive: req.body.isActive,
                 dependencies: req.body.dependencies,
-                numNoti: 0
+                numNoti: 0,
+                schoolUser: '',
+                instituteUser: '',
+                imageUser: '',
             });
 
             const user = await task.save();
