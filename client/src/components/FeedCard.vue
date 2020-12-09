@@ -456,6 +456,7 @@ export default {
       this.dialog3 = true;
     },
     async deleteval() {
+      this.overlay = true;
       await Services.deleteservices({
         _id: this.editedItem._id,
         imageService: this.editedItem.imageService,
@@ -518,6 +519,7 @@ export default {
       this.close();
     },
     async suscribeService() {
+      this.overlay = true;
       if (this.emailSub !== "") {
         await SuscribeService.suscribe({
           emailSub: this.emailSub,
@@ -532,6 +534,7 @@ export default {
       } else {
         this.errorEmail("Debe ingresar un correo electrónico");
       }
+      this.overlay = false;
     },
     resetValidation() {
       this.$refs.form.resetValidation();

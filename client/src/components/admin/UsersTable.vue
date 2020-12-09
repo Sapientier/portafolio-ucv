@@ -264,6 +264,7 @@ export default {
       this.dialog2 = true;
     },
     async deleteval() {
+      this.overlay = true;
       try {
         const response = await UsersService.deleteusers({
           _id: this.editedItem._id,
