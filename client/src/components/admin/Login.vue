@@ -84,6 +84,9 @@
               <v-btn color="primary" @click="login">Ingresar</v-btn>
             </v-card-actions>
           </v-form>
+          <v-overlay :value="overlay">
+            <v-progress-circular indeterminate size="64"></v-progress-circular>
+          </v-overlay>
           <v-snackbar v-model="snack" :timeout="3000" :color="snackColor">
             {{ snackText }}
             <template v-slot:action="{ attrs }">
@@ -112,6 +115,7 @@ export default {
     snackColor: "",
     snackText: "",
     emailreset: "",
+    overlay: false,
     passwordRules: [
       (v) => !!v || "Contraseña es requerida",
       (v) => v.length <= 20 || "La contraseña debe ser menor a 20 caracteres",
@@ -123,6 +127,7 @@ export default {
   }),
   methods: {
     async login() {
+      this.overlay = true;
       try {
         const response = await AuthenticationService.login({
           email: this.email,
@@ -143,8 +148,10 @@ export default {
         this.alert = true;
         this.error = error.response.data.error;
       }
+      this.overlay = false;
     },
     async resetpassword() {
+      this.overlay = true;
       if (this.emailreset !== "") {
         try {
           const response = await AuthenticationService.resetpass({
@@ -157,6 +164,7 @@ export default {
       } else {
         this.errorEmail("Debe ingresar un correo electrónico");
       }
+      this.overlay = false;
     },
     close() {
       this.dialog = false;

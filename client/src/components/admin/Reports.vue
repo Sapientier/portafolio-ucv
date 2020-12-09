@@ -643,7 +643,6 @@ export default {
       this.loading = true;
       this.headers = [];
       this.ReportList = [];
-      this.ReportListAux = [];
       const params = this.selectedFields();
       const values = this.selectedFieldVals;
       const notificaciones = {};
@@ -693,7 +692,7 @@ export default {
         await NotificationService.getreportsnoti(notificaciones)
           .then((response) => {
             response.data.forEach((d) => {
-              this.ReportListAux.push(d);
+              this.ReportList.push(d);
             });
           })
           .catch((err) => console.log(err.response.data.error));
@@ -702,7 +701,7 @@ export default {
         await Services.getreportserv(servicios)
           .then((response) => {
             response.data.forEach((d) => {
-              this.ReportListAux.push(d);
+              this.ReportList.push(d);
             });
           })
           .catch((err) => console.log(err.response.data.error));
@@ -711,7 +710,7 @@ export default {
         await SuscribeService.getreportsusc(suscriptores)
           .then((response) => {
             response.data.forEach((d) => {
-              this.ReportListAux.push(d);
+              this.ReportList.push(d);
             });
           })
           .catch((err) => console.log(err.response.data.error));
@@ -720,12 +719,11 @@ export default {
         await UsersService.getreportsuser(usuarios)
           .then((response) => {
             response.data.forEach((d) => {
-              this.ReportListAux.push(d);
+              this.ReportList.push(d);
             });
           })
           .catch((err) => console.log(err.response.data.error));
       }
-      this.ReportList = this.ReportListAux;
       this.loading = false;
     },
     selectedFields() {

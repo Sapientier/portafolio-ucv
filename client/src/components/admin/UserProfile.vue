@@ -242,8 +242,8 @@ export default {
         _id: this.$store.state.user._id,
       })
         .then((response) => {
-          this.escuelas = response.data.school;
-          this.institutos = response.data.institute;
+          this.escuelas = response.data.schoolUser;
+          this.institutos = response.data.instituteUser;
           this.imageUser = response.data.imageUser;
         })
         .catch((error) => console.log(error));
