@@ -67,11 +67,11 @@ module.exports = {
 
                 for (const element of correosSubs) {
                     if (aux === 0) {
-                        emailsSubs = element.email;
+                        emailsSubs = element.emailSub;
                         aux++;
                     }
                     else {
-                        emailsSubs = emailsSubs + ", " + element.email;
+                        emailsSubs = emailsSubs + ", " + element.emailSub;
                     }
                 }
 
