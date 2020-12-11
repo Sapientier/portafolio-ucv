@@ -407,9 +407,6 @@ export default {
     ...mapActions([
       "setServiciosAll",
       "setServicios",
-      "filterServiciosbyCat",
-      "filterServiciosbyName",
-      "filterServiciosbyApproved",
     ]),
     querySelections(v) {
       this.loading = true;
@@ -420,6 +417,27 @@ export default {
         });
         this.loading = false;
       }, 500);
+    },
+    async filterServiciosbyCat(value) {
+      await Services.getuniservicebycat(value)
+        .then((response) => {
+          this.setServiciosAll(response.data);
+        })
+        .catch((err) => console.log(err.response.data.error));
+    },
+    async filterServiciosbyApproved(value) {
+      await Services.getuniservicebyapproved(value)
+        .then((response) => {
+          this.setServiciosAll(response.data);
+        })
+        .catch((err) => console.log(err.response.data.error));
+    },
+    async filterServiciosbyName(value) {
+      await Services.getuniservicebyname(value)
+        .then((response) => {
+          this.setServiciosAll(response.data);
+        })
+        .catch((err) => console.log(err.response.data.error));
     },
     async getServices() {
       await Services.getservices()

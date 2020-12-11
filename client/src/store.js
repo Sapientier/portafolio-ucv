@@ -66,13 +66,6 @@ export default new Vuex.Store({
         setUserNumNoti({ commit }, numnoti) {
             commit("setUserNumNoti", numnoti);
         },
-        async getServicios({ commit }) {
-            await Services.getservices()
-                .then((response) => {
-                    commit("getServicios", response.data);
-                })
-                .catch((err) => console.log(err.response.data.error));
-        },
         setServiciosAll({ commit }, values) {
             commit("getServicios", values);
         },
@@ -85,28 +78,8 @@ export default new Vuex.Store({
         updateServicios({ commit }, values) {
             commit("updateServicios", values);
         },
-        async filterServiciosbyCat({ commit }, value) {
-            await Services.getuniservicebycat({
-                category: value,
-            })
-                .then((response) => {
-                    commit("getServicios", response.data);
-                })
-                .catch((err) => console.log(err.response.data.error));
-        },
-        async filterServiciosbyApproved({ commit }, value) {
-            await Services.getuniservicebyapproved({
-                approve: value,
-            })
-                .then((response) => {
-                    commit("getServicios", response.data);
-                })
-                .catch((err) => console.log(err.response.data.error));
-        },
-        async filterServiciosbyName({ commit }, value) {
-            await Services.getuniservicebyname({
-                name: value,
-            })
+        async getServicios({ commit }) {
+            await Services.getservices()
                 .then((response) => {
                     commit("getServicios", response.data);
                 })

@@ -105,7 +105,7 @@ module.exports = {
     },
     async getuniservicebycat(req, res) {
         try {
-            const services = await Service.find({ category: req.body.category });
+            const services = await Service.find({ category: req.query.category });
             res.json(services);
         } catch (err) {
             res.status(500).send({
@@ -115,7 +115,7 @@ module.exports = {
     },
     async getuniservicebyname(req, res) {
         try {
-            const services = await Service.find({ name: { $regex: '.*' + req.body.name + '.*' } }).limit(5);
+            const services = await Service.find({ name: { $regex: '.*' + req.query.name + '.*' } }).limit(5);
             res.json(services);
         } catch (err) {
             res.status(500).send({
@@ -125,7 +125,7 @@ module.exports = {
     },
     async getuniservicebyapproved(req, res) {
         try {
-            const services = await Service.find({ approve: req.body.approve });
+            const services = await Service.find({ approve: req.query.approve });
             res.json(services);
         } catch (err) {
             res.status(500).send({

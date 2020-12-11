@@ -37,6 +37,33 @@ module.exports = (app) => {
     app.get('/', function (req, res) {
         res.sendFile(path.join(__dirname, '../public/index.html'))
     }),
+        app.get('/getusers',
+            UsersController.getusers
+        ),
+        app.get('/getuniservicebycat',
+            ServicesController.getuniservicebycat
+        ),
+        app.get('/getuniservicebyname',
+            ServicesController.getuniservicebyname
+        ),
+        app.get('/getuniservicebyapproved',
+            ServicesController.getuniservicebyapproved
+        ),
+        app.get('/getservices',
+            ServicesController.getservices
+        ),
+        app.get('/getsuscribers',
+            SuscribeController.getsuscribers
+        ),
+        app.get('/getnotifications',
+            NotificationsController.getnotifications
+        ),
+        app.post('/getuserpass',
+            UsersController.getuserpass
+        ),
+        app.get('/getuserper',
+            UsersController.getuserper
+        ),
         app.post('/login',
             AuthenticationController.login
         ),
@@ -45,15 +72,6 @@ module.exports = (app) => {
         ),
         app.post('/insertusers',
             UsersController.insertusers
-        ),
-        app.get('/getusers',
-            UsersController.getusers
-        ),
-        app.post('/getuserpass',
-            UsersController.getuserpass
-        ),
-        app.post('/getuserper',
-            UsersController.getuserper
         ),
         app.post('/deleteusers',
             UsersController.deleteusers
@@ -78,27 +96,12 @@ module.exports = (app) => {
             upload1.single('image'),
             ServicesController.insertservices
         ),
-        app.get('/getservices',
-            ServicesController.getservices
-        ),
         app.post('/deleteservices',
             ServicesController.deleteservices
         ),
         app.post('/updateservices',
             upload1.single('image'),
             ServicesController.updateservices
-        ),
-        app.post('/getuniservicebycat',
-            ServicesController.getuniservicebycat
-        ),
-        app.post('/getuniservicebyname',
-            ServicesController.getuniservicebyname
-        ),
-        app.post('/getuniservicebyapproved',
-            ServicesController.getuniservicebyapproved
-        ),
-        app.post('/getnotifications',
-            NotificationsController.getnotifications
         ),
         app.post('/insertnotifications',
             NotificationsController.insertnotifications
@@ -108,9 +111,6 @@ module.exports = (app) => {
         ),
         app.post('/suscribeservices',
             SuscribeController.suscribeservices
-        ),
-        app.get('/getsuscribers',
-            SuscribeController.getsuscribers
         ),
         app.post('/getreportsnoti',
             NotificationsController.getreportsnoti

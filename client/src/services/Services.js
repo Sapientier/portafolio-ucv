@@ -5,10 +5,25 @@ export default {
         return Api().post('insertservices', values)
     },
     getuniservicebycat(values) {
-        return Api().post('getuniservicebycat', values)
+        return Api().get('getuniservicebycat', {
+            params: {
+                category: values
+            }
+        })
     },
     getuniservicebyname(values) {
-        return Api().post('getuniservicebyname', values)
+        return Api().get('getuniservicebyname', {
+            params: {
+                name: values
+            }
+        })
+    },
+    getuniservicebyapproved(values) {
+        return Api().get('getuniservicebyapproved', {
+            params: {
+                approve: values
+            }
+        })
     },
     getservices() {
         return Api().get('getservices')
@@ -18,9 +33,6 @@ export default {
     },
     updateservices(values) {
         return Api().post('updateservices', values)
-    },
-    getuniservicebyapproved(values) {
-        return Api().post('getuniservicebyapproved', values)
     },
     getreportserv(values) {
         return Api().post('getreportserv', values)

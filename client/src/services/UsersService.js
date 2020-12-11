@@ -1,17 +1,21 @@
 import Api from '@/services/Api'
 
 export default {
-    insertusers(credentials) {
-        return Api().post('insertusers', credentials)
-    },
     getusers() {
         return Api().get('getusers')
+    },
+    getuserper(values) {
+        return Api().get('getuserper', {
+            params: {
+                _id: values
+            }
+        })
     },
     getuserpass(values) {
         return Api().post('getuserpass', values)
     },
-    getuserper(values) {
-        return Api().post('getuserper', values)
+    insertusers(credentials) {
+        return Api().post('insertusers', credentials)
     },
     updateusers(values) {
         return Api().post('updateusers', values)

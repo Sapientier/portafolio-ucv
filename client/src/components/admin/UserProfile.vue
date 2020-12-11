@@ -238,9 +238,7 @@ export default {
       }
     },
     async initialize() {
-      await UsersService.getuserper({
-        _id: this.$store.state.user._id,
-      })
+      await UsersService.getuserper(this.$store.state.user._id)
         .then((response) => {
           this.escuelas = response.data.schoolUser;
           this.institutos = response.data.instituteUser;

@@ -93,7 +93,7 @@ module.exports = {
     async getnotifications(req, res) {
         try {
             const notifications = await Notification.find({
-                'emailsToNoti': { $in: req.body.email }
+                'emailsToNoti': { $in: req.query.email }
             });
 
             res.json(notifications);

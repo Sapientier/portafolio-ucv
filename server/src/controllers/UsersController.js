@@ -74,7 +74,7 @@ module.exports = {
     async getuserper(req, res) {
         try {
             const user = await User.findOne({
-                '_id': req.body._id
+                '_id': req.query._id
             });
             res.json(user);
         } catch (err) {
