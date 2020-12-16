@@ -70,13 +70,19 @@ export default new Vuex.Store({
             commit("getServicios", values);
         },
         setServicios({ commit }, values) {
-            commit("setServicios", values);
+            setTimeout(() => {
+                commit("setServicios", values);
+            }, 1000)
         },
         removeServicios({ commit }, values) {
-            commit("removeServicios", values);
+            setTimeout(() => {
+                commit("removeServicios", values);
+            }, 1000)
         },
         updateServicios({ commit }, values) {
-            commit("updateServicios", values);
+            setTimeout(() => {
+                commit("updateServicios", values);
+            }, 1000)
         },
         async getServicios({ commit }) {
             await Services.getservices()
