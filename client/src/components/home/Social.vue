@@ -1,13 +1,13 @@
 <template>
   <v-container id="social" tag="section" grid-list-xl>
     <v-row>
-      <v-col xs="12" md="4">
+      <v-col xs="12" md="4" cols="12">
         <instagram />
       </v-col>
-      <v-col xs="12" md="4">
+      <v-col xs="12" md="4" cols="12">
         <newest-posts />
       </v-col>
-      <v-col xs="12" md="4">
+      <v-col xs="12" md="4" cols="12">
         <tags />
       </v-col>
     </v-row>

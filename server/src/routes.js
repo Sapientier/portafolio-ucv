@@ -58,11 +58,11 @@ module.exports = (app) => {
         app.get('/getnotifications',
             NotificationsController.getnotifications
         ),
-        app.post('/getuserpass',
-            UsersController.getuserpass
-        ),
         app.get('/getuserper',
             UsersController.getuserper
+        ),
+        app.post('/getuserpass',
+            UsersController.getuserpass
         ),
         app.post('/login',
             AuthenticationController.login

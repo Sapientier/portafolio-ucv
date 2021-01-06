@@ -52,15 +52,15 @@
         </v-list-item>
       </v-list>
       <v-bottom-navigation absolute color="indigo">
-        <v-btn @click="navigateToExt('https://www.twitter.com/')">
+        <v-btn @click="navigateToExt('https://www.twitter.com/Noticienciasucv')">
           <v-icon>mdi-twitter</v-icon>
         </v-btn>
 
-        <v-btn @click="navigateToExt('https://www.youtube.com/')">
-          <v-icon>mdi-youtube</v-icon>
+        <v-btn @click="navigateToExt('https://www.instagram.com/noticienciasucv')">
+          <v-icon>mdi-instagram</v-icon>
         </v-btn>
 
-        <v-btn @click="navigateToExt('https://www.facebook.com/')">
+        <v-btn @click="navigateToExt('https://www.facebook.com/coordinaciondeextension.ucv')">
           <v-icon>mdi-facebook</v-icon>
         </v-btn>
       </v-bottom-navigation>

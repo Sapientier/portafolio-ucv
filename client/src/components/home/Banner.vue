@@ -4,9 +4,9 @@
       <v-overlay :absolute="absolute" :opacity="opacity">
         <v-row align="center" justify="center">
           <v-col class="text-center" cols="10">
-            <h1 class="display-3 font-weight-light">Servicios Ciencias</h1>
+            <h1 class="display-3 font-weight-light">Portafolio Ciencias</h1>
             <h4 class="font-weight-light mt-3 mb-3">
-              Para aquellos problemas que requieren modernas soluciones de alta
+              ¡Bienvenidos! Para aquellos problemas que requieren modernas soluciones de alta
               tecnología, la Facultad de Ciencias de la Universidad Central de
               Venezuela pone a disposición la aplicación de su conocimiento
               científico adquirido y perfeccionado en sus {{ facultyAge }} años

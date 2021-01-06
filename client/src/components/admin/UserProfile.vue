@@ -1,6 +1,11 @@
 <template>
   <v-container grid-list-xl>
     <v-row justify="center">
+      <h2 class="font-weight-medium text-center mt-5">
+        Perfil de Usuario
+      </h2>
+    </v-row>
+    <v-row justify="center">
       <v-col xs="12" md="4" cols="12">
         <v-card>
           <v-avatar class="mx-auto d-block" size="130">
