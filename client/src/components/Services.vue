@@ -18,16 +18,16 @@
 
           <v-chip
             class="ma-2"
-            color="warning"
+            color="green darken-3"
             :input-value="active1"
             filter
             outlined
             @click="
-              filterServiciosbyCat('Investigación');
+              filterServiciosbyCat('Ambiente');
               activefilter(1);
             "
           >
-            <v-icon left>mdi-glasses</v-icon>Investigación
+            <v-icon left>mdi-nature</v-icon>Ambiente
           </v-chip>
 
           <v-chip
@@ -37,78 +37,138 @@
             filter
             outlined
             @click="
-              filterServiciosbyCat('Tecnología');
+              filterServiciosbyCat('Enseñanza de la Ciencia');
               activefilter(2);
             "
           >
-            <v-icon left>mdi-server</v-icon>Tecnología
+            <v-icon left>mdi-glasses</v-icon>Enseñanza de la Ciencia
           </v-chip>
 
           <v-chip
             class="ma-2"
-            color="deep-purple accent-4"
+            color="deep-purple"
             :input-value="active3"
             filter
             outlined
             @click="
-              filterServiciosbyCat('Mercadeo');
+              filterServiciosbyCat('Extensión');
               activefilter(3);
             "
           >
-            <v-icon left>mdi-currency-usd</v-icon>Mercadeo
+            <v-icon left>mdi-graph</v-icon>Extensión
           </v-chip>
 
           <v-chip
             class="ma-2"
-            color="indigo darken-3"
+            color="brown"
             :input-value="active4"
             filter
             outlined
             @click="
-              filterServiciosbyCat('Medicina');
+              filterServiciosbyCat('Geociencias');
               activefilter(4);
             "
           >
-            <v-icon left>mdi-medical-bag</v-icon>Medicina
+            <v-icon left>mdi-earth</v-icon>Geociencias
+          </v-chip>
+
+          <v-chip
+            class="ma-2"
+            color="yellow darken-3"
+            :input-value="active5"
+            filter
+            outlined
+            @click="
+              filterServiciosbyCat('Materiales y Energía');
+              activefilter(5);
+            "
+          >
+            <v-icon left>mdi-solar-power</v-icon>Materiales y Energía
+          </v-chip>
+
+          <v-chip
+            class="ma-2"
+            color="cyan darken-3"
+            :input-value="active6"
+            filter
+            outlined
+            @click="
+              filterServiciosbyCat('Modelos y Teorías');
+              activefilter(6);
+            "
+          >
+            <v-icon left>mdi-globe-model</v-icon>Modelos y Teorías
           </v-chip>
 
           <v-chip
             class="ma-2"
             color="red darken-3"
-            :input-value="active5"
+            :input-value="active7"
             filter
             outlined
             @click="
-              filterServiciosbyCat('Educación');
-              activefilter(5);
+              filterServiciosbyCat('Salud');
+              activefilter(7);
             "
           >
-            <v-icon left>mdi-book</v-icon>Educación
+            <v-icon left>mdi-medical-bag</v-icon>Salud
           </v-chip>
+
+          <v-chip
+            class="ma-2"
+            color="indigo darken-3"
+            :input-value="active8"
+            filter
+            outlined
+            @click="
+              filterServiciosbyCat('Seguridad Alimentaria');
+              activefilter(8);
+            "
+          >
+            <v-icon left>mdi-food-fork-drink</v-icon>Seguridad Alimentaria
+          </v-chip>
+
+          <v-chip
+            class="ma-2"
+            color="orange darken-3"
+            :input-value="active9"
+            filter
+            outlined
+            @click="
+              filterServiciosbyCat(
+                'Tecnologías de la Información y Comunicación'
+              );
+              activefilter(9);
+            "
+          >
+            <v-icon left>mdi-book-information-variant</v-icon>Tecnologías de la Información y Comunicación
+          </v-chip>
+
           <v-chip
             v-if="$store.state.isUserLoggedIn"
             class="ma-2"
             color="success"
             outlined
-            :input-value="active6"
+            :input-value="active10"
             filter
             @click="
               filterServiciosbyApproved(true);
-              activefilter(6);
+              activefilter(10);
             "
           >
             <v-icon left>mdi-account-check</v-icon>Aprobados
           </v-chip>
+
           <v-chip
             v-if="$store.state.isUserLoggedIn"
             class="ma-2"
             color="error"
             outlined
-            :input-value="active7"
+            :input-value="active11"
             filter
             @click="
               filterServiciosbyApproved(false);
-              activefilter(7);
+              activefilter(11);
             "
           >
             <v-icon left>mdi-account-cancel</v-icon>No Aprobados
@@ -362,12 +422,20 @@ export default {
     active5: false,
     active6: false,
     active7: false,
+    active8: false,
+    active9: false,
+    active10: false,
+    active11: false,
     itemselCat: [
-      "Medicina",
-      "Tecnología",
-      "Educación",
-      "Mercadeo",
-      "Investigación",
+      "Ambiente",
+      "Enseñanza de la Ciencia",
+      "Extensión",
+      "Geociencias",
+      "Materiales y Energía",
+      "Modelos y Teorías",
+      "Salud",
+      "Seguridad Alimentaria",
+      "Tecnologías de la Información y Comunicación",
     ],
     itemselSchool: [
       "N/A",
@@ -404,10 +472,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions([
-      "setServiciosAll",
-      "setServicios",
-    ]),
+    ...mapActions(["setServiciosAll", "setServicios"]),
     querySelections(v) {
       this.loading = true;
       // Simulated ajax query
@@ -535,6 +600,10 @@ export default {
       this.active5 = false;
       this.active6 = false;
       this.active7 = false;
+      this.active8 = false;
+      this.active9 = false;
+      this.active10 = false;
+      this.active11 = false;
       switch (num) {
         case 0:
           this.active0 = true;
@@ -559,6 +628,18 @@ export default {
           break;
         case 7:
           this.active7 = true;
+          break;
+        case 8:
+          this.active8 = true;
+          break;
+        case 9:
+          this.active9 = true;
+          break;
+        case 10:
+          this.active10 = true;
+          break;
+        case 11:
+          this.active11 = true;
           break;
       }
     },

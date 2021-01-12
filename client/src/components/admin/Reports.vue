@@ -327,11 +327,15 @@ export default {
     ReportList: [],
     ReportListAux: [],
     itemselCat: [
-      "Investigación",
-      "Tecnología",
-      "Mercadeo",
-      "Medicina",
-      "Educación",
+      "Ambiente",
+      "Enseñanza de Ciencia",
+      "Extensión",
+      "Geociencias",
+      "Materiales y Energía",
+      "Modelos y Teorías",
+      "Salud",
+      "Seguridad Alimentaria",
+      "TIC",
     ],
     itemselSchool: [
       "N/A",
@@ -532,6 +536,10 @@ export default {
         "rgba(156, 39, 176, 1)",
         "rgba(121, 85, 72, 1)",
         "rgba(205, 220, 57, 1)",
+        "rgba(90, 100, 223, 1)",
+        "rgba(132, 93, 167, 1)",
+        "rgba(102, 150, 27, 1)",
+        "rgba(250, 202, 75, 1)",
       ],
       backgroundColor: [
         "rgba(242, 5, 116, 0.2)",
@@ -539,6 +547,10 @@ export default {
         "rgba(156, 39, 176, 0.2)",
         "rgba(121, 85, 72, 0.2)",
         "rgba(205, 220, 57, 0.2)",
+        "rgba(90, 100, 223, 0.2)",
+        "rgba(132, 93, 167, 0.2)",
+        "rgba(102, 150, 27, 0.2)",
+        "rgba(250, 202, 75, 0.2)",
       ],
     },
     servicesChartData: [],
@@ -630,7 +642,7 @@ export default {
       var dd = {
         pageOrientation: "landscape",
         pageMargins: [20, 20, 20, 20],
-        pageSize: 'A4',
+        pageSize: "A4",
         defaultStyle: {
           fontSize: 10,
         },
@@ -829,27 +841,43 @@ export default {
           tecnum = 0,
           mernum = 0,
           mednum = 0,
-          deunum = 0;
+          deunum = 0,
+          modnum = 0,
+          salnum = 0,
+          segnum = 0,
+          tecnonum = 0;
         data.forEach((d) => {
           switch (d.category) {
-            case "Investigación":
+            case "Ambiente":
               invnum++;
               break;
-            case "Tecnología":
+            case "Enseñanza de la Ciencia":
               tecnum++;
               break;
-            case "Mercadeo":
+            case "Extensión":
               mernum++;
               break;
-            case "Medicina":
+            case "Geociencias":
               mednum++;
               break;
-            case "Educación":
+            case "Materiales y Energía":
               deunum++;
+              break;
+            case "Modelos y Teorías":
+              modnum++;
+              break;
+            case "Salud":
+              salnum++;
+              break;
+            case "Seguridad Alimentaria":
+              segnum++;
+              break;
+            case "Tecnologías de la Información y Comunicación":
+              tecnonum++;
               break;
           }
         });
-        this.servicesChartData = [invnum, tecnum, mernum, mednum, deunum];
+        this.servicesChartData = [invnum, tecnum, mernum, mednum, deunum, modnum, salnum, segnum, tecnonum];
         this.loaded2 = true;
       })
       .catch((err) => console.log(err.response.data.error));
