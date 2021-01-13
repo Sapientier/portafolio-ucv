@@ -141,7 +141,8 @@
               activefilter(9);
             "
           >
-            <v-icon left>mdi-book-information-variant</v-icon>Tecnologías de la Información y Comunicación
+            <v-icon left>mdi-laptop</v-icon>Tecnologías de la Información y
+            Comunicación
           </v-chip>
 
           <v-chip
@@ -260,14 +261,16 @@
                   <v-select
                     v-model="schools"
                     :items="itemselSchool"
-                    label="Escuela"
+                    :rules="schoolRules"
+                    label="Escuela*"
                   ></v-select>
                 </v-col>
                 <v-col cols="12" sm="6">
                   <v-select
                     v-model="institutes"
                     :items="itemselInst"
-                    label="Instituto"
+                    :rules="instRules"
+                    label="Instituto*"
                   ></v-select>
                 </v-col>
                 <v-col cols="12" sm="6">
@@ -458,6 +461,8 @@ export default {
     nameRules: [(v) => !!v || "Nombre de servicio es requerida"],
     categoriaRules: [(v) => !!v || "La categoría es requerida"],
     autorRules: [(v) => !!v || "El autor es requerido"],
+    schoolRules: [(v) => v.length > 0 || "La escuela es requerida"],
+    instRules: [(v) => v.length > 0 || "El instituto es requerido"],
   }),
   created() {
     this.getServices();
@@ -560,7 +565,9 @@ export default {
           category: this.categories,
           approve: this.approve,
           email: this.$store.state.user.email,
-          isUpdate: false,
+          isUpdate: 0,
+          institute: this.institutes,
+          school: this.schools,
         });
       } catch (err) {
         this.snack = true;

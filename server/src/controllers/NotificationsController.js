@@ -18,13 +18,18 @@ module.exports = {
             else
                 descripcion = "No aprobado: " + req.body.name;
 
-            if (req.body.isUpdate === true)
+            if (req.body.isUpdate === 1)
                 titulo = "Actualización de Servicio";
-            else
+            else if (req.body.isUpdate === 0)
                 titulo = "Nuevo Servicio";
+            else if (req.body.isUpdate === 2)
+                titulo = "Eliminación de Servicio";
 
             const usersNoti = await User.find({
-                '_id': { $ne: req.body.id }
+                $and: [
+                    { '_id': { $ne: req.body.id } },
+                    { $and: [{ schoolUser: req.body.school }, { instituteUser: req.body.institute }] }
+                ]
             });
 
             for (const element of usersNoti) {
@@ -39,7 +44,7 @@ module.exports = {
                 emailsToNoti: emails,
                 typeNoti: "Service",
                 title: titulo,
-                description: descripcion,
+                descriptionNoti: descripcion,
                 dateNoti: date,
                 owner: req.body.email
             });
@@ -52,16 +57,22 @@ module.exports = {
                 var aux = 0;
                 var correosSubs = "";
 
-                if (req.body.isUpdate === true) {
+                if (req.body.isUpdate === 1) {
                     descripcion = "Servicio actualizado";
                     correosSubs = await Subscriber.find({
                         $or: [{ typeSub: "Todo" }, { typeSub: req.body.serviceId }]
                     });
                 }
-                else {
+                else if (req.body.isUpdate === 0) {
                     descripcion = "Nuevo servicio disponible";
                     correosSubs = await Subscriber.find({
                         typeSub: "Todo"
+                    });
+                }
+                else if (req.body.isUpdate === 2) {
+                    descripcion = "Servicio eliminado";
+                    correosSubs = await Subscriber.find({
+                        $or: [{ typeSub: "Todo" }, { typeSub: req.body.serviceId }]
                     });
                 }
 
@@ -133,8 +144,8 @@ module.exports = {
             if (req.body.title !== '' && req.body.title !== undefined) {
                 query['title'] = { $regex: '.*' + req.body.title + '.*' };
             }
-            
-            if(Object.keys(query).length === 0){
+
+            if (Object.keys(query).length === 0) {
                 notifications = await Notification.find();
             }
             else {

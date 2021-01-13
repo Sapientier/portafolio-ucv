@@ -23,10 +23,12 @@ const ServiceSchema = new Schema({
         type: String
     },
     school: {
-        type: String
+        type: String,
+        required: true
     },
     institute: {
-        type: String
+        type: String,
+        required: true
     },
     userspp: {
         type: String

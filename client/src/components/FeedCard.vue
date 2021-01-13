@@ -129,14 +129,16 @@
                       <v-select
                         v-model="editedItem.school"
                         :items="itemselSchool"
-                        label="Escuela"
+                        :rules="schoolRules"
+                        label="Escuela*"
                       ></v-select>
                     </v-col>
                     <v-col cols="12" sm="6">
                       <v-select
                         v-model="editedItem.institute"
                         :items="itemselInst"
-                        label="Instituto"
+                        :rules="instRules"
+                        label="Instituto*"
                       ></v-select>
                     </v-col>
                     <v-col cols="12" sm="6">
@@ -428,6 +430,8 @@ export default {
     nameRules: [(v) => !!v || "Nombre de servicio es requerida"],
     categoriaRules: [(v) => !!v || "La categoría es requerida"],
     autorRules: [(v) => !!v || "El autor es requerido"],
+    schoolRules: [(v) => v.length > 0 || "La escuela es requerida"],
+    instRules: [(v) => v.length > 0 || "El instituto es requerido"],
   }),
   props: {
     size: {
@@ -461,19 +465,31 @@ export default {
     },
     async deleteval() {
       this.overlay = true;
-      await Services.deleteservices({
-        _id: this.editedItem._id,
-        imageService: this.editedItem.imageService,
-      })
-        .then((response) => {
+      try {
+        await Services.deleteservices({
+          _id: this.editedItem._id,
+          imageService: this.editedItem.imageService,
+        }).then((response) => {
           this.delete();
           this.removeServicios(this.editedItem._id);
-        })
-        .catch((err) => {
-          this.snack = true;
-          this.snackColor = "error";
-          this.snackText = err.response.data.error;
         });
+
+        await NotificationService.insertnotifications({
+          id: this.$store.state.user._id,
+          name: this.editedItem.name,
+          category: this.editedItem.category,
+          approve: this.editedItem.approve,
+          email: this.$store.state.user.email,
+          isUpdate: 2,
+          serviceId: this.editedItem._id,
+          institute: this.editedItem.institute,
+          school: this.editedItem.school,
+        });
+      } catch (err) {
+        this.snack = true;
+        this.snackColor = "error";
+        this.snackText = err.response.data.error;
+      }
 
       this.close();
     },
@@ -511,8 +527,10 @@ export default {
           category: this.editedItem.category,
           approve: this.editedItem.approve,
           email: this.$store.state.user.email,
-          isUpdate: true,
+          isUpdate: 1,
           serviceId: this.editedItem._id,
+          institute: this.editedItem.institute,
+          school: this.editedItem.school,
         });
       } catch (err) {
         this.snack = true;

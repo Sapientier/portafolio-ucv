@@ -25,8 +25,8 @@ module.exports = {
                 isActive: req.body.isActive,
                 dependencies: req.body.dependencies,
                 numNoti: 0,
-                schoolUser: '',
-                instituteUser: '',
+                schoolUser: 'N/A',
+                instituteUser: 'N/A',
                 imageUser: '',
             });
 
@@ -121,8 +121,8 @@ module.exports = {
                 newpath = req.file.path.substring(7);
             }
             const newTask = {
-                school: req.body.school,
-                institute: req.body.institute,
+                schoolUser: req.body.school,
+                instituteUser: req.body.institute,
                 imageUser: newpath
             };
             await User.findByIdAndUpdate(req.body._id, newTask);
