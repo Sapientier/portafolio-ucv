@@ -25,8 +25,8 @@ module.exports = {
                 isActive: req.body.isActive,
                 dependencies: req.body.dependencies,
                 numNoti: 0,
-                schoolUser: 'N/A',
-                instituteUser: 'N/A',
+                schoolUser: '',
+                instituteUser: '',
                 imageUser: '',
             });
 

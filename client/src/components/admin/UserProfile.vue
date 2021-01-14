@@ -306,8 +306,8 @@ export default {
         fd.append("image", this.selectedFile, this.selectedFile.name);
       }
       fd.append("_id", this.$store.state.user._id);
-      fd.append("school", this.escuelas);
-      fd.append("institute", this.institutos);
+      fd.append("school", this.escuelas === "N/A" ? "" : this.escuelas);
+      fd.append("institute", this.institutos === "N/A" ? "" : this.institutos);
       fd.append("imageUser", this.imageUser);
 
       await UsersService.updateuserper(fd)

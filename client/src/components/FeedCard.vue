@@ -57,6 +57,11 @@
                 small
                 dark
                 @click="editItem(value)"
+                v-if="
+                  $store.state.user.schoolUser === value.school ||
+                    $store.state.user.instituteUser === value.institute ||
+                    $store.state.user.dependencies !== 'Profesor/Investigador'
+                "
               >
                 <v-icon>mdi-pencil</v-icon>
               </v-btn>
@@ -67,6 +72,11 @@
                 dark
                 small
                 @click="deleteItem(value)"
+                v-if="
+                  $store.state.user.schoolUser === value.school ||
+                    $store.state.user.instituteUser === value.institute ||
+                    $store.state.user.dependencies !== 'Profesor/Investigador'
+                "
               >
                 <v-icon>mdi-delete</v-icon>
               </v-btn>
@@ -255,7 +265,11 @@
               </v-btn>
               <v-toolbar-title
                 >{{ value.name }} ({{
-                  value.school !== "N/A" ? value.school : value.institute
+                  value.school !== "N/A"
+                    ? value.school
+                    : value.institute !== "N/A"
+                    ? value.institute
+                    : ""
                 }})</v-toolbar-title
               >
               <v-spacer></v-spacer>
