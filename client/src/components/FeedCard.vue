@@ -482,8 +482,12 @@ export default {
           email: this.$store.state.user.email,
           isUpdate: 2,
           serviceId: this.editedItem._id,
-          institute: this.editedItem.institute,
-          school: this.editedItem.school,
+          institute:
+            this.editedItem.institute === "N/A"
+              ? ""
+              : this.editedItem.institute,
+          school:
+            this.editedItem.school === "N/A" ? "" : this.editedItem.school,
         });
       } catch (err) {
         this.snack = true;
@@ -529,8 +533,12 @@ export default {
           email: this.$store.state.user.email,
           isUpdate: 1,
           serviceId: this.editedItem._id,
-          institute: this.editedItem.institute,
-          school: this.editedItem.school,
+          institute:
+            this.editedItem.institute === "N/A"
+              ? ""
+              : this.editedItem.institute,
+          school:
+            this.editedItem.school === "N/A" ? "" : this.editedItem.school,
         });
       } catch (err) {
         this.snack = true;

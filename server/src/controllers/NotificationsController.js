@@ -28,7 +28,7 @@ module.exports = {
             const usersNoti = await User.find({
                 $and: [
                     { '_id': { $ne: req.body.id } },
-                    { $and: [{ schoolUser: req.body.school }, { instituteUser: req.body.institute }] }
+                    { $or: [{ schoolUser: req.body.school }, { instituteUser: req.body.institute }] }
                 ]
             });
 

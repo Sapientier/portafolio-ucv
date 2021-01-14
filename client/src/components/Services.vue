@@ -566,8 +566,8 @@ export default {
           approve: this.approve,
           email: this.$store.state.user.email,
           isUpdate: 0,
-          institute: this.institutes,
-          school: this.schools,
+          institute: this.institutes === "N/A" ? "" : this.institutes,
+          school: this.schools === "N/A" ? "" : this.schools,
         });
       } catch (err) {
         this.snack = true;
