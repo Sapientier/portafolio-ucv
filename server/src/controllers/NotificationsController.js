@@ -27,8 +27,8 @@ module.exports = {
 
             const usersNoti = await User.find({
                 $and: [
-                    { '_id': { $ne: req.body.id } },
-                    { $or: [{ schoolUser: req.body.school }, { instituteUser: req.body.institute }] }
+                    { _id: { $ne: req.body.id } },
+                    { $or: [{ schoolUser: req.body.school }, { instituteUser: req.body.institute }, { dependencies: { $ne: 'Profesor/Investigador'} }] }
                 ]
             });
 
@@ -104,7 +104,7 @@ module.exports = {
     async getnotifications(req, res) {
         try {
             const notifications = await Notification.find({
-                'emailsToNoti': { $in: req.query.email }
+                emailsToNoti: { $in: req.query.email }
             });
 
             res.json(notifications);
