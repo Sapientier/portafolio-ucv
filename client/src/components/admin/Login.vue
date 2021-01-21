@@ -134,7 +134,9 @@ export default {
           password: this.password,
         });
 
-        const responsenoti = await NotificationService.getnotifications(this.email);
+        const responsenoti = await NotificationService.getnotifications(
+          this.email
+        );
 
         this.$store.dispatch("setToken", response.data.token);
         this.$store.dispatch("setUser", response.data.user);

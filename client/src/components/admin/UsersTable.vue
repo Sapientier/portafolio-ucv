@@ -67,7 +67,6 @@
                                 label="Correo"
                                 type="email"
                                 :rules="emailRules"
-                                required
                               ></v-text-field>
                             </v-col>
                             <v-col col="12" sm="6" md="6">
@@ -75,6 +74,7 @@
                                 v-model="editedItem.dependencies"
                                 :items="itemsel"
                                 label="Dependencias"
+                                :rules="depenRules"
                               ></v-select>
                             </v-col>
                             <v-col cols="12" sm="6" md="6">
@@ -175,6 +175,7 @@ export default {
       (v) => !!v || "El correo es requerido",
       (v) => /.+@.+\..+/.test(v) || "El correo debe ser valido",
     ],
+    depenRules: [(v) => v.length > 0 || "La dependencia es requerida"],
     valid: true,
     page: 1,
     pageCount: 0,
@@ -321,6 +322,7 @@ export default {
           this.error = error.response.data.error;
         }
       }
+      this.overlay = false;
     },
     async reset() {
       this.overlay = true;
@@ -332,10 +334,10 @@ export default {
       } catch (error) {
         this.error = error.response.data.error;
       }
+      this.overlay = false;
     },
     //toasts/snackbar messages for actions
     emailInline() {
-      this.overlay = false;
       this.snack = true;
       this.snackColor = "success";
       this.snackText = "Contraseña reiniciada";

@@ -263,7 +263,6 @@ export default {
       this.show3 = false;
       this.dialog = false;
       this.alert = false;
-      this.overlay = false;
       this.resetValidation();
     },
     async checkPassword() {
@@ -297,6 +296,7 @@ export default {
         this.alert = true;
         this.error = error.response.data.error;
       }
+      this.overlay = false;
     },
     async updateUser() {
       this.overlay = true;
@@ -317,10 +317,10 @@ export default {
           this.snackColor = "error";
           this.snackText = err.response.data.error;
         });
+      this.overlay = false;
     },
     //toasts/snackbar messages for actions
     updateInline() {
-      this.overlay = false;
       this.snack = true;
       this.snackColor = "success";
       this.snackText = "Datos actualizados";

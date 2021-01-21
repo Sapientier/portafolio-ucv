@@ -508,7 +508,6 @@ export default {
         this.snackColor = "error";
         this.snackText = err.response.data.error;
       }
-
       this.close();
     },
     async updateService() {

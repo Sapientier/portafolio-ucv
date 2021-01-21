@@ -22,7 +22,8 @@ const UserSchema = new Schema({
         required: true
     },
     dependencies: {
-        type: String
+        type: String,
+        required: true
     },
     schoolUser: {
         type: String
