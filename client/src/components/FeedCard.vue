@@ -553,13 +553,14 @@ export default {
           school:
             this.editedItem.school === "N/A" ? "" : this.editedItem.school,
         });
+
+        this.close();
       } catch (err) {
+        this.overlay = false;
         this.snack = true;
         this.snackColor = "error";
         this.snackText = err.response.data.error;
       }
-
-      this.close();
     },
     async suscribeService() {
       this.overlay = true;

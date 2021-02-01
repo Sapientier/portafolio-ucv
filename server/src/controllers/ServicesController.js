@@ -115,7 +115,9 @@ module.exports = {
     },
     async getuniservicebyname(req, res) {
         try {
-            const services = await Service.find({ name: { $regex: '.*' + req.query.name + '.*' } }).limit(5);
+            const services = await Service.find({ 
+                $or: [{ name: { $regex: '.*' + req.query.name + '.*' }}, { autor: { $regex: '.*' + req.query.name + '.*' }}]
+            }).limit(5);
             res.json(services);
         } catch (err) {
             res.status(500).send({

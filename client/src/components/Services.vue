@@ -513,18 +513,16 @@ export default {
       await Services.getservices()
         .then((response) => {
           for (const servicio of response.data) {
-            if (
-              !servicio.name ||
-              this.servicesnames.find((name) => name.text === servicio.name)
-            )
-              continue;
+            if (!servicio.name && !servicio.autor) continue;
 
             if (!this.$store.state.isUserLoggedIn) {
               if (servicio.approve !== false) {
                 this.servicesnames.push(servicio.name);
+                this.servicesnames.push(servicio.autor);
               }
             } else {
               this.servicesnames.push(servicio.name);
+              this.servicesnames.push(servicio.autor);
             }
           }
 
@@ -569,12 +567,14 @@ export default {
           institute: this.institutes === "N/A" ? "" : this.institutes,
           school: this.schools === "N/A" ? "" : this.schools,
         });
+
+        this.close();
       } catch (err) {
+        this.overlay = false;
         this.snack = true;
         this.snackColor = "error";
         this.snackText = err.response.data.error;
       }
-      this.close();
     },
     resetValidation() {
       this.$refs.form.resetValidation();

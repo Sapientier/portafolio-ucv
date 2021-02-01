@@ -170,7 +170,7 @@ export default {
         this.dialog = true;
       } else {
         this.snackText = "Debe ingresar un correo electrónico";
-        this.snackColor = "error";
+        this.snackColor = "warning";
         this.errorEmail();
         this.valid = false;
       }
