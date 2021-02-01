@@ -460,7 +460,7 @@ export default {
     ],
     nameRules: [(v) => !!v || "Nombre de servicio es requerida"],
     categoriaRules: [(v) => !!v || "La categoría es requerida"],
-    autorRules: [(v) => !!v || "El autor es requerido"],
+    autorRules: [(v) => !!v || "El coordinador es requerido"],
     schoolRules: [(v) => !!v || "La escuela es requerida"],
     instRules: [(v) => !!v || "El instituto es requerido"],
   }),

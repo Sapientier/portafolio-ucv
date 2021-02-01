@@ -443,7 +443,7 @@ export default {
     ],
     nameRules: [(v) => !!v || "Nombre de servicio es requerida"],
     categoriaRules: [(v) => !!v || "La categoría es requerida"],
-    autorRules: [(v) => !!v || "El autor es requerido"],
+    autorRules: [(v) => !!v || "El coordinador es requerido"],
     schoolRules: [(v) => v.length > 0 || "La escuela es requerida"],
     instRules: [(v) => v.length > 0 || "El instituto es requerido"],
   }),
