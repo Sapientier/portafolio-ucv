@@ -8,9 +8,19 @@
             Venezuela <strong>(UCV)</strong>. Facultad de Ciencias.
           </v-col>
         </v-row>
-        <base-btn class="ml-6 ml-md-0" square title="Ir al tope" @click="$vuetify.goTo(0)">
-          <v-icon>mdi-chevron-up</v-icon>
-        </base-btn>
+        <v-tooltip top>
+          <template v-slot:activator="{ on }">
+            <base-btn
+              class="ml-6 ml-md-0"
+              square
+              @click="$vuetify.goTo(0)"
+              v-on="on"
+            >
+              <v-icon>mdi-chevron-up</v-icon>
+            </base-btn>
+          </template>
+          <span>Ir al tope</span>
+        </v-tooltip>
       </v-row>
     </v-container>
   </v-footer>
