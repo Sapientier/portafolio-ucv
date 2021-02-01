@@ -7,19 +7,24 @@ module.exports = {
         const date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
         var descripcionMail = "";
         var typeSub = "";
+        var catSub = [];
+        var isSuscribed = false;
+        var correoaux = {};
 
         try {
-            if (req.body.typeSub === "Todo") {
-                descripcionMail = "Usted se encuentra suscrito a todos los servicios de la Facultad de Ciencias."
-                typeSub = req.body.typeSub
-                const correoux = await Subscriber.findOne({
+            if (req.body.typeSub !== "Unique") {
+                let categories = "";
+                typeSub = req.body.typeSub;
+                catSub = req.body.catSub;
+                catSub.forEach(cat => categories === "" ? categories = cat : categories = categories + ", " + cat);
+                descripcionMail = "Usted se encuentra suscrito a los servicios de la Facultad de Ciencias en las siguientes categorías: " + categories;
+
+                correoaux = await Subscriber.findOne({
                     emailSub: req.body.emailSub, typeSub: typeSub
                 });
 
-                if (correoux) {
-                    return res.status(403).send({
-                        error: 'Ha ocurrido un error, el correo electronico ingresado ya esta suscrito a todos los servicios.'
-                    })
+                if (correoaux) {
+                    isSuscribed = true;
                 }
                 else {
                     const correo = await Subscriber.findOne({
@@ -41,7 +46,7 @@ module.exports = {
 
                 if (correoaux) {
                     return res.status(403).send({
-                        error: 'Ha ocurrido un error, el correo electronico ingresado ya esta suscrito a todos los servicios.'
+                        error: 'Ha ocurrido un error, el correo electronico ingresado ya esta suscrito a esta categoría de servicios.'
                     })
                 }
                 else {
@@ -63,17 +68,39 @@ module.exports = {
                 html: '<html><body>' + descripcionMail + '<br><br> Correo automático. Por favor no responder.</body></html>'
             };
 
-            const task = new Subscriber({
-                emailSub: req.body.emailSub,
-                typeSub: typeSub,
-                dateSub: date
-            });
-
-            const user = await task.save();
+            if (isSuscribed) {
+                const task = {
+                    dateSub: date,
+                    catSub: catSub
+                };
+                const user = await Subscriber.findByIdAndUpdate(correoaux._id, task);
+                res.json(user.toJSON());
+            }
+            else {
+                if (req.body.typeSub !== "Unique") {
+                    const task = new Subscriber({
+                        emailSub: req.body.emailSub,
+                        typeSub: typeSub,
+                        dateSub: date,
+                        catSub: catSub
+                    });
+                    const user = await task.save();
+                    res.json(user.toJSON());
+                }
+                else {
+                    const task = new Subscriber({
+                        emailSub: req.body.emailSub,
+                        typeSub: typeSub,
+                        dateSub: date,
+                        catSub: []
+                    });
+                    const user = await task.save();
+                    res.json(user.toJSON());
+                }
+            }
 
             Mailer.sendMails(mailOptions);
 
-            res.json(user.toJSON());
         } catch (err) {
             res.status(500).send({
                 error: 'Ha ocurrido un error al suscribirse'

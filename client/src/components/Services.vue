@@ -252,7 +252,7 @@
                 <v-col cols="12" sm="6">
                   <v-text-field
                     v-model="autor"
-                    label="Autor*"
+                    label="Coordinador*"
                     :rules="autorRules"
                     required
                   ></v-text-field>
@@ -461,8 +461,8 @@ export default {
     nameRules: [(v) => !!v || "Nombre de servicio es requerida"],
     categoriaRules: [(v) => !!v || "La categoría es requerida"],
     autorRules: [(v) => !!v || "El autor es requerido"],
-    schoolRules: [(v) => v.length > 0 || "La escuela es requerida"],
-    instRules: [(v) => v.length > 0 || "El instituto es requerido"],
+    schoolRules: [(v) => !!v || "La escuela es requerida"],
+    instRules: [(v) => !!v || "El instituto es requerido"],
   }),
   created() {
     this.getServices();

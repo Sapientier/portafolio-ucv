@@ -27,7 +27,7 @@
                   class="ma-0"
                   color="secondary"
                   style="height: 48px"
-                  @click="suscribir"
+                  @click="showSubscribe()"
                   >Suscribirse</v-btn
                 >
                 <v-overlay :value="overlay">
@@ -36,17 +36,49 @@
                     size="64"
                   ></v-progress-circular>
                 </v-overlay>
-                <v-dialog v-model="dialog" max-width="350">
+                <v-dialog v-model="dialog" max-width="450" persistent>
                   <v-card>
-                    <v-card-title class="headline">{{
-                      dialogTitle
-                    }}</v-card-title>
-                    <v-card-text>{{ dialogText }}</v-card-text>
+                    <v-card-title class="headline">
+                      Suscripción
+                    </v-card-title>
+                    <v-card-text>
+                      <v-select
+                        v-model="categories"
+                        :items="itemselCat"
+                        label="Categorías"
+                        multiple
+                        chips
+                        hint="Seleccione las categorías a suscribir"
+                        persistent-hint
+                        :rules="categoriaRules"
+                      >
+                        <template v-slot:prepend-item>
+                          <v-list-item ripple @click="toggle">
+                            <v-list-item-action>
+                              <v-icon
+                                :color="
+                                  categories.length > 0 ? 'indigo darken-4' : ''
+                                "
+                              >
+                                {{ icon }}
+                              </v-icon>
+                            </v-list-item-action>
+                            <v-list-item-content>
+                              <v-list-item-title>
+                                Seleccionar todo
+                              </v-list-item-title>
+                            </v-list-item-content>
+                          </v-list-item>
+                          <v-divider class="mt-2"></v-divider>
+                        </template>
+                      </v-select>
+                    </v-card-text>
                     <v-card-actions>
                       <v-spacer></v-spacer>
-                      <v-btn :color="buttonColor" text @click="dialog = false"
-                        >Aceptar</v-btn
-                      >
+                      <v-btn text @click="close()">Cerrar</v-btn>
+                      <v-btn color="primary" text @click="suscribir()">
+                        Aceptar
+                      </v-btn>
                     </v-card-actions>
                   </v-card>
                 </v-dialog>
@@ -114,60 +146,98 @@ export default {
     snack: false,
     snackColor: "",
     snackText: "",
-    buttonColor: "",
-    errorIndex: -1,
+    categories: [],
     emailRules: [
       (v) => !!v || "El correo es requerido",
       (v) => /.+@.+\..+/.test(v) || "El correo debe ser valido",
     ],
+    categoriaRules: [(v) => v.length > 0 || "La categoría es requerida"],
+    itemselCat: [
+      "Ambiente",
+      "Enseñanza de la Ciencia",
+      "Extensión",
+      "Geociencias",
+      "Materiales y Energía",
+      "Modelos y Teorías",
+      "Salud",
+      "Seguridad Alimentaria",
+      "Tecnologías de la Información y Comunicación",
+    ],
   }),
   methods: {
-    async suscribir() {
+    showSubscribe() {
       if (this.emailSub !== "") {
-        try {
-          this.overlay = true;
-          const response = await SuscribeService.suscribe({
-            emailSub: this.emailSub,
-            typeSub: "Todo",
-          }).then((response) => {
-            this.buttonColor = "green darken-1";
-            this.errorIndex = -1;
-          });
-        } catch (error) {
-          this.buttonColor = "red darken-1";
-          this.errorIndex = 0;
-        }
-        this.close();
+        this.dialog = true;
       } else {
+        this.snackText = "Debe ingresar un correo electrónico";
+        this.snackColor = "error";
         this.errorEmail();
         this.valid = false;
       }
     },
+    async suscribir() {
+      this.overlay = true;
+      if (this.categories.length > 0) {
+        try {
+          await SuscribeService.suscribe({
+            emailSub: this.emailSub,
+            typeSub: "Todo",
+            catSub: this.categories,
+          }).then(() => {
+            this.subscribeSuccess();
+          });
+        } catch (error) {
+          this.snackText = "Por favor ingrese otro correo electrónico";
+          this.snackColor = "error";
+          this.errorEmail();
+        }
+        this.close();
+      }
+      else {
+          this.snackText = "Debe seleccionar una categoría";
+          this.snackColor = "warning";
+          this.errorEmail();
+      }
+    },
+    toggle() {
+      this.$nextTick(() => {
+        if (this.likesAllCategories) {
+          this.categories = [];
+        } else {
+          this.categories = this.itemselCat.slice();
+        }
+      });
+    },
     close() {
       this.overlay = false;
-      this.dialog = true;
-      this.email = "";
+      this.dialog = false;
+      this.emailSub = "";
+      this.categories = [];
       this.resetValidation();
     },
     resetValidation() {
       this.$refs.form.resetValidation();
     },
+    subscribeSuccess() {
+      this.snack = true;
+      this.snackColor = "success";
+      this.snackText = "Suscripción exitosa";
+    },
     errorEmail() {
       this.snack = true;
-      this.snackColor = "error";
-      this.snackText = "Debe ingresar un correo electrónico";
     },
   },
   computed: {
-    dialogTitle() {
-      return this.errorIndex === -1
-        ? "Suscripción exitosa"
-        : "Ha ocurrido un error";
+    likesAllCategories() {
+      return this.categories.length === this.itemselCat.length;
     },
-    dialogText() {
-      return this.errorIndex === -1
-        ? "Se le envió un correo electrónico de verificación"
-        : "Por favor ingrese otro correo electrónico";
+    likesSomeCategories() {
+      return this.categories.length > 0 && !this.likesAllCategories;
+    },
+    icon() {
+      if (this.likesAllCategories) return "mdi-close-box";
+      if (this.likesSomeCategories) return "mdi-minus-box";
+      return "mdi-checkbox-blank-outline";
     },
   },
 };

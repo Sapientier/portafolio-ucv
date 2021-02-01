@@ -421,7 +421,7 @@ export default {
           {
             parentText: "Servicios",
             value: "autor",
-            text: "Autor",
+            text: "Coordinador",
             type: "String",
           },
           {

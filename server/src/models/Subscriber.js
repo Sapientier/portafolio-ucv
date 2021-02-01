@@ -14,6 +14,9 @@ const SubscriberSchema = new Schema({
         type: Date,
         required: true
     },
+    catSub: [{
+        type: String,
+    }],
 });
 
 module.exports = mongoose.model('Subscriber', SubscriberSchema);

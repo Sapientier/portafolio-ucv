@@ -60,19 +60,19 @@ module.exports = {
                 if (req.body.isUpdate === 1) {
                     descripcion = "Servicio actualizado";
                     correosSubs = await Subscriber.find({
-                        $or: [{ typeSub: "Todo" }, { typeSub: req.body.serviceId }]
+                        $or: [{ catSub: { $in: req.body.category }}, { typeSub: req.body.serviceId }]
                     });
                 }
                 else if (req.body.isUpdate === 0) {
                     descripcion = "Nuevo servicio disponible";
                     correosSubs = await Subscriber.find({
-                        typeSub: "Todo"
+                        catSub: { $in: req.body.category } 
                     });
                 }
                 else if (req.body.isUpdate === 2) {
                     descripcion = "Servicio eliminado";
                     correosSubs = await Subscriber.find({
-                        $or: [{ typeSub: "Todo" }, { typeSub: req.body.serviceId }]
+                        $or: [{ catSub: { $in: req.body.category }}, { typeSub: req.body.serviceId }]
                     });
                 }
 
@@ -116,7 +116,7 @@ module.exports = {
     },
     async deletenotifications(req, res) {
         try {
-            await Notification.updateMany({}, {
+            await Notification.updateMany({
                 $pull: { emailsToNoti: { $in: req.body.email } },
             });
 

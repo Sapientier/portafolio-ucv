@@ -130,7 +130,7 @@
                     <v-col cols="12" sm="6">
                       <v-text-field
                         v-model="editedItem.autor"
-                        label="Autor*"
+                        label="Coordinador*"
                         :rules="autorRules"
                         required
                       ></v-text-field>
