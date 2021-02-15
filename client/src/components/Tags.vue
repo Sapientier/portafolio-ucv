@@ -36,6 +36,11 @@ export default {
         link: "http://www.ciens.ucv.ve/ciens/",
       },
       {
+        icon: "mdi-calendar-multiple-check",
+        text: "Gestión de Eventos",
+        link: "",
+      },
+      {
         icon: "mdi-at",
         text: "Webmail",
         link: "https://correo.ciens.ucv.ve/mail/",
