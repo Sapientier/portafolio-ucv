@@ -8,6 +8,13 @@ export default {
             }
         })
     },
+    getNotiNumbyUser(values) {
+        return Api().get('getNotiNumbyUser', {
+            params: {
+                email: values
+            }
+        })
+    },
     insertnotifications(values) {
         return Api().post('insertnotifications', values)
     },
@@ -16,5 +23,5 @@ export default {
     },
     getreportsnoti(values) {
         return Api().post('getreportsnoti', values)
-    }
+    },
 }

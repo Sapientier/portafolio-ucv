@@ -158,5 +158,18 @@ module.exports = {
                 error: 'Ha ocurrido un error al buscar las notificaciones'
             })
         }
-    }
+    },
+    async getNotiNumbyUser (req, res) {
+        try {
+            const numNoti = await User.findOne({
+                'email': req.query.email
+            }, 'numNoti');
+
+            res.send(numNoti);
+        } catch (err) {
+            res.status(500).send({
+                error: 'Ha ocurrido un error al obtener usuario'
+            })
+        }
+    },
 }

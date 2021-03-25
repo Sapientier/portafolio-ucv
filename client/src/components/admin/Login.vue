@@ -141,6 +141,7 @@ export default {
         this.$store.dispatch("setToken", response.data.token);
         this.$store.dispatch("setUser", response.data.user);
         this.$store.dispatch("setNoti", responsenoti.data);
+        this.$store.dispatch("setUserNumNoti", response.data.user.numNoti);
         this.$router.push({
           name: "UserProfile",
         });

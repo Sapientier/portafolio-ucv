@@ -13,6 +13,7 @@ export default new Vuex.Store({
         user: null,
         isUserLoggedIn: false,
         notificaciones: [],
+        numNoti: 0,
     },
     getters: {
         services: (state) => state.servicios,
@@ -30,7 +31,7 @@ export default new Vuex.Store({
         setUser: (state, user) => (state.user = user),
         setNoti: (state, notificaciones) => (state.notificaciones = notificaciones),
         cleanNoti: (state) => (state.notificaciones = []),
-        setUserNumNoti: (state, numnoti) => (state.user.numNoti = numnoti),
+        setUserNumNoti: (state, numnoti) => (state.numNoti = numnoti),
         getServicios: (state, servicios) => (state.servicios = servicios),
         setServicios: (state, servicios) => state.servicios.unshift(servicios),
         removeServicios: (state, id) => {

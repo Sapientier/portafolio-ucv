@@ -7,7 +7,7 @@
     </v-row>
     <v-row justify="center">
       <v-col xs="12" md="4" cols="12">
-        <v-card>
+        <v-card style="height: 272px">
           <v-avatar class="mx-auto d-block" size="130">
             <v-img
               :src="

@@ -52,15 +52,25 @@
         </v-list-item>
       </v-list>
       <v-bottom-navigation absolute color="indigo">
-        <v-btn @click="navigateToExt('https://www.twitter.com/Noticienciasucv')">
+        <v-btn
+          @click="navigateToExt('https://www.twitter.com/Noticienciasucv')"
+        >
           <v-icon>mdi-twitter</v-icon>
         </v-btn>
 
-        <v-btn @click="navigateToExt('https://www.instagram.com/noticienciasucv')">
+        <v-btn
+          @click="navigateToExt('https://www.instagram.com/noticienciasucv')"
+        >
           <v-icon>mdi-instagram</v-icon>
         </v-btn>
 
-        <v-btn @click="navigateToExt('https://www.facebook.com/coordinaciondeextension.ucv')">
+        <v-btn
+          @click="
+            navigateToExt(
+              'https://www.facebook.com/coordinaciondeextension.ucv'
+            )
+          "
+        >
           <v-icon>mdi-facebook</v-icon>
         </v-btn>
       </v-bottom-navigation>
@@ -114,11 +124,9 @@
               >
                 <v-badge
                   overlap
-                  :value="$store.state.user.numNoti"
+                  :value="$store.state.numNoti"
                   :content="
-                    $store.state.user.numNoti > 9
-                      ? '9+'
-                      : $store.state.user.numNoti
+                    $store.state.numNoti > 9 ? '9+' : $store.state.numNoti
                   "
                 >
                   <v-icon>mdi-bell</v-icon>
@@ -209,7 +217,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters } from "vuex";
 import UsersService from "@/services/UsersService";
 import NotificationService from "@/services/NotificationService";
 
@@ -260,9 +268,28 @@ export default {
         })
         .catch((err) => {});
     },
+    checkNoti() {
+      setInterval(async () => {
+        if (this.$store.state.isUserLoggedIn) {
+          const responsenoti = await NotificationService.getnotifications(
+            this.$store.state.user.email
+          );
+
+          const response = await NotificationService.getNotiNumbyUser(
+            this.$store.state.user.email
+          );
+
+          this.$store.dispatch("setUserNumNoti", response.data.numNoti);
+          this.$store.dispatch("setNoti", responsenoti.data);
+        }
+      }, 60000);
+    },
   },
   computed: {
     ...mapGetters(["notifications"]),
+  },
+  created() {
+    this.checkNoti();
   },
   data: () => ({
     drawer: null,

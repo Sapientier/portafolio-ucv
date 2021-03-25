@@ -61,6 +61,9 @@ module.exports = (app) => {
         app.get('/getuserper',
             UsersController.getuserper
         ),
+        app.get('/getNotiNumbyUser',
+            NotificationsController.getNotiNumbyUser
+        ),
         app.post('/getuserpass',
             UsersController.getuserpass
         ),
@@ -124,4 +127,4 @@ module.exports = (app) => {
         app.post('/getreportsuser',
             UsersController.getreportsuser
         )
-}   
+}
