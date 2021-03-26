@@ -311,7 +311,17 @@ export default {
       fd.append("imageUser", this.imageUser);
 
       await UsersService.updateuserper(fd)
-        .then((response) => this.updateInline())
+        .then((response) => {
+          this.$store.dispatch(
+            "setschoolUser",
+            this.escuelas === "N/A" ? "" : this.escuelas
+          );
+          this.$store.dispatch(
+            "setinstituteUser",
+            this.institutos === "N/A" ? "" : this.institutos
+          );
+          this.updateInline();
+        })
         .catch((err) => {
           this.snack = true;
           this.snackColor = "error";

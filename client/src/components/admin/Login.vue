@@ -142,6 +142,8 @@ export default {
         this.$store.dispatch("setUser", response.data.user);
         this.$store.dispatch("setNoti", responsenoti.data);
         this.$store.dispatch("setUserNumNoti", response.data.user.numNoti);
+        this.$store.dispatch("setschoolUser", response.data.user.schoolUser);
+        this.$store.dispatch("setinstituteUser", response.data.user.instituteUser);
         this.$router.push({
           name: "UserProfile",
         });

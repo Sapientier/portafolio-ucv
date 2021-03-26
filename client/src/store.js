@@ -14,6 +14,8 @@ export default new Vuex.Store({
         isUserLoggedIn: false,
         notificaciones: [],
         numNoti: 0,
+        schoolUser: "",
+        instituteUser: "",
     },
     getters: {
         services: (state) => state.servicios,
@@ -32,6 +34,8 @@ export default new Vuex.Store({
         setNoti: (state, notificaciones) => (state.notificaciones = notificaciones),
         cleanNoti: (state) => (state.notificaciones = []),
         setUserNumNoti: (state, numnoti) => (state.numNoti = numnoti),
+        setschoolUser: (state, school) => (state.schoolUser = school),
+        setinstituteUser: (state, institute) => (state.instituteUser = institute),
         getServicios: (state, servicios) => (state.servicios = servicios),
         setServicios: (state, servicios) => state.servicios.unshift(servicios),
         removeServicios: (state, id) => {
@@ -66,6 +70,12 @@ export default new Vuex.Store({
         },
         setUserNumNoti({ commit }, numnoti) {
             commit("setUserNumNoti", numnoti);
+        },
+        setschoolUser({ commit }, school) {
+            commit("setschoolUser", school);
+        },
+        setinstituteUser({ commit }, institute) {
+            commit("setinstituteUser", institute);
         },
         setServiciosAll({ commit }, values) {
             commit("getServicios", values);

@@ -58,8 +58,8 @@
                 dark
                 @click="editItem(value)"
                 v-if="
-                  $store.state.user.schoolUser === value.school ||
-                    $store.state.user.instituteUser === value.institute ||
+                  $store.state.schoolUser === value.school ||
+                    $store.state.instituteUser === value.institute ||
                     $store.state.user.dependencies !== 'Profesor/Investigador'
                 "
               >
@@ -73,8 +73,8 @@
                 small
                 @click="deleteItem(value)"
                 v-if="
-                  $store.state.user.schoolUser === value.school ||
-                    $store.state.user.instituteUser === value.institute ||
+                  $store.state.schoolUser === value.school ||
+                    $store.state.instituteUser === value.institute ||
                     $store.state.user.dependencies !== 'Profesor/Investigador'
                 "
               >
