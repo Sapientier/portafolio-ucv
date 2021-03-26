@@ -73,7 +73,17 @@ module.exports = {
             from: '"Portafolio Ciencias" <portafolioucv@gmail.com>',
             to: req.body.email,
             subject: 'Reinicio exitoso',
-            html: body
+            html: body,
+            attachments: [{
+                filename: 'UCV.png',
+                path: 'src/templates/UCV.png',
+                cid: 'UCV@portafolio.app'
+            },
+            {
+                filename: 'ciencia.png',
+                path: 'src/templates/ciencia.png',
+                cid: 'ciencia@portafolio.app'
+            }]
         };
 
         var salt = bcrypt.genSaltSync(SALT_WORK_FACTOR);

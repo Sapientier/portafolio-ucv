@@ -358,7 +358,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapActions } from "vuex";
 import Services from "@/services/Services";
 import NotificationService from "@/services/NotificationService";
 import SuscribeService from "@/services/SuscribeService";
