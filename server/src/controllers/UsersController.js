@@ -3,18 +3,32 @@ const generatePassword = require('password-generator');
 const Mailer = require('../controllers/MailController');
 const Promise = require('bluebird');
 const bcrypt = Promise.promisifyAll(require('bcrypt'));
-const fs = require('fs')
+const fs = require('fs');
 const SALT_WORK_FACTOR = 8;
+
+function setEmailContent(Title, Content, htmlText) {
+    let finalText = htmlText;
+    finalText = htmlText.replace("{{EmailSubject}}", Title);
+    finalText = finalText.replace("{{Content}}", Content);
+
+    return finalText;
+}
 
 module.exports = {
     async insertusers(req, res) {
         var password = generatePassword(12, false);
 
+        var descripcionMail = 'Su usuario es: <b>' + req.body.email + '</b> y su contraseña es: <b>' + password + '</b>';
+
+        var contents = fs.readFileSync('./src/templates/communications.html', 'utf8');
+
+        var body = setEmailContent("Creación de usuario", descripcionMail, contents);
+
         var mailOptions = {
             from: '"Portafolio Ciencias" <portafolioucv@gmail.com>',
             to: req.body.email,
-            subject: 'Creación de usuario',
-            html: '<html><body>Su usuario es: <b>' + req.body.email + '</b><br>Su contraseña es: <b>' + password + '</b><br><br> Correo automático. Por favor no responder.</body></html>'
+            subject: 'Creación exitosa',
+            html: body
         };
 
         try {
@@ -105,13 +119,13 @@ module.exports = {
             const user = await User.findOne({
                 '_id': req.body._id
             });
-        
+
             if (req.file === undefined) {
                 newpath = user.imageUser;
             }
             else {
                 const newpathdel = "public/" + user.imageUser;
-               
+
                 fs.unlink(newpathdel, (err) => {
                     if (err) {
                         console.error(err)
@@ -175,11 +189,17 @@ module.exports = {
     async resetpass(req, res) {
         var password = generatePassword(12, false);
 
+        var descripcionMail = 'Su nueva contraseña es: <b>' + password + '</b>';
+
+        var contents = fs.readFileSync('./src/templates/communications.html', 'utf8');
+
+        var body = setEmailContent("Reinicio de contraseña", descripcionMail, contents);
+
         var mailOptions = {
             from: '"Portafolio Ciencias" <portafolioucv@gmail.com>',
             to: req.body.email,
-            subject: 'Reinicio de contraseña',
-            html: '<html><body>Su nueva contraseña es: <b>' + password + '</b><br><br> Correo automático. Por favor no responder.</body></html>'
+            subject: 'Reinicio exitoso',
+            html: body
         };
 
         var salt = bcrypt.genSaltSync(SALT_WORK_FACTOR);
@@ -192,7 +212,7 @@ module.exports = {
             await User.findByIdAndUpdate(req.body._id, newTask);
 
             Mailer.sendMails(mailOptions);
-            
+
             res.json("Actualizado con exito");
         } catch (err) {
             res.status(500).send({
@@ -223,8 +243,8 @@ module.exports = {
             if (req.body.schoolUser !== '' && req.body.schoolUser !== undefined) {
                 query['schoolUser'] = req.body.schoolUser;
             }
-            
-            if(Object.keys(query).length === 0){
+
+            if (Object.keys(query).length === 0) {
                 notifications = await User.find();
             }
             else {

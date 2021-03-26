@@ -5,7 +5,16 @@ const Mailer = require('../controllers/MailController');
 const Promise = require('bluebird');
 const bcrypt = Promise.promisifyAll(require('bcrypt'));
 const generatePassword = require('password-generator');
+const fs = require('fs');
 const SALT_WORK_FACTOR = 8;
+
+function setEmailContent(Title, Content, htmlText) {
+    let finalText = htmlText;
+    finalText = htmlText.replace("{{EmailSubject}}", Title);
+    finalText = finalText.replace("{{Content}}", Content);
+
+    return finalText;
+}
 
 function jwtSignUser (user) {
     return jwt.sign(user, config.authentication.jwtSecret, {
@@ -54,11 +63,17 @@ module.exports = {
     async resetpassLogin(req, res) {
         var password = generatePassword(12, false);
 
+        var descripcionMail = 'Su nueva contraseña es: <b>' + password + '</b>';
+
+        var contents = fs.readFileSync('./src/templates/communications.html', 'utf8');
+
+        var body = setEmailContent("Reinicio de contraseña", descripcionMail, contents);
+
         var mailOptions = {
             from: '"Portafolio Ciencias" <portafolioucv@gmail.com>',
             to: req.body.email,
-            subject: 'Reinicio de contraseña',
-            html: '<html><body>Su nueva contraseña es: <b>' + password + '</b><br><br> Correo automático. Por favor no responder.</body></html>'
+            subject: 'Reinicio exitoso',
+            html: body
         };
 
         var salt = bcrypt.genSaltSync(SALT_WORK_FACTOR);

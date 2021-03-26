@@ -2,7 +2,16 @@ const Notification = require('../models/Notification');
 const Subscriber = require('../models/Subscriber');
 const User = require('../models/User');
 const Mailer = require('../controllers/MailController');
+const fs = require('fs');
 var moment = require('moment');
+
+function setEmailContent(Title, Content, htmlText) {
+    let finalText = htmlText;
+    finalText = htmlText.replace("{{EmailSubject}}", Title);
+    finalText = finalText.replace("{{Content}}", Content);
+
+    return finalText;
+}
 
 module.exports = {
     async insertnotifications(req, res) {
@@ -28,7 +37,7 @@ module.exports = {
             const usersNoti = await User.find({
                 $and: [
                     { _id: { $ne: req.body.id } },
-                    { $or: [{ schoolUser: req.body.school }, { instituteUser: req.body.institute }, { dependencies: { $ne: 'Profesor/Investigador'} }] }
+                    { $or: [{ schoolUser: req.body.school }, { instituteUser: req.body.institute }, { dependencies: { $ne: 'Profesor/Investigador' } }] }
                 ]
             });
 
@@ -60,19 +69,19 @@ module.exports = {
                 if (req.body.isUpdate === 1) {
                     descripcion = "Servicio actualizado";
                     correosSubs = await Subscriber.find({
-                        $or: [{ catSub: { $in: req.body.category }}, { typeSub: req.body.serviceId }]
+                        $or: [{ catSub: { $in: req.body.category } }, { typeSub: req.body.serviceId }]
                     });
                 }
                 else if (req.body.isUpdate === 0) {
                     descripcion = "Nuevo servicio disponible";
                     correosSubs = await Subscriber.find({
-                        catSub: { $in: req.body.category } 
+                        catSub: { $in: req.body.category }
                     });
                 }
                 else if (req.body.isUpdate === 2) {
                     descripcion = "Servicio eliminado";
                     correosSubs = await Subscriber.find({
-                        $or: [{ catSub: { $in: req.body.category }}, { typeSub: req.body.serviceId }]
+                        $or: [{ catSub: { $in: req.body.category } }, { typeSub: req.body.serviceId }]
                     });
                 }
 
@@ -86,11 +95,17 @@ module.exports = {
                     }
                 }
 
+                var descripcionMail = 'Servicio <b>' + req.body.name + '</b> en la categoría <b>' + req.body.category + '</b>';
+
+                var contents = fs.readFileSync('./src/templates/communications.html', 'utf8');
+
+                var body = setEmailContent(descripcion, descripcionMail, contents);
+
                 var mailOptions = {
                     from: '"Portafolio Ciencias" <portafolioucv@gmail.com>',
                     to: emailsSubs,
-                    subject: descripcion,
-                    html: '<html><body>Servicio <b>' + req.body.name + '</b> en la categoría <b>' + req.body.category + '</b>.<br><br> Correo automático. Por favor no responder.</body></html>'
+                    subject: 'Noticia de servicios',
+                    html: body
                 };
 
                 Mailer.sendMails(mailOptions);
@@ -159,7 +174,7 @@ module.exports = {
             })
         }
     },
-    async getNotiNumbyUser (req, res) {
+    async getNotiNumbyUser(req, res) {
         try {
             const numNoti = await User.findOne({
                 'email': req.query.email

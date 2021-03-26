@@ -1,6 +1,15 @@
 const Subscriber = require('../models/Subscriber');
 const Mailer = require('../controllers/MailController');
 var moment = require('moment');
+var fs = require('fs');
+
+function setEmailContent(Title, Content, htmlText) {
+    let finalText = htmlText;
+    finalText = htmlText.replace("{{EmailSubject}}", Title);
+    finalText = finalText.replace("{{Content}}", Content);
+
+    return finalText;
+}
 
 module.exports = {
     async suscribeservices(req, res) {
@@ -17,7 +26,7 @@ module.exports = {
                 typeSub = req.body.typeSub;
                 catSub = req.body.catSub;
                 catSub.forEach(cat => categories === "" ? categories = cat : categories = categories + ", " + cat);
-                descripcionMail = "Usted se encuentra suscrito a los servicios de la Facultad de Ciencias en las siguientes categorías: " + categories;
+                descripcionMail = "Usted se encuentra suscrito a los servicios de la Facultad de Ciencias en las siguientes categorías: <b>" + categories + "</b>";
 
                 correoaux = await Subscriber.findOne({
                     emailSub: req.body.emailSub, typeSub: typeSub
@@ -61,11 +70,15 @@ module.exports = {
                 }
             }
 
+            var contents = fs.readFileSync('./src/templates/communications.html', 'utf8');
+
+            var body = setEmailContent("Suscripción por Categorías", descripcionMail, contents);
+
             var mailOptions = {
                 from: '"Portafolio Ciencias" <portafolioucv@gmail.com>',
                 to: req.body.emailSub,
-                subject: 'Suscripción realizada',
-                html: '<html><body>' + descripcionMail + '<br><br> Correo automático. Por favor no responder.</body></html>'
+                subject: 'Suscripción exitosa',
+                html: body
             };
 
             if (isSuscribed) {

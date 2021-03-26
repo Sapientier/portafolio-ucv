@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta name="x-apple-disable-message-reformatting" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta content="telephone=no" name="format-detection" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      p,
+      span {
+        font-family: "Roboto", sans-serif;
+        color: rgba(0, 0, 0, 0.87);
+        font-size: 14px;
+      }
+    </style>
+  </head>
+
+  <body style="height: 800px; display: initial">
+    <!-- Email body -->
+    <table
+      id="emailBody"
+      width="100%"
+      border="0"
+      cellspacing="0"
+      cellpadding="0"
+      style="background: #e5e5e5 !important"
+    >
+      <tr>
+        <td align="center">
+          <!-- Email header -->
+          <table
+            id="emailHeader"
+            style="
+              background-color: #3f51b5;
+              padding: 40px 30px;
+              width: 600px;
+              margin: 0 auto;
+            "
+          >
+            <tr id="emailLogo" style="vertical-align: baseline">
+              <td
+                style="
+                  color: #fff;
+                  font-family: 'Roboto', sans-serif;
+                  font-weight: bold;
+                  font-size: 16px;
+                  text-align: left;
+                  vertical-align: middle;
+                "
+              >
+                Portafolio Digital Ciencias
+              </td>
+
+              <td
+                id="emailTitle"
+                style="
+                  color: #fff;
+                  font-family: 'Roboto', sans-serif;
+                  font-weight: bold;
+                  font-size: 16px;
+                  text-align: left;
+                  vertical-align: middle;
+                  padding-left: 100px;
+                "
+              >
+                {{EmailSubject}}
+              </td>
+            </tr>
+          </table>
+
+          <div id="emailContent" style="width: 600px; margin: 0 auto">
+            <div
+              style="
+                padding: 50px 30px 5px;
+                background-color: #fff;
+                text-align: left;
+              "
+            >
+              <div
+                id="emailActionContent"
+                style="font-size: 14px; font-family: 'Roboto', sans-serif"
+              >
+                {{Content}}.
+              </div>
+
+              <p id="emailPosdata" style="margin: 25px 0">
+                <span style="font-weight: bold"
+                  >Correo automático. Por favor no responder.</span
+                >
+              </p>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
