@@ -1,13 +1,13 @@
 <template>
-  <v-card tile flat v-bind="$attrs" v-on="$listeners">
-    <slot />
-  </v-card>
+    <v-card tile flat v-bind="$attrs" v-on="$listeners">
+        <slot />
+    </v-card>
 </template>
 
 <script>
 export default {
-  name: "BaseCard",
+    name: "BaseCard",
 
-  inheritAttrs: false,
+    inheritAttrs: false,
 };
 </script>

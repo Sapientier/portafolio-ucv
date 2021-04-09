@@ -2,67 +2,67 @@
 import { Bar } from "vue-chartjs";
 
 export default {
-  name: "BarChart",
-  extends: Bar,
-  props: {
-    chartdata: {
-      type: Array | Object,
-    },
-    chartlabels: {
-      type: Array,
-    },
-    chartcolors: {
-      type: Object,
-    },
-  },
-  data() {
-    return {
-      options: {
-        scales: {
-          yAxes: [
-            {
-              ticks: {
-                beginAtZero: true,
-              },
-              gridLines: {
-                display: true,
-              },
-            },
-          ],
-          xAxes: [
-            {
-              gridLines: {
-                display: false,
-              },
-            },
-          ],
+    name: "BarChart",
+    extends: Bar,
+    props: {
+        chartdata: {
+            type: Array | Object,
         },
-        legend: {
-          display: false,
+        chartlabels: {
+            type: Array,
         },
-        responsive: true,
-        maintainAspectRatio: false,
-      },
-    };
-  },
-  mounted() {
-    const { borderColor, backgroundColor } = this.chartcolors;
+        chartcolors: {
+            type: Object,
+        },
+    },
+    data() {
+        return {
+            options: {
+                scales: {
+                    yAxes: [
+                        {
+                            ticks: {
+                                beginAtZero: true,
+                            },
+                            gridLines: {
+                                display: true,
+                            },
+                        },
+                    ],
+                    xAxes: [
+                        {
+                            gridLines: {
+                                display: false,
+                            },
+                        },
+                    ],
+                },
+                legend: {
+                    display: false,
+                },
+                responsive: true,
+                maintainAspectRatio: false,
+            },
+        };
+    },
+    mounted() {
+        const { borderColor, backgroundColor } = this.chartcolors;
 
-    this.renderChart(
-      {
-        labels: this.chartlabels,
-        datasets: [
-          {
-            label: this.label,
-            borderColor: borderColor,
-            backgroundColor: backgroundColor,
-            borderWidth: 1,
-            data: this.chartdata,
-          },
-        ],
-      },
-      this.options
-    );
-  },
+        this.renderChart(
+            {
+                labels: this.chartlabels,
+                datasets: [
+                    {
+                        label: this.label,
+                        borderColor: borderColor,
+                        backgroundColor: backgroundColor,
+                        borderWidth: 1,
+                        data: this.chartdata,
+                    },
+                ],
+            },
+            this.options
+        );
+    },
 };
 </script>

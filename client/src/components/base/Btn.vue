@@ -1,32 +1,32 @@
 <template>
-  <v-btn
-    fab
-    small
-    color="primary"
-    :style="styles"
-    v-bind="$attrs"
-    v-on="$listeners"
-  >
-    <slot />
-  </v-btn>
+    <v-btn
+        fab
+        small
+        color="primary"
+        :style="styles"
+        v-bind="$attrs"
+        v-on="$listeners"
+    >
+        <slot />
+    </v-btn>
 </template>
 
 <script>
 export default {
-  name: "BaseBtn",
+    name: "BaseBtn",
 
-  inheritAttrs: false,
+    inheritAttrs: false,
 
-  props: {
-    square: Boolean,
-  },
-
-  computed: {
-    styles() {
-      return {
-        borderRadius: this.square ? "2px" : undefined,
-      };
+    props: {
+        square: Boolean,
     },
-  },
+
+    computed: {
+        styles() {
+            return {
+                borderRadius: this.square ? "2px" : undefined,
+            };
+        },
+    },
 };
 </script>

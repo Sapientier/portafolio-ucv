@@ -1,33 +1,33 @@
 <template>
-  <div id="home">
-    <articles>
-      <banner />
-    </articles>
+    <div id="home">
+        <articles>
+            <banner />
+        </articles>
 
-    <about />
+        <about />
 
-    <subscribe />
+        <subscribe />
 
-    <social />
-  </div>
+        <social />
+    </div>
 </template>
 
 <script>
 import { mapActions } from "vuex";
 
 export default {
-  created() {
-    this.getServicios();
-  },
-  components: {
-    About: () => import("@/components/home/About"),
-    Articles: () => import("@/components/home/Articles"),
-    Banner: () => import("@/components/home/Banner"),
-    Social: () => import("@/components/home/Social"),
-    Subscribe: () => import("@/components/home/Subscribe"),
-  },
-  methods: {
-    ...mapActions(["getServicios"]),
-  },
+    created() {
+        this.getServicios();
+    },
+    components: {
+        About: () => import("@/components/home/About"),
+        Articles: () => import("@/components/home/Articles"),
+        Banner: () => import("@/components/home/Banner"),
+        Social: () => import("@/components/home/Social"),
+        Subscribe: () => import("@/components/home/Subscribe"),
+    },
+    methods: {
+        ...mapActions(["getServicios"]),
+    },
 };
 </script>
