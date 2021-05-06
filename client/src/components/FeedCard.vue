@@ -290,7 +290,57 @@
                                 }})</v-toolbar-title
                             >
                             <v-spacer></v-spacer>
-
+                            <v-dialog
+                                v-model="dialog5"
+                                persistent
+                                max-width="450px"
+                            >
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-toolbar-items>
+                                        <v-btn
+                                            v-if="value.approve === true"
+                                            dark
+                                            text
+                                            v-bind="attrs"
+                                            v-on="on"
+                                            >Solicitar</v-btn
+                                        >
+                                    </v-toolbar-items>
+                                </template>
+                                <v-card>
+                                    <v-card-title class="headline">
+                                        Solicitud de servicio
+                                    </v-card-title>
+                                    <v-card-text>
+                                        <v-form ref="form">
+                                            <v-text-field
+                                                label="Correo"
+                                                v-model="emailReq"
+                                                type="email"
+                                                :rules="emailRules"
+                                            ></v-text-field>
+                                            <v-textarea
+                                                label="Nota"
+                                                v-model="note"
+                                                rows="3"
+                                            ></v-textarea>
+                                        </v-form>
+                                    </v-card-text>
+                                    <v-card-actions>
+                                        <v-spacer></v-spacer>
+                                        <v-btn text @click="close">
+                                            Cerrar
+                                        </v-btn>
+                                        <v-btn
+                                            color="primary darken-1"
+                                            text
+                                            @click="requestService"
+                                        >
+                                            Aceptar
+                                        </v-btn>
+                                    </v-card-actions>
+                                </v-card>
+                            </v-dialog>
                             <v-dialog
                                 v-model="dialog4"
                                 persistent
@@ -397,6 +447,7 @@ import { mapActions } from "vuex";
 import Services from "@/services/Services";
 import NotificationService from "@/services/NotificationService";
 import SuscribeService from "@/services/SuscribeService";
+import RequestService from "@/services/RequestService";
 
 export default {
     data: () => ({
@@ -443,10 +494,13 @@ export default {
         snackColor: "",
         snackText: "",
         emailSub: "",
+        emailReq: "",
+        note: "",
         dialog: false,
         dialog2: false,
         dialog3: false,
         dialog4: false,
+        dialog5: false,
         overlay: false,
         valid: true,
         itemselCat: [
@@ -619,6 +673,25 @@ export default {
             }
             this.overlay = false;
         },
+        async requestService() {
+            this.overlay = true;
+            if (this.emailReq !== "") {
+                 await RequestService.request({
+                    emailReq: this.emailReq,
+                    serviceName: this.value.name,
+                    school: this.value.school,
+                    institute: this.value.institute,
+                    note: this.note,
+                })
+                    .then((response) => this.reqInline())
+                    .catch((err) => this.errorEmail(err.response.data.error));
+
+                this.close();
+            } else {
+                this.errorEmail("Debe ingresar un correo electrónico");
+            }
+            this.overlay = false;
+        },
         resetValidation() {
             this.$refs.form.resetValidation();
         },
@@ -627,7 +700,10 @@ export default {
             this.dialog = false;
             this.dialog2 = false;
             this.dialog4 = false;
+            this.dialog5 = false;
             this.emailSub = "";
+            this.emailReq = "";
+            this.note = "";
             this.resetValidation();
             setTimeout(() => {
                 this.editedItem = Object.assign({}, this.defaultItem);
@@ -652,6 +728,11 @@ export default {
             this.snack = true;
             this.snackColor = "success";
             this.snackText = "Suscripción realizada con éxito";
+        },
+        reqInline() {
+            this.snack = true;
+            this.snackColor = "success";
+            this.snackText = "Solicitud realizada con éxito";
         },
     },
     computed: {

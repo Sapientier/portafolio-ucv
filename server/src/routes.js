@@ -2,6 +2,7 @@ const AuthenticationController = require('./controllers/AuthenticationController
 const UsersController = require('./controllers/UsersController');
 const ServicesController = require('./controllers/ServicesController');
 const SuscribeController = require('./controllers/SuscribeController');
+const RequestController = require('./controllers/RequestController');
 const NotificationsController = require('./controllers/NotificationsController');
 const fs = require('fs')
 const path = require('path');
@@ -114,6 +115,9 @@ module.exports = (app) => {
         ),
         app.post('/suscribeservices',
             SuscribeController.suscribeservices
+        ),
+        app.post('/requestservice',
+            RequestController.requestservice
         ),
         app.post('/getreportsnoti',
             NotificationsController.getreportsnoti
