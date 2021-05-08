@@ -556,6 +556,7 @@ export default {
             }
             fd.append("name", this.name);
             fd.append("autor", this.autor);
+            fd.append("autorMail", this.$store.state.user.email);
             fd.append("userspp", this.usuariospp);
             fd.append("school", this.schools);
             fd.append("category", this.categories);

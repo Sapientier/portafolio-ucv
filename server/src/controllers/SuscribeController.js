@@ -13,7 +13,8 @@ function setEmailContent(Title, Content, htmlText) {
 
 module.exports = {
     async suscribeservices(req, res) {
-        const date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
+        const date = new Date().toISOString().substr(0, 10);
+        
         var descripcionMail = "";
         var typeSub = "";
         var catSub = [];

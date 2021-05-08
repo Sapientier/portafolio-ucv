@@ -20,7 +20,7 @@ module.exports = {
             const emails = [];
             var descripcion = "";
             var titulo = "";
-            const date = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '').substring(0, 10);
+            const date = new Date().toISOString().substr(0, 10);
 
             if (req.body.approve === true)
                 descripcion = "Aprobado: " + req.body.name;

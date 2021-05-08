@@ -110,7 +110,7 @@ module.exports = {
             res.json("Actualizado con exito");
         } catch (err) {
             res.status(500).send({
-                error: 'Ha ocurrido un error al actualizar los usuarios'
+                error: 'Ha ocurrido un error al reiniciar la contraseña'
             })
         }
     }

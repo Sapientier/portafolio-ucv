@@ -1,7 +1,7 @@
 <template>
     <v-container class="fill-height" fluid>
         <v-row align="center" justify="center">
-            <v-col cols="12" sm="8" md="4">
+            <v-col cols="12" sm="8" md="6" xl="4">
                 <v-card class="elevation-12">
                     <v-form ref="form">
                         <v-toolbar color="primary" dark flat>
@@ -72,14 +72,6 @@
                                 </v-card>
                             </v-dialog>
                         </v-card-text>
-                        <v-alert
-                            type="error"
-                            v-model="alert"
-                            dismissible
-                            transition="scale-transition"
-                        >
-                            <div v-html="error"></div>
-                        </v-alert>
                         <v-card-actions>
                             <v-btn icon>
                                 <v-tooltip bottom>
@@ -110,7 +102,6 @@
                     </v-overlay>
                     <v-snackbar
                         v-model="snack"
-                        :timeout="3000"
                         :color="snackColor"
                     >
                         {{ snackText }}
@@ -135,8 +126,6 @@ export default {
         email: "",
         password: "",
         show1: false,
-        error: null,
-        alert: false,
         dialog: false,
         snack: false,
         snackColor: "",
@@ -185,9 +174,8 @@ export default {
                 this.$router.push({
                     name: "UserProfile",
                 });
-            } catch (error) {
-                this.alert = true;
-                this.error = error.response.data.error;
+            } catch (err) {
+                this.errorEmail(err.response.data.error);
             }
             this.overlay = false;
         },

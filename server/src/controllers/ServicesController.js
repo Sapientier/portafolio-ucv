@@ -13,6 +13,7 @@ module.exports = {
                 name: req.body.name,
                 category: req.body.category,
                 autor: req.body.autor,
+                autorMail: req.body.autorMail,
                 date: req.body.date,
                 imageService: newpath,
                 school: req.body.school,

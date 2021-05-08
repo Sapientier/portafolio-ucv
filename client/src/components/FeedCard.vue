@@ -429,7 +429,7 @@
                         </v-container>
                     </v-card>
                 </v-dialog>
-                <v-snackbar v-model="snack" :timeout="3000" :color="snackColor">
+                <v-snackbar v-model="snack" :color="snackColor">
                     {{ snackText }}
                     <template v-slot:action="{ attrs }">
                         <v-btn text v-bind="attrs" @click="snack = false"
@@ -679,8 +679,7 @@ export default {
                  await RequestService.request({
                     emailReq: this.emailReq,
                     serviceName: this.value.name,
-                    school: this.value.school,
-                    institute: this.value.institute,
+                    autorMail: this.value.autorMail,
                     note: this.note,
                 })
                     .then((response) => this.reqInline())

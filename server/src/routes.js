@@ -56,6 +56,9 @@ module.exports = (app) => {
         app.get('/getsuscribers',
             SuscribeController.getsuscribers
         ),
+        app.get('/getrequests',
+            RequestController.getrequests
+        ),
         app.get('/getnotifications',
             NotificationsController.getnotifications
         ),
@@ -127,6 +130,9 @@ module.exports = (app) => {
         ),
         app.post('/getreportsusc',
             SuscribeController.getreportsusc
+        ),
+        app.post('/getreportreq',
+            RequestController.getreportreq
         ),
         app.post('/getreportsuser',
             UsersController.getreportsuser

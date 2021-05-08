@@ -27,10 +27,11 @@
             </v-col>
             <v-col cols="12" md="4" sm="12">
                 <v-card class="mt-4 mx-auto">
-                    <h2 class="text-center">Suscripciones</h2>
+                    <h2 class="text-center">Suscripciones - Solicitudes</h2>
                     <line-chart
                         v-if="loaded3"
                         :chartdata="suscribeChartData"
+                        :chartdata2="requestChartData"
                         :chartlabels="suscribeLabels"
                         :chartcolors="suscribeChartColors"
                         class="chartsReports"
@@ -97,9 +98,7 @@
                                             class="grey--text caption"
                                         >
                                             (y
-                                            {{
-                                                selectedCollections.length - 2
-                                            }}
+                                            {{ selectedCollections.length - 2 }}
                                             más)
                                         </span>
                                     </template>
@@ -338,6 +337,9 @@
                         <template v-slot:[`item.dateSub`]="{ item }">
                             {{ formatDate2(item.dateSub) }}
                         </template>
+                        <template v-slot:[`item.dateReq`]="{ item }">
+                            {{ formatDate2(item.dateReq) }}
+                        </template>
                         <template v-slot:[`item.approve`]="{ item }">
                             <v-checkbox
                                 v-model="item.approve"
@@ -376,6 +378,7 @@
 import Services from "@/services/Services";
 import UsersService from "@/services/UsersService";
 import SuscribeService from "@/services/SuscribeService";
+import RequestService from "@/services/RequestService";
 import NotificationService from "@/services/NotificationService";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
@@ -528,12 +531,37 @@ export default {
                     {
                         parentText: "Suscriptores",
                         value: "emailSub",
-                        text: "Email",
+                        text: "Correo",
                         type: "String",
                     },
                     {
                         parentText: "Suscriptores",
                         value: "dateSub",
+                        text: "Fecha",
+                        type: "Date",
+                    },
+                ],
+            },
+            {
+                value: "requets",
+                text: "Solicitantes",
+                selectedFields: [],
+                fields: [
+                    {
+                        parentText: "Solicitantes",
+                        value: "emailReq",
+                        text: "Correo",
+                        type: "String",
+                    },
+                    {
+                        parentText: "Solicitantes",
+                        value: "serviceReq",
+                        text: "Servicio",
+                        type: "String",
+                    },
+                    {
+                        parentText: "Solicitantes",
+                        value: "dateReq",
                         text: "Fecha",
                         type: "Date",
                     },
@@ -553,7 +581,7 @@ export default {
                     {
                         parentText: "Usuarios",
                         value: "email",
-                        text: "Email",
+                        text: "Correo",
                         type: "String",
                     },
                     {
@@ -629,6 +657,7 @@ export default {
             backgroundColor: "rgba(242, 90, 56, 0.2)",
         },
         suscribeChartData: [],
+        requestChartData: [],
         suscribeLabels: [],
         loaded1: false,
         loaded2: false,
@@ -648,6 +677,7 @@ export default {
             "Diciembre",
         ],
         contmonths: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        contmonths2: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     }),
     methods: {
         buildTableBody(data, columns, headers) {
@@ -664,6 +694,7 @@ export default {
                         if (
                             column === "date" ||
                             column === "dateSub" ||
+                            column === "dateReq" ||
                             column === "dateNoti"
                         ) {
                             dataRow.push(
@@ -734,6 +765,7 @@ export default {
             const notificaciones = {};
             const servicios = {};
             const suscriptores = {};
+            const solicitantes = {};
             const usuarios = {};
             var index = 0;
 
@@ -761,6 +793,14 @@ export default {
                             value: d.value,
                         });
                         suscriptores[d.value] = values[index];
+                        index++;
+                        break;
+                    case "Solicitantes":
+                        this.headers.push({
+                            text: d.text + " (" + d.parentText + ")",
+                            value: d.value,
+                        });
+                        solicitantes[d.value] = values[index];
                         index++;
                         break;
                     case "Usuarios":
@@ -794,6 +834,15 @@ export default {
             }
             if (Object.keys(suscriptores).length !== 0) {
                 await SuscribeService.getreportsusc(suscriptores)
+                    .then((response) => {
+                        response.data.forEach((d) => {
+                            this.ReportList.push(d);
+                        });
+                    })
+                    .catch((err) => console.log(err.response.data.error));
+            }
+            if (Object.keys(solicitantes).length !== 0) {
+                await RequestService.getreportreq(solicitantes)
                     .then((response) => {
                         response.data.forEach((d) => {
                             this.ReportList.push(d);
@@ -970,11 +1019,11 @@ export default {
             .then((response) => {
                 const data = response.data;
 
-                var d = new Date();
-                var ano = d.getFullYear().toString();
+                let d = new Date();
+                let ano = d.getFullYear().toString();
 
                 data.forEach((d) => {
-                    var fecha = this.formatDate(d.dateSub);
+                    let fecha = this.formatDate(d.dateSub);
 
                     if (fecha[0] === ano) {
                         switch (fecha[1]) {
@@ -1020,6 +1069,61 @@ export default {
 
                 this.suscribeChartData = this.contmonths;
                 this.suscribeLabels = this.months;
+            })
+            .catch((err) => console.log(err.response.data.error));
+
+        await RequestService.getrequests()
+            .then((response) => {
+                const data = response.data;
+
+                let d = new Date();
+                let ano = d.getFullYear().toString();
+
+                data.forEach((d) => {
+                    let fecha = this.formatDate(d.dateReq);
+
+                    if (fecha[0] === ano) {
+                        switch (fecha[1]) {
+                            case "01":
+                                this.contmonths2[0]++;
+                                break;
+                            case "02":
+                                this.contmonths2[1]++;
+                                break;
+                            case "03":
+                                this.contmonths2[2]++;
+                                break;
+                            case "04":
+                                this.contmonths2[3]++;
+                                break;
+                            case "05":
+                                this.contmonths2[4]++;
+                                break;
+                            case "06":
+                                this.contmonths2[5]++;
+                                break;
+                            case "07":
+                                this.contmonths2[6]++;
+                                break;
+                            case "08":
+                                this.contmonths2[7]++;
+                                break;
+                            case "09":
+                                this.contmonths2[8]++;
+                                break;
+                            case "10":
+                                this.contmonths2[9]++;
+                                break;
+                            case "11":
+                                this.contmonths2[10]++;
+                                break;
+                            case "12":
+                                this.contmonths2[11]++;
+                                break;
+                        }
+                    }
+                });
+                this.requestChartData = this.contmonths2;
                 this.loaded3 = true;
             })
             .catch((err) => console.log(err.response.data.error));

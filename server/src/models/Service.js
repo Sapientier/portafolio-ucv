@@ -15,6 +15,10 @@ const ServiceSchema = new Schema({
         type: String,
         required: true
     },
+    autorMail: {
+        type: String,
+        required: true
+    },
     date: {
         type: Date,
         required: true

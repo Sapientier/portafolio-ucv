@@ -8,6 +8,9 @@ export default {
         chartdata: {
             type: Array | Object,
         },
+        chartdata2: {
+            type: Array | Object,
+        },
         chartlabels: {
             type: Array,
         },
@@ -37,9 +40,6 @@ export default {
                         },
                     ],
                 },
-                legend: {
-                    display: false,
-                },
                 responsive: true,
                 maintainAspectRatio: false,
             },
@@ -53,12 +53,19 @@ export default {
                 labels: this.chartlabels,
                 datasets: [
                     {
-                        label: this.label,
+                        label: "Suscriptores",
                         borderColor: borderColor,
                         backgroundColor: backgroundColor,
                         borderWidth: 1,
                         data: this.chartdata,
                     },
+                    {
+                        label: "Solicitantes",
+                        borderColor: "rgba(50, 153, 255, 1)",
+                        backgroundColor: "rgba(50, 153, 255, 0.2)",
+                        borderWidth: 1,
+                        data: this.chartdata2,
+                    }
                 ],
             },
             this.options
