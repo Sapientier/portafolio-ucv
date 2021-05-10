@@ -145,7 +145,7 @@ module.exports = {
                 query['approve'] = req.body.approve;
             }
             if (req.body.autor !== '' && req.body.autor !== undefined) {
-                query['autor'] = { $regex: '.*' + req.body.autor + '.*' };
+                query['autor'] = { $regex: '.*' + req.body.autor + '.*', $options: 'i' };
             }
             if (req.body.category !== '' && req.body.category !== undefined) {
                 query['category'] = req.body.category;
@@ -157,7 +157,7 @@ module.exports = {
                 query['institute'] = req.body.institute;
             }
             if (req.body.name !== '' && req.body.name !== undefined) {
-                query['name'] = { $regex: '.*' + req.body.name + '.*' };
+                query['name'] = { $regex: '.*' + req.body.name + '.*', $options: 'i' };
             }
             if (req.body.school !== '' && req.body.school !== undefined) {
                 query['school'] = req.body.school;

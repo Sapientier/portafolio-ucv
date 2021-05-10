@@ -161,13 +161,13 @@ module.exports = {
                 query['dateNoti'] = moment(req.body.dateNoti, "DD/MM/YYYY").format("YYYY-MM-DDT00:00:00.000+00:00");
             }
             if (req.body.descriptionNoti !== '' && req.body.descriptionNoti !== undefined) {
-                query['descriptionNoti'] = { $regex: '.*' + req.body.descriptionNoti + '.*' };
+                query['descriptionNoti'] = { $regex: '.*' + req.body.descriptionNoti + '.*', $options: 'i' };
             }
             if (req.body.owner !== '' && req.body.owner !== undefined) {
-                query['owner'] = { $regex: '.*' + req.body.owner + '.*' };
+                query['owner'] = { $regex: '.*' + req.body.owner + '.*', $options: 'i' };
             }
             if (req.body.title !== '' && req.body.title !== undefined) {
-                query['title'] = { $regex: '.*' + req.body.title + '.*' };
+                query['title'] = { $regex: '.*' + req.body.title + '.*', $options: 'i' };
             }
 
             if (Object.keys(query).length === 0) {

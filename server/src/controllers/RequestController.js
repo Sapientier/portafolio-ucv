@@ -88,10 +88,16 @@ module.exports = {
             let requests;
 
             if (req.body.emailReq !== '' && req.body.emailReq !== undefined) {
-                query['emailReq'] = { $regex: '.*' + req.body.emailReq + '.*' };
+                query['emailReq'] = { $regex: '.*' + req.body.emailReq + '.*', $options: 'i' };
             }
             if (req.body.dateReq !== '' && req.body.dateReq !== undefined) {
                 query['dateReq'] = moment(req.body.dateReq, "DD/MM/YYYY").format("YYYY-MM-DDT00:00:00.000+00:00");
+            }
+            if (req.body.serviceReq !== '' && req.body.serviceReq !== undefined) {
+                query['serviceReq'] = { $regex: '.*' + req.body.serviceReq + '.*', $options: 'i' };
+            }
+            if (req.body.noteReq !== '' && req.body.noteReq !== undefined) {
+                query['noteReq'] = { $regex: '.*' + req.body.noteReq + '.*', $options: 'i' };
             }
 
             if (Object.keys(query).length === 0) {

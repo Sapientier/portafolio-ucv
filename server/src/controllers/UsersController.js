@@ -249,7 +249,7 @@ module.exports = {
                 query['dependencies'] = req.body.dependencies;
             }
             if (req.body.email !== '' && req.body.email !== undefined) {
-                query['email'] = { $regex: '.*' + req.body.email + '.*' };
+                query['email'] = { $regex: '.*' + req.body.email + '.*', $options: 'i' };
             }
             if (req.body.instituteUser !== '' && req.body.instituteUser !== undefined) {
                 query['instituteUser'] = req.body.instituteUser;

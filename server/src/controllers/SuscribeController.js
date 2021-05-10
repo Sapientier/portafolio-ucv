@@ -147,7 +147,7 @@ module.exports = {
             var suscriptions;
 
             if (req.body.emailSub !== '' && req.body.emailSub !== undefined) {
-                query['emailSub'] = { $regex: '.*' + req.body.emailSub + '.*' };
+                query['emailSub'] = { $regex: '.*' + req.body.emailSub + '.*', $options: 'i' };
             }
             if (req.body.dateSub !== '' && req.body.dateSub !== undefined) {
                 query['dateSub'] = moment(req.body.dateSub, "DD/MM/YYYY").format("YYYY-MM-DDT00:00:00.000+00:00");

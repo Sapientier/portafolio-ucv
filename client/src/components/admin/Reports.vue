@@ -463,7 +463,7 @@ export default {
                     {
                         parentText: "Notificaciones",
                         value: "owner",
-                        text: "Dueño",
+                        text: "Creador",
                         type: "String",
                     },
                     {
@@ -564,6 +564,12 @@ export default {
                         value: "dateReq",
                         text: "Fecha",
                         type: "Date",
+                    },
+                    {
+                        parentText: "Solicitantes",
+                        value: "noteReq",
+                        text: "Nota",
+                        type: "String",
                     },
                 ],
             },
