@@ -20,7 +20,7 @@
             </v-overlay>
         </v-parallax>
 
-        <v-row class="white">
+        <!-- <v-row class="white">
             <v-col xs="12">
                 <v-carousel
                     cycle
@@ -47,7 +47,7 @@
                     </v-carousel-item>
                 </v-carousel>
             </v-col>
-        </v-row>
+        </v-row> -->
     </base-card>
 </template>
 
@@ -57,26 +57,26 @@ export default {
         return {
             absolute: true,
             opacity: 0.65,
-            items: [
-                {
-                    slide: "Proceso de inscripcion I-2020",
-                    src:
-                        "https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg",
-                },
-                {
-                    slide: "II Congreso de Transformación Digital",
-                    src: "https://cdn.vuetifyjs.com/images/carousel/sky.jpg",
-                },
-                {
-                    slide: "Reincorporaciones 1-2019",
-                    src: "https://cdn.vuetifyjs.com/images/carousel/bird.jpg",
-                },
-                {
-                    slide: "Cronograma de ingreso por Mérito Académico",
-                    src: "https://cdn.vuetifyjs.com/images/carousel/planet.jpg",
-                },
-            ],
-            slides: ["Noticia 1", "Second", "Third", "Fourth", "Fifth"],
+            // items: [
+            //     {
+            //         slide: "Proceso de inscripcion I-2020",
+            //         src:
+            //             "https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg",
+            //     },
+            //     {
+            //         slide: "II Congreso de Transformación Digital",
+            //         src: "https://cdn.vuetifyjs.com/images/carousel/sky.jpg",
+            //     },
+            //     {
+            //         slide: "Reincorporaciones 1-2019",
+            //         src: "https://cdn.vuetifyjs.com/images/carousel/bird.jpg",
+            //     },
+            //     {
+            //         slide: "Cronograma de ingreso por Mérito Académico",
+            //         src: "https://cdn.vuetifyjs.com/images/carousel/planet.jpg",
+            //     },
+            // ],
+            // slides: ["Noticia 1", "Second", "Third", "Fourth", "Fifth"],
         };
     },
     computed: {
