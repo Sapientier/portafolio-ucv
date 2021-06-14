@@ -17,6 +17,9 @@ const RequestSchema = new Schema({
     noteReq: {
         type: String
     },
+    status: {
+        type: String
+    }
 });
 
 module.exports = mongoose.model('Request', RequestSchema);

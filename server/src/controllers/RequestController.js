@@ -3,9 +3,10 @@ const Mailer = require('../controllers/MailController');
 var moment = require('moment');
 var fs = require('fs');
 
-function setEmailContent(Title, Content, htmlText) {
+function setEmailContent(Title, Content, Url, htmlText) {
     let finalText = htmlText;
     finalText = htmlText.replace("{{EmailSubject}}", Title);
+    finalText = finalText.replace("{{AcceptURL}}", Url);
     finalText = finalText.replace("{{Content}}", Content);
 
     return finalText;
@@ -14,9 +15,10 @@ function setEmailContent(Title, Content, htmlText) {
 module.exports = {
     async requestservice(req, res) {
         const date = new Date().toISOString().substr(0, 10);
-
+        let redirectFinalUrl = "https://portafolio-ucv.herokuapp.com/"
         let descripcionMail = "Se realizo una solicitud por <b>" + req.body.emailReq + "</b> del servicio <b>" + req.body.serviceName + "</b>";
         let note = req.body.note;
+        let url = redirectFinalUrl + 'updaterequestservice?emailReq=' + req.body.emailReq + '&serviceReq=' + req.body.serviceName;
 
         try {
             if (note !== "") {
@@ -34,9 +36,9 @@ module.exports = {
                 })
             }
             else {
-                let contents = fs.readFileSync('./src/templates/communications.html', 'utf8');
+                let contents = fs.readFileSync('./src/templates/requests.html', 'utf8');
 
-                let body = setEmailContent("Solicitud de servicio", descripcionMail, contents);
+                let body = setEmailContent("Solicitud de servicio", descripcionMail, url, contents);
 
                 let mailOptions = {
                     from: '"Portafolio Ciencias" <portafolioucv@gmail.com>',
@@ -59,7 +61,8 @@ module.exports = {
                     emailReq: req.body.emailReq,
                     dateReq: date,
                     serviceReq: req.body.serviceName,
-                    noteReq: note
+                    noteReq: note,
+                    status: 'Abierto'
                 });
                 const request = await task.save();
                 res.json(request.toJSON());
@@ -69,6 +72,27 @@ module.exports = {
         } catch (err) {
             res.status(500).send({
                 error: 'Ha ocurrido un error al solicitar un servicio'
+            })
+        }
+    },
+    async updaterequestservice(req, res) {
+        try {
+            const newTask = {
+                status: "Atendido"
+            };
+
+            const id = await Request.findOne({
+                $and: [
+                    { emailReq: req.query.emailReq },
+                    { serviceReq: req.query.serviceReq }
+                ]
+            }).select('_id');
+
+            await Request.findByIdAndUpdate(id, newTask);
+            res.json("Petición atendida con exito");
+        } catch (err) {
+            res.status(500).send({
+                error: 'Ha ocurrido un error al actualizar la actualización de estatus'
             })
         }
     },
@@ -98,6 +122,9 @@ module.exports = {
             }
             if (req.body.noteReq !== '' && req.body.noteReq !== undefined) {
                 query['noteReq'] = { $regex: '.*' + req.body.noteReq + '.*', $options: 'i' };
+            }
+            if (req.body.status !== '' && req.body.status !== undefined) {
+                query['status'] = { $regex: '.*' + req.body.status + '.*', $options: 'i' };
             }
 
             if (Object.keys(query).length === 0) {

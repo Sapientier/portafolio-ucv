@@ -17,11 +17,11 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
-app.use(history());
-app.use(express.static(path.join(__dirname, '../public/')));
 
 // Rutas
 require('./routes')(app)
+app.use(history());
+app.use(express.static(path.join(__dirname, '../public/')));
 
 // Inicialización del servidor
 app.listen(config.port, () => {

@@ -544,31 +544,37 @@ export default {
             },
             {
                 value: "requets",
-                text: "Solicitantes",
+                text: "Solicitudes",
                 selectedFields: [],
                 fields: [
                     {
-                        parentText: "Solicitantes",
+                        parentText: "Solicitudes",
                         value: "emailReq",
                         text: "Correo",
                         type: "String",
                     },
                     {
-                        parentText: "Solicitantes",
+                        parentText: "Solicitudes",
                         value: "serviceReq",
                         text: "Servicio",
                         type: "String",
                     },
                     {
-                        parentText: "Solicitantes",
+                        parentText: "Solicitudes",
                         value: "dateReq",
                         text: "Fecha",
                         type: "Date",
                     },
                     {
-                        parentText: "Solicitantes",
+                        parentText: "Solicitudes",
                         value: "noteReq",
                         text: "Nota",
+                        type: "String",
+                    },
+                    {
+                        parentText: "Solicitudes",
+                        value: "status",
+                        text: "Estatus",
                         type: "String",
                     },
                 ],
@@ -801,7 +807,7 @@ export default {
                         suscriptores[d.value] = values[index];
                         index++;
                         break;
-                    case "Solicitantes":
+                    case "Solicitudes":
                         this.headers.push({
                             text: d.text + " (" + d.parentText + ")",
                             value: d.value,

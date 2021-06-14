@@ -68,6 +68,9 @@ module.exports = (app) => {
         app.get('/getNotiNumbyUser',
             NotificationsController.getNotiNumbyUser
         ),
+        app.get('/updaterequestservice',
+            RequestController.updaterequestservice
+        ),
         app.post('/getuserpass',
             UsersController.getuserpass
         ),
