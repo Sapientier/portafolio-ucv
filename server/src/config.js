@@ -1,16 +1,19 @@
+// Lectura de valores de variables de entorno
+require('dotenv').config();
+
 // Configuraciones del servidor
 module.exports = {
     port: process.env.PORT || 8000,
     db: {
-        URI: 'mongodb+srv://Sapientier:portafolio-ucv@portafolio-bd-3ovqh.mongodb.net/test?retryWrites=true&w=majority',
-        database: process.env.DB_NAME || 'portafolio-bd',
-        user: process.env.DB_USER || 'Sapientier',
-        password: process.env.DB_PASS || 'portafolio-ucv',
+        URI: process.env.DB_CONNECTION_STRING,
+        database: process.env.DB_NAME,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASS,
         options: { useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false }
     },
     authentication: {
-        jwtSecret: process.env.JWT_SECRET || 'secret',
-        email: 'portafolioucv@gmail.com',
-        password: '25082020'
+        jwtSecret: process.env.JWT_SECRET,
+        email: process.env.NOTIFIER_EMAIL_ADDRESS,
+        password: process.env.NOTIFIER_EMAIL_PASSWORD
     }
 }
