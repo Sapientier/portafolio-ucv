@@ -70,7 +70,7 @@ module.exports = {
         var body = setEmailContent("Reinicio de contraseña", descripcionMail, contents);
 
         var mailOptions = {
-            from: '"Portafolio Ciencias" <portafolioucv@gmail.com>',
+            from: '"Portafolio Ciencias UCV" <portafolio.ciencias.ucv@hotmail.com>',
             to: req.body.email,
             subject: 'Reinicio exitoso',
             html: body,

@@ -6,9 +6,7 @@ module.exports = {
     async sendMails(mailOptions) {
         // creamos objeto transporter reusable usando el SMTP de gmail
         let transporter = nodemailer.createTransport({
-            host: "smtp.gmail.com",
-            port: 465,
-            secure: true, // true para 465, false para otros puertos
+            service: "Hotmail",
             auth: {
                 user: config.authentication.email,
                 pass: config.authentication.password

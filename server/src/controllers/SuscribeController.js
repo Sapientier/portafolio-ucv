@@ -76,7 +76,7 @@ module.exports = {
             var body = setEmailContent("Suscripción por Categorías", descripcionMail, contents);
 
             var mailOptions = {
-                from: '"Portafolio Ciencias" <portafolioucv@gmail.com>',
+                from: '"Portafolio Ciencias UCV" <portafolio.ciencias.ucv@hotmail.com>',
                 to: req.body.emailSub,
                 subject: 'Suscripción exitosa',
                 html: body,

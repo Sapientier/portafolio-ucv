@@ -41,7 +41,7 @@ module.exports = {
                 let body = setEmailContent("Solicitud de servicio", descripcionMail, url, contents);
 
                 let mailOptions = {
-                    from: '"Portafolio Ciencias" <portafolioucv@gmail.com>',
+                    from: '"Portafolio Ciencias UCV" <portafolio.ciencias.ucv@hotmail.com>',
                     to: req.body.autorMail,
                     subject: 'Solicitud nueva',
                     html: body,

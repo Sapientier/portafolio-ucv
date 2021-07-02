@@ -102,7 +102,7 @@ module.exports = {
                 var body = setEmailContent(descripcion, descripcionMail, contents);
 
                 var mailOptions = {
-                    from: '"Portafolio Ciencias" <portafolioucv@gmail.com>',
+                    from: '"Portafolio Ciencias UCV" <portafolio.ciencias.ucv@hotmail.com>',
                     to: emailsSubs,
                     subject: 'Noticia de servicios',
                     html: body,
