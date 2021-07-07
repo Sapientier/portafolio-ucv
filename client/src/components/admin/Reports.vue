@@ -419,7 +419,7 @@ export default {
             "Matemática",
             "Química",
         ],
-        itemselInst: ["N/A", "IBE", "ICTA", "ICT"],
+        itemselInst: ["N/A", "IBE", "ICTA", "ICT", "IZET"],
         selectedFieldVals: [
             "",
             "",

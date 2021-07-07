@@ -295,7 +295,7 @@ export default {
             "Matemática",
             "Química",
         ],
-        itemsel2: ["N/A", "IBE", "ICTA", "ICT"],
+        itemsel2: ["N/A", "IBE", "ICTA", "ICT", "IZET"],
         selectedFile: null,
     }),
     created() {

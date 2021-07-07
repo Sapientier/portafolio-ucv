@@ -237,7 +237,7 @@
                                 <v-col cols="12" sm="12">
                                     <v-text-field
                                         v-model="name"
-                                        label="Nombre*"
+                                        label="Nombre *"
                                         :rules="nameRules"
                                         required
                                     ></v-text-field>
@@ -246,7 +246,7 @@
                                     <v-select
                                         v-model="categories"
                                         :items="itemselCat"
-                                        label="Categoría*"
+                                        label="Categoría *"
                                         :rules="categoriaRules"
                                         required
                                     ></v-select>
@@ -254,7 +254,7 @@
                                 <v-col cols="12" sm="6">
                                     <v-text-field
                                         v-model="autor"
-                                        label="Coordinador*"
+                                        label="Coordinador *"
                                         :rules="autorRules"
                                         required
                                     ></v-text-field>
@@ -264,7 +264,7 @@
                                         v-model="schools"
                                         :items="itemselSchool"
                                         :rules="schoolRules"
-                                        label="Escuela*"
+                                        label="Escuela *"
                                     ></v-select>
                                 </v-col>
                                 <v-col cols="12" sm="6">
@@ -272,7 +272,7 @@
                                         v-model="institutes"
                                         :items="itemselInst"
                                         :rules="instRules"
-                                        label="Instituto*"
+                                        label="Instituto *"
                                     ></v-select>
                                 </v-col>
                                 <v-col cols="12" sm="6">
@@ -288,7 +288,7 @@
                                         >
                                             <v-text-field
                                                 v-model="computedDateFormatted"
-                                                label="Fecha de Creación*"
+                                                label="Fecha de Creación *"
                                                 prepend-icon="mdi-calendar"
                                                 readonly
                                                 v-on="on"
@@ -347,7 +347,15 @@
                                 </v-col>
                             </v-row>
                         </v-container>
-                        <small>*Indica que es un campo requerido</small>
+                        <small>
+                            * Indica que es un campo requerido
+                        </small>
+                        <v-spacer></v-spacer>
+                        <small>
+                            Los servicios deben ser aprobados por los
+                            coordinadores para su visualización al público
+                            general
+                        </small>
                     </v-card-text>
                     <v-divider></v-divider>
                     <v-card-actions v-if="$store.state.isUserLoggedIn">
@@ -461,7 +469,7 @@ export default {
             "Matemática",
             "Química",
         ],
-        itemselInst: ["N/A", "IBE", "ICTA", "ICT"],
+        itemselInst: ["N/A", "IBE", "ICTA", "ICT", "IZET"],
         dialog: false,
         overlay: false,
         rulesImg: [

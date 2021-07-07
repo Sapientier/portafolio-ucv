@@ -122,7 +122,7 @@
                                         <v-col cols="12" sm="12">
                                             <v-text-field
                                                 v-model="editedItem.name"
-                                                label="Nombre*"
+                                                label="Nombre *"
                                                 :rules="nameRules"
                                                 required
                                             ></v-text-field>
@@ -131,7 +131,7 @@
                                             <v-select
                                                 v-model="editedItem.category"
                                                 :items="itemselCat"
-                                                label="Categoría*"
+                                                label="Categoría *"
                                                 :rules="categoriaRules"
                                                 required
                                             ></v-select>
@@ -139,7 +139,7 @@
                                         <v-col cols="12" sm="6">
                                             <v-text-field
                                                 v-model="editedItem.autor"
-                                                label="Coordinador*"
+                                                label="Coordinador *"
                                                 :rules="autorRules"
                                                 required
                                             ></v-text-field>
@@ -149,7 +149,7 @@
                                                 v-model="editedItem.school"
                                                 :items="itemselSchool"
                                                 :rules="schoolRules"
-                                                label="Escuela*"
+                                                label="Escuela *"
                                             ></v-select>
                                         </v-col>
                                         <v-col cols="12" sm="6">
@@ -157,7 +157,7 @@
                                                 v-model="editedItem.institute"
                                                 :items="itemselInst"
                                                 :rules="instRules"
-                                                label="Instituto*"
+                                                label="Instituto *"
                                             ></v-select>
                                         </v-col>
                                         <v-col cols="12" sm="6">
@@ -178,7 +178,7 @@
                                                         v-model="
                                                             computedDateFormatted
                                                         "
-                                                        label="Fecha de Creación*"
+                                                        label="Fecha de Creación *"
                                                         prepend-icon="mdi-calendar"
                                                         readonly
                                                         v-bind="attrs"
@@ -237,7 +237,15 @@
                                         </v-col>
                                     </v-row>
                                 </v-container>
-                                <small>*Indica que es un campo requerido</small>
+                                <small>
+                                    * Indica que es un campo requerido
+                                </small>
+                                <v-spacer></v-spacer>
+                                <small>
+                                    Los servicios deben ser aprobados por los
+                                    coordinadores para su visualización al 
+                                    público general
+                                </small>
                             </v-card-text>
                             <v-divider></v-divider>
                             <v-card-actions v-if="$store.state.isUserLoggedIn">
@@ -389,7 +397,7 @@
                         </v-toolbar>
                         <v-container grid-list-xl>
                             <v-row>
-                                <v-col cols="12" sm="6">
+                                <v-col cols="12" sm="7">
                                     <div class="title">
                                         Usuarios del Servicio, Producto o
                                         Proceso:
@@ -406,7 +414,7 @@
                                     </div>
                                     <p class="body-1">{{ value.request }}</p>
                                 </v-col>
-                                <v-col cols="12" sm="6">
+                                <v-col cols="12" sm="5">
                                     <v-img
                                         :src="`${value.imageService}`"
                                         height="100%"
@@ -523,7 +531,7 @@ export default {
             "Matemática",
             "Química",
         ],
-        itemselInst: ["N/A", "IBE", "ICTA", "ICT"],
+        itemselInst: ["N/A", "IBE", "ICTA", "ICT", "IZET"],
         rulesImg: [
             (value) =>
                 !value ||
@@ -676,7 +684,7 @@ export default {
         async requestService() {
             this.overlay = true;
             if (this.emailReq !== "") {
-                 await RequestService.request({
+                await RequestService.request({
                     emailReq: this.emailReq,
                     serviceName: this.value.name,
                     autorMail: this.value.autorMail,
