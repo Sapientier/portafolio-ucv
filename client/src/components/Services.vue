@@ -513,6 +513,8 @@ export default {
             }, 500);
         },
         async filterServiciosbyCat(value) {
+            this.select = null;
+            this.search = null;
             await Services.getuniservicebycat(value)
                 .then((response) => {
                     this.setServiciosAll(response.data);
@@ -520,6 +522,8 @@ export default {
                 .catch((err) => console.log(err.response.data.error));
         },
         async filterServiciosbyApproved(value) {
+            this.select = null;
+            this.search = null;
             await Services.getuniservicebyapproved(value)
                 .then((response) => {
                     this.setServiciosAll(response.data);
@@ -534,6 +538,8 @@ export default {
                 .catch((err) => console.log(err.response.data.error));
         },
         async getServices() {
+            this.select = null;
+            this.search = null;
             await Services.getservices()
                 .then((response) => {
                     for (const servicio of response.data) {
