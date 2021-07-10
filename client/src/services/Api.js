@@ -2,6 +2,6 @@ import axios from 'axios'
 
 export default () => {
     return axios.create({
-        baseURL: '/portafolioserver/'
+        baseURL: 'http://localhost:8000/'
     })
 }
