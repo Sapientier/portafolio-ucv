@@ -243,7 +243,7 @@
                                 <v-spacer></v-spacer>
                                 <small>
                                     Los servicios deben ser aprobados por los
-                                    coordinadores para su visualización al 
+                                    coordinadores para su visualización al
                                     público general
                                 </small>
                             </v-card-text>
@@ -607,7 +607,7 @@ export default {
                 this.snackColor = "error";
                 this.snackText = err.response.data.error;
             }
-            this.close();
+            this.closeDel();
         },
         async updateService() {
             this.overlay = true;
@@ -712,6 +712,13 @@ export default {
             this.emailReq = "";
             this.note = "";
             this.resetValidation();
+            setTimeout(() => {
+                this.editedItem = Object.assign({}, this.defaultItem);
+            }, 300);
+        },
+        closeDel() {
+            this.overlay = false;
+            this.dialog = false;
             setTimeout(() => {
                 this.editedItem = Object.assign({}, this.defaultItem);
             }, 300);
