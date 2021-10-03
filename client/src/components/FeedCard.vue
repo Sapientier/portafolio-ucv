@@ -316,11 +316,15 @@
                                     </v-toolbar-items>
                                 </template>
                                 <v-card>
-                                    <v-card-title class="headline">
-                                        Solicitud de servicio
-                                    </v-card-title>
-                                    <v-card-text>
-                                        <v-form ref="form">
+                                    <v-form
+                                        ref="form"
+                                        v-model="valid2"
+                                        lazy-validation
+                                    >
+                                        <v-card-title class="headline">
+                                            Solicitud de servicio
+                                        </v-card-title>
+                                        <v-card-text>
                                             <v-text-field
                                                 label="Correo"
                                                 v-model="emailReq"
@@ -332,21 +336,22 @@
                                                 v-model="note"
                                                 rows="3"
                                             ></v-textarea>
-                                        </v-form>
-                                    </v-card-text>
-                                    <v-card-actions>
-                                        <v-spacer></v-spacer>
-                                        <v-btn text @click="close">
-                                            Cerrar
-                                        </v-btn>
-                                        <v-btn
-                                            color="primary darken-1"
-                                            text
-                                            @click="requestService"
-                                        >
-                                            Aceptar
-                                        </v-btn>
-                                    </v-card-actions>
+                                        </v-card-text>
+                                        <v-card-actions>
+                                            <v-spacer></v-spacer>
+                                            <v-btn text @click="close">
+                                                Cerrar
+                                            </v-btn>
+                                            <v-btn
+                                                color="primary darken-1"
+                                                text
+                                                @click="requestService"
+                                                :disabled="!valid2"
+                                            >
+                                                Aceptar
+                                            </v-btn>
+                                        </v-card-actions>
+                                    </v-form>
                                 </v-card>
                             </v-dialog>
                             <v-dialog
@@ -367,31 +372,37 @@
                                     </v-toolbar-items>
                                 </template>
                                 <v-card>
-                                    <v-card-title class="headline"
-                                        >Suscripción</v-card-title
+                                    <v-form
+                                        ref="form"
+                                        v-model="valid3"
+                                        lazy-validation
                                     >
-                                    <v-card-text>
-                                        <v-form ref="form"
-                                            ><v-text-field
+                                        <v-card-title class="headline"
+                                            >Suscripción</v-card-title
+                                        >
+                                        <v-card-text>
+                                            <v-text-field
                                                 label="Correo"
                                                 prepend-icon="mdi-email"
                                                 v-model="emailSub"
                                                 type="email"
                                                 :rules="emailRules"
-                                            ></v-text-field></v-form
-                                    ></v-card-text>
-                                    <v-card-actions>
-                                        <v-spacer></v-spacer>
-                                        <v-btn text @click="close">
-                                            Cerrar
-                                        </v-btn>
-                                        <v-btn
-                                            color="primary darken-1"
-                                            text
-                                            @click="suscribeService"
-                                            >Aceptar</v-btn
-                                        >
-                                    </v-card-actions>
+                                            ></v-text-field>
+                                        </v-card-text>
+                                        <v-card-actions>
+                                            <v-spacer></v-spacer>
+                                            <v-btn text @click="close">
+                                                Cerrar
+                                            </v-btn>
+                                            <v-btn
+                                                color="primary darken-1"
+                                                text
+                                                @click="suscribeService"
+                                                :disabled="!valid3"
+                                                >Aceptar</v-btn
+                                            >
+                                        </v-card-actions>
+                                    </v-form>
                                 </v-card>
                             </v-dialog>
                         </v-toolbar>
@@ -511,6 +522,8 @@ export default {
         dialog5: false,
         overlay: false,
         valid: true,
+        valid2: true,
+        valid3: true,
         itemselCat: [
             "Ambiente",
             "Enseñanza de la Ciencia",

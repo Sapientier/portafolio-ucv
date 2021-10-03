@@ -3,7 +3,7 @@
         <v-row align="center" justify="center">
             <v-col cols="12" sm="8" md="6" xl="4">
                 <v-card class="elevation-12">
-                    <v-form ref="form">
+                    <v-form ref="form" v-model="valid" lazy-validation>
                         <v-toolbar color="primary" dark flat>
                             <v-toolbar-title>Inicio de Sesión</v-toolbar-title>
                         </v-toolbar>
@@ -43,32 +43,40 @@
                                     </div>
                                 </template>
                                 <v-card>
-                                    <v-card-title>
-                                        <span class="headline"
-                                            >Recuperación de contraseña</span
-                                        >
-                                    </v-card-title>
-                                    <v-card-text
-                                        ><v-text-field
-                                            label="Correo"
-                                            prepend-icon="mdi-email"
-                                            v-model="emailreset"
-                                            type="email"
-                                            :rules="emailRules"
-                                        ></v-text-field
-                                    ></v-card-text>
-                                    <v-card-actions>
-                                        <v-spacer></v-spacer>
-                                        <v-btn text @click="close">
-                                            Cerrar
-                                        </v-btn>
-                                        <v-btn
-                                            color="primary darken-1"
-                                            text
-                                            @click="resetpassword"
-                                            >Aceptar</v-btn
-                                        >
-                                    </v-card-actions>
+                                    <v-form
+                                        ref="form"
+                                        v-model="valid2"
+                                        lazy-validation
+                                    >
+                                        <v-card-title>
+                                            <span class="headline"
+                                                >Recuperación de
+                                                contraseña</span
+                                            >
+                                        </v-card-title>
+                                        <v-card-text
+                                            ><v-text-field
+                                                label="Correo"
+                                                prepend-icon="mdi-email"
+                                                v-model="emailreset"
+                                                type="email"
+                                                :rules="emailRules"
+                                            ></v-text-field
+                                        ></v-card-text>
+                                        <v-card-actions>
+                                            <v-spacer></v-spacer>
+                                            <v-btn text @click="close">
+                                                Cerrar
+                                            </v-btn>
+                                            <v-btn
+                                                color="primary darken-1"
+                                                text
+                                                @click="resetpassword"
+                                                :disabled="!valid2"
+                                                >Aceptar</v-btn
+                                            >
+                                        </v-card-actions>
+                                    </v-form>
                                 </v-card>
                             </v-dialog>
                         </v-card-text>
@@ -88,8 +96,10 @@
                                 </v-tooltip>
                             </v-btn>
                             <v-spacer />
-
-                            <v-btn color="primary" @click="login"
+                            <v-btn
+                                color="primary"
+                                @click="login"
+                                :disabled="!valid"
                                 >Ingresar</v-btn
                             >
                         </v-card-actions>
@@ -100,10 +110,7 @@
                             size="64"
                         ></v-progress-circular>
                     </v-overlay>
-                    <v-snackbar
-                        v-model="snack"
-                        :color="snackColor"
-                    >
+                    <v-snackbar v-model="snack" :color="snackColor">
                         {{ snackText }}
                         <template v-slot:action="{ attrs }">
                             <v-btn text v-bind="attrs" @click="snack = false"
@@ -132,6 +139,8 @@ export default {
         snackText: "",
         emailreset: "",
         overlay: false,
+        valid: true,
+        valid2: true,
         passwordRules: [
             (v) => !!v || "Contraseña es requerida",
             (v) =>
