@@ -304,16 +304,29 @@
                                 max-width="450px"
                             >
                                 <template v-slot:activator="{ on, attrs }">
-                                    <v-toolbar-items>
-                                        <v-btn
-                                            v-if="value.approve === true"
-                                            dark
-                                            text
-                                            v-bind="attrs"
-                                            v-on="on"
-                                            >Solicitar</v-btn
+                                    <v-tooltip bottom>
+                                        <template
+                                            v-slot:activator="{ on: tooltip }"
                                         >
-                                    </v-toolbar-items>
+                                            <v-toolbar-items>
+                                                <v-btn
+                                                    v-if="
+                                                        value.approve === true
+                                                    "
+                                                    dark
+                                                    text
+                                                    v-bind="attrs"
+                                                    v-on="{ ...tooltip, ...on }"
+                                                    >Solicitar</v-btn
+                                                >
+                                            </v-toolbar-items>
+                                        </template>
+                                        <span
+                                            >La solicitud le permitirá obtener
+                                            mayor información del servico por
+                                            correo electrónico</span
+                                        >
+                                    </v-tooltip>
                                 </template>
                                 <v-card>
                                     <v-form
@@ -360,16 +373,30 @@
                                 max-width="450px"
                             >
                                 <template v-slot:activator="{ on, attrs }">
-                                    <v-toolbar-items>
-                                        <v-btn
-                                            v-if="value.approve === true"
-                                            dark
-                                            text
-                                            v-bind="attrs"
-                                            v-on="on"
-                                            >Suscribirse</v-btn
+                                    <v-tooltip bottom>
+                                        <template
+                                            v-slot:activator="{ on: tooltip }"
                                         >
-                                    </v-toolbar-items>
+                                            <v-toolbar-items>
+                                                <v-btn
+                                                    v-if="
+                                                        value.approve === true
+                                                    "
+                                                    dark
+                                                    text
+                                                    v-bind="attrs"
+                                                    v-on="{ ...on, ...tooltip }"
+                                                    >Suscribirse</v-btn
+                                                >
+                                            </v-toolbar-items>
+                                        </template>
+                                        <span
+                                            >La suscripción le permitirá recibir
+                                            notificaciones sobre actualizaciones
+                                            del servicio por correo
+                                            electrónico</span
+                                        >
+                                    </v-tooltip>
                                 </template>
                                 <v-card>
                                     <v-form

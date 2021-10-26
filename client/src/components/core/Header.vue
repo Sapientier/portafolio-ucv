@@ -22,14 +22,6 @@
                         <v-list-item-title>Servicios</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
-                <v-list-item link to="/credits">
-                    <v-list-item-action>
-                        <v-icon>mdi-newspaper-variant</v-icon>
-                    </v-list-item-action>
-                    <v-list-item-content>
-                        <v-list-item-title>Créditos</v-list-item-title>
-                    </v-list-item-content>
-                </v-list-item>
                 <v-list-item
                     link
                     to="/reports"
@@ -56,6 +48,14 @@
                         <v-list-item-title
                             >Administración de Usuarios</v-list-item-title
                         >
+                    </v-list-item-content>
+                </v-list-item>
+                <v-list-item link to="/credits">
+                    <v-list-item-action>
+                        <v-icon>mdi-newspaper-variant</v-icon>
+                    </v-list-item-action>
+                    <v-list-item-content>
+                        <v-list-item-title>Créditos</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
             </v-list>
