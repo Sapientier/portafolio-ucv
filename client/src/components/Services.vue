@@ -315,10 +315,23 @@
                                     ></v-file-input>
                                 </v-col>
                                 <v-col cols="12">
-                                    <v-text-field
-                                        v-model="usuariospp"
-                                        label="Usuarios Involucrados"
-                                    ></v-text-field>
+                                    <v-tooltip bottom>
+                                        <template
+                                            v-slot:activator="{
+                                                on: tooltip,
+                                            }"
+                                        >
+                                            <v-text-field
+                                                v-model="usuariospp"
+                                                label="Usuarios Involucrados"
+                                                v-on="tooltip"
+                                            ></v-text-field>
+                                        </template>
+                                        <span
+                                            >Usuarios internos/externos que
+                                            participaran en el servicio</span
+                                        >
+                                    </v-tooltip>
                                 </v-col>
                                 <v-col cols="12">
                                     <v-textarea
@@ -327,16 +340,42 @@
                                     />
                                 </v-col>
                                 <v-col cols="12">
-                                    <v-text-field
-                                        v-model="solicitud"
-                                        label="Solicitud del Servicio"
-                                    ></v-text-field>
+                                    <v-tooltip bottom>
+                                        <template
+                                            v-slot:activator="{
+                                                on: tooltip,
+                                            }"
+                                        >
+                                            <v-text-field
+                                                v-model="solicitud"
+                                                label="Solicitud del Servicio"
+                                                v-on="tooltip"
+                                            ></v-text-field>
+                                        </template>
+                                        <span
+                                            >Las maneras en la que el usuario
+                                            puede solicitar el servicio.
+                                            Ejemplo: (Correo)</span
+                                        >
+                                    </v-tooltip>
                                 </v-col>
                                 <v-col cols="12">
-                                    <v-text-field
-                                        v-model="params"
-                                        label="Parámetros del Servicio"
-                                    ></v-text-field>
+                                    <v-tooltip bottom>
+                                        <template
+                                            v-slot:activator="{
+                                                on: tooltip,
+                                            }"
+                                        >
+                                            <v-text-field
+                                                v-model="params"
+                                                label="Parámetros del Servicio"
+                                                v-on="tooltip"
+                                            ></v-text-field>
+                                        </template>
+                                        <span
+                                            >Información adicional del servicio</span
+                                        >
+                                    </v-tooltip>
                                 </v-col>
                                 <v-col cols="12">
                                     <v-textarea

@@ -58,6 +58,19 @@
                         <v-list-item-title>Créditos</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
+                <v-list-item
+                    link
+                    @click="
+                        download()
+                    "
+                >
+                    <v-list-item-action>
+                        <v-icon>mdi-lifebuoy</v-icon>
+                    </v-list-item-action>
+                    <v-list-item-content>
+                        <v-list-item-title>Ayuda</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
             </v-list>
             <v-bottom-navigation absolute color="indigo">
                 <v-btn
@@ -304,6 +317,9 @@ export default {
         },
         navigateToExt(route) {
             window.open(route, "_blank");
+        },
+        download(){
+            window.open("/Manual de usuario Portafolio Digital Ciencias UCV.pdf", "_blank");
         },
         logout() {
             this.$store.dispatch("setToken", null);

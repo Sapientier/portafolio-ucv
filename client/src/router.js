@@ -8,6 +8,7 @@ import UsersTable from '@/components/admin/UsersTable'
 import Reports from '@/components/admin/Reports'
 import Credits from '@/components/Credits'
 import NotFound from '@/components/core/NotFound'
+import UnderMaint from '@/components/core/UnderMaint'
 
 Vue.use(VueRouter)
 
@@ -48,6 +49,11 @@ export default new VueRouter({
             path: '/credits',
             name: 'Credits',
             component: Credits
+        },
+        {
+            path: '/undermaintenance',
+            name: 'UnderMaint',
+            component: UnderMaint
         },
         {
             path: '*',

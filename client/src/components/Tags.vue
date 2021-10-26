@@ -52,7 +52,13 @@ export default {
     }),
     methods: {
         navigateTo(route) {
-            window.open(route, "_blank");
+            if (route === "") {
+                this.$router.push({
+                    name: "UnderMaint",
+                });
+            } else {
+                window.open(route, "_blank");
+            }
         },
     },
 };
