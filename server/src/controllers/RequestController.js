@@ -15,7 +15,7 @@ function setEmailContent(Title, Content, Url, htmlText) {
 module.exports = {
     async requestservice(req, res) {
         const date = new Date().toISOString().substr(0, 10);
-        let redirectFinalUrl = "https://portafolio-ucv.herokuapp.com/"
+        let redirectFinalUrl = "http://portafolio.ciens.ucv.ve/"
         let descripcionMail = "Se realizo una solicitud por <b>" + req.body.emailReq + "</b> del servicio <b>" + req.body.serviceName + "</b>";
         let note = req.body.note;
         let url = redirectFinalUrl + 'updaterequestservice?emailReq=' + req.body.emailReq + '&serviceReq=' + req.body.serviceName;
