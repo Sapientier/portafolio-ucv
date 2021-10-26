@@ -319,7 +319,7 @@ export default {
             window.open(route, "_blank");
         },
         download(){
-            window.open("/Manual de usuario Portafolio Digital Ciencias UCV.pdf", "_blank");
+            window.open("/Manual de usuario.pdf", "_blank");
         },
         logout() {
             this.$store.dispatch("setToken", null);
