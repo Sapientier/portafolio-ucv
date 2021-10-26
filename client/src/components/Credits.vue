@@ -30,7 +30,7 @@
                 <v-card class="mx-auto elevation-6" max-width="600" outlined>
                     <v-list-item>
                         <v-list-item-content>
-                            <v-list-item-title>Tutora:</v-list-item-title>
+                            <v-list-item-title class="overline mb-4">Tutora:</v-list-item-title>
                             <v-list-item-subtitle
                                 >Profa. Yosly Hernández</v-list-item-subtitle
                             >
@@ -38,7 +38,7 @@
                     </v-list-item>
                     <v-list-item>
                         <v-list-item-content>
-                            <v-list-item-title
+                            <v-list-item-title class="overline mb-4"
                                 >Conceptualización, diagramación y
                                 contenido:</v-list-item-title
                             >
@@ -55,7 +55,7 @@
                     </v-list-item>
                     <v-list-item>
                         <v-list-item-content>
-                            <v-list-item-title
+                            <v-list-item-title class="overline mb-4"
                                 >Diseño Gráfico y Desarrollo:</v-list-item-title
                             >
                             <v-list-item-subtitle

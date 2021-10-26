@@ -98,13 +98,18 @@
             <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
             <v-btn icon large>
                 <v-avatar size="32px" item>
-                    <v-img :src="require('@/assets/UCV.png')" alt="Vuetify" />
+                    <v-img
+                        :src="require('@/assets/UCV.png')"
+                        alt="Vuetify"
+                        @click="navigateTo({ name: 'Home' })"
+                    />
                 </v-avatar>
             </v-btn>
             <v-btn icon large>
                 <v-avatar size="32px" item>
                     <v-img
                         :src="require('@/assets/ciencia.png')"
+                        @click="navigateTo({ name: 'Home' })"
                         alt="Vuetify"
                     />
                 </v-avatar>
