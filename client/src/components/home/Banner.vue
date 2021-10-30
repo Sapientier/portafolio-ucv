@@ -8,7 +8,7 @@
                             Portafolio Ciencias UCV
                         </h1>
                         <h4 class="font-weight-light mt-3 mb-3">
-                            ¡Bienvenidos! Para aquellos problemas que requieren
+                            ¡Bienvenidos! Para aquellos desafíos que requieren
                             modernas soluciones de alta tecnología, la Facultad
                             de Ciencias de la Universidad Central de Venezuela
                             pone a disposición la aplicación de su conocimiento
